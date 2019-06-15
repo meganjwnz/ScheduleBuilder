@@ -1,9 +1,10 @@
 ﻿using ScheduleManager.DAL;
 using System.Data;
+using System.Web.Mvc;
 
 namespace ScheduleManager.Controllers
 {
-    public class LoginController
+    public class LoginController : Controller
     {
         private readonly LoginDAL loginDAL;
 
