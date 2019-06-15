@@ -1,6 +1,6 @@
 ﻿using ScheduleManager.Model;
 using ScheduleManager.DAL;
-
+using System.Web.Mvc;
 using System.Collections.Generic;
 
 namespace ScheduleManager.Controllers
@@ -9,7 +9,7 @@ namespace ScheduleManager.Controllers
     /// This class insures proper access to the DAL 
     /// and controls all manipulation of the person object(s)
     /// </summary>
-    public static class PersonController
+    public class PersonController : Controller
     {
         
 
@@ -27,11 +27,19 @@ namespace ScheduleManager.Controllers
         /// returns a list of all persons - no where clause specified
         /// </summary>
         /// <returns></returns>
-        public static List<Person> GetAllPeoples()
+        //public static List<Person> GetAllPeoples()
+        //{
+
+        //    string whereClause = "";
+        //    return PersonDAL.GetDesiredPersons(whereClause);
+
+        //}
+
+        public ActionResult GetAllPeoples()
         {
             string whereClause = "";
-            return PersonDAL.GetDesiredPersons(whereClause);
-
+            PersonDAL.GetDesiredPersons(whereClause);
+            return View(PersonDAL.GetDesiredPersons(whereClause));
         }
 
         /// <summary>

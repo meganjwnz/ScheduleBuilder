@@ -27,11 +27,9 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
-        public ActionResult ListPeople()  
+        public ActionResult PeopleDirectory()
         {
-            ViewBag.Message = "Your People.";
-            List<Person> people = PersonController.GetAllPeoples();
-            return View(people);
+            return View();
         }
     }
 }
