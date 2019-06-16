@@ -47,22 +47,10 @@ namespace ScheduleBuilder.Controllers
             if (dataTable.Rows.Count > 0)
             {
                 Session["user"] = dataTable.Rows[0]["name"];
-
-                if ((string)dataTable.Rows[0]["roleTitle"] == "Employee")
-                {
-                    FormsAuthentication.SetAuthCookie(person.Username, true);
-                    return View("Index");
-                }
-                else if ((string)dataTable.Rows[0]["roleTitle"] == "Manager")
-                {
-                    FormsAuthentication.SetAuthCookie(person.Username, true);
-                    return View("Index");
-                }
-                else if ((string)dataTable.Rows[0]["roleTitle"] == "Administrator")
-                {
-                    FormsAuthentication.SetAuthCookie(person.Username, true);
-                    return View("Index");
-                }
+                Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
+                Session["id"] = dataTable.Rows[0]["id"];
+                FormsAuthentication.SetAuthCookie(person.Username, true);
+                return View("Index");
             }
             return View();
         }
