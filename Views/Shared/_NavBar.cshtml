@@ -17,13 +17,13 @@
             </ul>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-right">
-                    @if (@ViewBag.User == null)
+                    @if (@Session["user"] == null)
                     {
                         <li> @Html.ActionLink("Login", "Login", "Home")</li>
                     }
-                    @if (@ViewBag.User != null)
+                    @if (@Session["user"] != null)
                     {
-                        <li>@Html.ActionLink("Logout", "Index", "Home")</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
                     }
                 </ul>
             </div>
