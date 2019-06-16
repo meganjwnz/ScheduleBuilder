@@ -9,7 +9,9 @@
 </head>
 <body>
     @Html.Partial("_NavBar");
+    
     <div class="container body-content">
+        <div class="floatRight">Hi @ViewBag.User !</div>
         @RenderBody()
         <hr />
         <footer>

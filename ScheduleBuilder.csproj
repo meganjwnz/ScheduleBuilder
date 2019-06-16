@@ -133,6 +133,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\LogoutController.cs" />
     <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PersonDal.cs" />
     <Compile Include="DAL\ScheduleManager_DB_Connection.cs" />
@@ -201,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
+    <Folder Include="Views\Logout\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -15,6 +15,18 @@
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 <li>@Html.ActionLink("List all People", "PeopleDirectory", "Home")</li>
             </ul>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-right">
+                    @if (@ViewBag.User == null)
+                    {
+                        <li> @Html.ActionLink("Login", "Login", "Home")</li>
+                    }
+                    @if (@ViewBag.User != null)
+                    {
+                        <li>@Html.ActionLink("Logout", "Index", "Home")</li>
+                    }
+                </ul>
+            </div>
+        </div>  
         </div>
-    </div>
 </div>
