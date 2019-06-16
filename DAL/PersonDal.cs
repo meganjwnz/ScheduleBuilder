@@ -43,6 +43,7 @@ namespace ScheduleManager.DAL
                 ", phone" +
                 ", zipcode" +
                 ", username" +
+                ", password" +
                 ", roleId" +
                 ", statusId" +
                 " From dbo.person " + whereClause;
@@ -61,13 +62,13 @@ namespace ScheduleManager.DAL
                             person.LastName = reader["last_name"].ToString();
                             person.FirstName = reader["first_name"].ToString();
                             person.DateOfBirth = (DateTime)reader["date_of_birth"];
-                            person.Ssn = (char)reader["ssn"];
+                            //person.Ssn = (char)reader["ssn"];
                             person.Gender = reader["gender"].ToString();
                             person.StreetAddress = reader["street_address"].ToString();
                             person.Phone = reader["phone"].ToString();
                             person.Zipcode = reader["zipcode"].ToString();
                             person.Username = reader["username"].ToString();
-                            person.Password = (string)reader["password"];
+                            person.Password = reader["password"].ToString();
                             person.RoleId = (int)reader["roleId"];
                             person.StatusId = (int)reader["statusId"];
 

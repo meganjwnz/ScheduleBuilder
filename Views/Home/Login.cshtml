@@ -4,40 +4,21 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    <h2>Login</h2>
-    <p class="text-danger">
-        @ViewBag.Error
-    </p>
 }
 @using (Html.BeginForm())
 {
-    <table>
-        <tbody>
-            <tr>
-                <td>
-                    <label for="Username">Username : </label>
-                </td>
-                <td>
-                    <input name="Username" type="text" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="Password">Password : </label>
-                </td>
-                <td>
-                    <input name="Password" type="password" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <input type="submit" value="Login" />
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+<div class="wrapper">
+    <h2 class="login_welcome">Welcome to Schedule Manager!</h2>
+    <div class="login">
+        <h3 class="form-signin-heading">Please Login</h3>
+        <h4 class="text-danger">@ViewBag.Error</h4>
+
+        <input required="" class="form-control" name="Username" type="text" placeholder="Username" />
+
+        <input required="" class="form-control" name="Password" type="password" placeholder="Password" />
+
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login" />
+
+    </div>
+</div>
 }
