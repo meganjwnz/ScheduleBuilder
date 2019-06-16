@@ -42,7 +42,6 @@ namespace ScheduleManager.DAL
                 ", phone" +
                 ", zipcode" +
                 ", username" +
-                ", password" +
                 ", roleId" +
                 ", statusId" +
                 " From dbo.person " + whereClause;
@@ -67,7 +66,7 @@ namespace ScheduleManager.DAL
                             person.Phone = reader["phone"].ToString();
                             person.Zipcode = reader["zipcode"].ToString();
                             person.Username = reader["username"].ToString();
-                            person.Password = (byte[])reader["password"];
+                            //person.Password = (byte[])reader["password"];
                             person.RoleId = (int)reader["roleId"];
                             person.StatusId = (int)reader["statusId"];
 

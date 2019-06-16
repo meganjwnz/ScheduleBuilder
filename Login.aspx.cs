@@ -16,7 +16,7 @@ namespace ScheduleBuilder
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            loginController = new LoginController();
+            this.loginController = new LoginController();
             ErrorLabel.Visible = false;
         }
 

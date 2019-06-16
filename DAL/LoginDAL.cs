@@ -21,19 +21,19 @@ namespace ScheduleBuilder.DAL
                          "SELECT p.id, p.username, p.password, (p.first_name + ' ' + p.last_name) AS 'name', r.roleTitle " +
                          "FROM person p " +
                          "JOIN role r ON p.roleID = r.id " +
-                         "WHERE username = @username AND CONVERT(varbinary, password) = @password";
+                         "WHERE username = @username AND password = @password";
 
             using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
             {
                 connection.Open();
                 SqlCommand sqlCommand = new SqlCommand(selectStatement, connection);
                 sqlCommand.Parameters.AddWithValue("@username", username);
-                sqlCommand.Parameters.AddWithValue("@password", Encoding.UTF8.GetBytes(password));
+                sqlCommand.Parameters.AddWithValue("@password", password);
                 SqlDataReader reader = sqlCommand.ExecuteReader();
 
                 dt.Columns.Add("id", typeof(int));
                 dt.Columns.Add("username", typeof(string));
-                dt.Columns.Add("password", typeof(byte[]));
+                dt.Columns.Add("password", typeof(string));
                 dt.Columns.Add("name", typeof(string));
                 dt.Columns.Add("roleTitle", typeof(string));
 

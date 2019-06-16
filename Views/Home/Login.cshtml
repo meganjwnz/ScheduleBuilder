@@ -1,0 +1,46 @@
+﻿@model ScheduleManager.Model.Person
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src=@Url.Content("~/Scripts/jquery.validate.min.js")></script>
+    <script src=@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")></script>
+
+
+    <h2>Login</h2>
+    <p class="text-danger">
+        @ViewBag.Error
+    </p>
+}
+@using (Html.BeginForm())
+{
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    <label for="Username">Username : </label>
+                </td>
+                <td>
+                    <input name="Username" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Password">Password : </label>
+                </td>
+                <td>
+                    <input name="Password" type="password" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Login" />
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+}

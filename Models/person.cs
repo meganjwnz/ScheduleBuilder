@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleManager.Model
 {
@@ -21,7 +22,7 @@ namespace ScheduleManager.Model
         public string StreetAddress { get; set; }
         public string Zipcode { get; set; }
         public string Username { get; set; }
-        public byte[] Password { get; set; }
+        public string Password { get; set; }
         public int RoleId { get; set; }
         public int StatusId { get; set; }
     }
