@@ -62,7 +62,7 @@ namespace ScheduleManager.DAL
                             person.LastName = reader["last_name"].ToString();
                             person.FirstName = reader["first_name"].ToString();
                             person.DateOfBirth = (DateTime)reader["date_of_birth"];
-                            //person.Ssn = (char)reader["ssn"];
+                            //person.Ssn = reader["ssn"].ToString();
                             person.Gender = reader["gender"].ToString();
                             person.StreetAddress = reader["street_address"].ToString();
                             person.Phone = reader["phone"].ToString();
