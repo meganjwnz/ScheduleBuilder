@@ -45,6 +45,26 @@ namespace ScheduleManager.Controllers
             return View(PersonDAL.GetDesiredPersons(whereClause));
         }
 
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
         /// <summary>
         /// Returns list of persons based upon inputed statusid
         /// </summary>
