@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="ScheduleBuilder.Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="ScheduleBuilder.Login" %>
 
 <!DOCTYPE html>
 
@@ -23,7 +23,7 @@
                         <asp:Label ID="PasswordLabel" runat="server" Text="Password"></asp:Label>
                     </td>
                     <td>
-                        <asp:TextBox ID="PasswordTextBox" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="PasswordTextBox" runat="server" TextMode="Password"></asp:TextBox>
                     </td> 
                 </tr>
                 <tr>

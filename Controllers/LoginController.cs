@@ -1,12 +1,10 @@
-﻿using ScheduleManager.DAL;
+﻿using ScheduleBuilder.DAL;
 using System.Data;
 
-namespace ScheduleManager.Controllers
+namespace ScheduleBuilder.Controllers
 {
     public class LoginController
     {
-        private readonly LoginDAL loginDAL;
-
         /// <summary>
         ///  Retrieves login information in the form of a data table   
         /// </summary>
@@ -15,7 +13,7 @@ namespace ScheduleManager.Controllers
         /// <returns></returns>
         public DataTable GetLogin(string username, string password)
         {
-            return loginDAL.GetLogin(username, password);
+            return LoginDAL.GetLogin(username, password);
         }
     }
 }
