@@ -1,4 +1,5 @@
-﻿using ScheduleManager.DAL;
+﻿using ScheduleBuilder.Models;
+using ScheduleManager.DAL;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,6 +18,7 @@ namespace ScheduleBuilder.DAL
         public static DataTable GetLogin(string username, string password)
         {
             DataTable dt = new DataTable();
+            HashingService hash = new HashingService();
             string selectStatement =
                          "SELECT p.id, p.username, p.password, (p.first_name + ' ' + p.last_name) AS 'name', r.roleTitle " +
                          "FROM person p " +
@@ -28,7 +30,7 @@ namespace ScheduleBuilder.DAL
                 connection.Open();
                 SqlCommand sqlCommand = new SqlCommand(selectStatement, connection);
                 sqlCommand.Parameters.AddWithValue("@username", username);
-                sqlCommand.Parameters.AddWithValue("@password", password);
+                sqlCommand.Parameters.AddWithValue("@password", hash.PasswordHashing(password));
                 SqlDataReader reader = sqlCommand.ExecuteReader();
 
                 dt.Columns.Add("id", typeof(int));

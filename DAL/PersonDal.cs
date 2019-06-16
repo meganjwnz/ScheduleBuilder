@@ -1,4 +1,5 @@
-﻿using ScheduleManager.Model;
+﻿using ScheduleBuilder.Models;
+using ScheduleManager.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -60,13 +61,13 @@ namespace ScheduleManager.DAL
                             person.LastName = reader["last_name"].ToString();
                             person.FirstName = reader["first_name"].ToString();
                             person.DateOfBirth = (DateTime)reader["date_of_birth"];
-                          //  person.Ssn = (char)reader["ssn"];
+                            person.Ssn = (char)reader["ssn"];
                             person.Gender = reader["gender"].ToString();
                             person.StreetAddress = reader["street_address"].ToString();
                             person.Phone = reader["phone"].ToString();
                             person.Zipcode = reader["zipcode"].ToString();
                             person.Username = reader["username"].ToString();
-                            //person.Password = (byte[])reader["password"];
+                            person.Password = (string)reader["password"];
                             person.RoleId = (int)reader["roleId"];
                             person.StatusId = (int)reader["statusId"];
 
@@ -89,6 +90,7 @@ namespace ScheduleManager.DAL
         /// <param name="addPerson"></param>
         public static void AddPerson(Person addPerson)
         {
+            HashingService hash = new HashingService();
             int addedPersonId = -1;
 
             try
@@ -125,7 +127,6 @@ namespace ScheduleManager.DAL
                             ", @roleId" +
                             ", @statusId)";
 
-
                         using (SqlCommand command = new SqlCommand(insertPerson, connection))
                         {
                             command.Parameters.Add(new SqlParameter("@last_name", addPerson.LastName));
@@ -137,7 +138,7 @@ namespace ScheduleManager.DAL
                             command.Parameters.Add(new SqlParameter("@phone", addPerson.Phone));
                             command.Parameters.Add(new SqlParameter("@zipcode", addPerson.Zipcode));
                             command.Parameters.Add(new SqlParameter("@username", addPerson.Username));
-                            command.Parameters.Add(new SqlParameter("@password", addPerson.Password));
+                            command.Parameters.Add(new SqlParameter("@password", hash.PasswordHashing(addPerson.Password)));
                             command.Parameters.Add(new SqlParameter("@roleId", addPerson.Password));
                             command.Parameters.Add(new SqlParameter("@statusID", addPerson.Password));
 
