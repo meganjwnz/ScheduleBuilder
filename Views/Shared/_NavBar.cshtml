@@ -21,20 +21,18 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("List all People", "PeopleDirectory", "Home")</li>
                 }
-
             </ul>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-right">
-                    @if (@Session["user"] == null)
-                    {
-                        <li> @Html.ActionLink("Login", "Login", "Home")</li>
-                    }
-                    @if (@Session["user"] != null)
-                    {
-                        <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
-                    }
-                </ul>
-            </div>
-        </div>  
+            <ul class="nav navbar-nav navbar-right">
+                @if (@Session["user"] == null)
+                {
+                    <li>@Html.ActionLink("Login", "Login", "Home")</li>
+                }
+                @if (@Session["user"] != null)
+                {
+                    <li style="color:white; padding-top:1em"><strong>@Session["user"]</strong></li>
+                    <li>@Html.ActionLink("Logout", "Logout", "Home")</li>
+                }
+            </ul>
         </div>
+    </div>
 </div>
