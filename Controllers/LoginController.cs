@@ -1,9 +1,10 @@
 ﻿using ScheduleBuilder.DAL;
 using System.Data;
+using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
 {
-    public class LoginController
+    public class LoginController : Controller
     {
         /// <summary>
         ///  Retrieves login information in the form of a data table   
