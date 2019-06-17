@@ -2,6 +2,9 @@
 using ScheduleManager.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
+using ScheduleBuilder.DAL;
+using System.Data;
+using ScheduleBuilder.Controllers;
 
 namespace ScheduleManager.Controllers
 {
@@ -39,6 +42,26 @@ namespace ScheduleManager.Controllers
         {
             string whereClause = "";
             return View(PersonDAL.GetDesiredPersons(whereClause));
+        }
+
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+        public ActionResult Delete()
+        {
+            return View();
         }
 
         /// <summary>
@@ -112,7 +135,5 @@ namespace ScheduleManager.Controllers
             return PersonDAL.GetDesiredPersons(whereClause);
         }
         #endregion
-
-
     }
 }
