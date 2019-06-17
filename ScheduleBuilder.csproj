@@ -198,9 +198,11 @@
     <Content Include="Views\Person\Create.cshtml" />
     <Content Include="Views\Person\Details.cshtml" />
     <Content Include="Views\Person\Delete.cshtml" />
+    <Content Include="Views\Person\AddPerson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
+    <Folder Include="ModelViews\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

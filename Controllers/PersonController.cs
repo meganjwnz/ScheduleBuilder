@@ -20,10 +20,15 @@ namespace ScheduleManager.Controllers
         /// Adds a person to the database
         /// </summary>
         /// <param name="addedPerson"></param>
-        public static void AddPerson(Person addedPerson)
+        public ActionResult AddPerson()
         {
-            PersonDAL.AddPerson(addedPerson);
+
+            ViewBag.Message = "Add Employee";
+            return View();
+            
         }
+
+
 
         #region Return specified Persons
         /// <summary>
