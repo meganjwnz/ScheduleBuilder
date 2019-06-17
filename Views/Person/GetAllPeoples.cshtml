@@ -5,10 +5,16 @@
 }
 
 <h2>GetAllPeoples</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (Session["roleTitle"].ToString() == "Employee")
+{
+    <p></p>
+}
+else
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -84,9 +90,17 @@
                 @Html.DisplayFor(modelItem => item.StatusId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @if (Session["roleTitle"].ToString() == "Employee")
+                {
+                    <p></p>
+                }
+                else
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <strong>|</strong>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) <strong>|</strong>
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }) 
+                }
+
             </td>
         </tr>
     }
