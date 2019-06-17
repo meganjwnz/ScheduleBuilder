@@ -1,4 +1,5 @@
 ﻿body {
+    font-family: 'Capriola', sans-serif;
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -21,4 +22,55 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+.floatRight {
+    float: right;
+}
+
+/*Login Form*/
+
+body {
+    background: #eee !important;
+}
+
+.wrapper {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.login {
+    font-family: 'Capriola', sans-serif;
+    margin: 0 auto;
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.login_welcome {
+    font-family: 'Capriola', sans-serif;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.form-control {
+    font-size: 16px;
+    height: auto;
+    padding: 20px;
+}
+
+input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+input[type="password"] {
+    margin-bottom: 20px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }

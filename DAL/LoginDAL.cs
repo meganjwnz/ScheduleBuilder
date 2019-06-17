@@ -1,8 +1,10 @@
-﻿using System.Data;
+﻿using ScheduleBuilder.Models;
+using ScheduleManager.DAL;
+using System.Data;
 using System.Data.SqlClient;
 
 
-namespace ScheduleManager.DAL
+namespace ScheduleBuilder.DAL
 {
     public class LoginDAL
     {
@@ -12,12 +14,14 @@ namespace ScheduleManager.DAL
         /// <param name="username">As a string</param>
         /// <param name="password">As a string</param>
         /// <returns></returns>
-        public DataTable GetLogin(string username, string password)
+        public static DataTable GetLogin(string username, string password)
         {
             DataTable dt = new DataTable();
+            HashingService hash = new HashingService();
             string selectStatement =
-                         "SELECT l.personID, l.userName, l.password, (p.first_name + ' ' + p.last_name) AS 'name', p.role" +
-                         "FROM login l JOIN person p ON p.id = l.personID" +
+                         "SELECT p.id, p.username, p.password, (p.first_name + ' ' + p.last_name) AS 'name', r.roleTitle " +
+                         "FROM person p " +
+                         "JOIN role r ON p.roleID = r.id " +
                          "WHERE username = @username AND password = @password";
 
             using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
@@ -25,16 +29,16 @@ namespace ScheduleManager.DAL
                 connection.Open();
                 SqlCommand sqlCommand = new SqlCommand(selectStatement, connection);
                 sqlCommand.Parameters.AddWithValue("@username", username);
-                sqlCommand.Parameters.AddWithValue("@password", password);
+                sqlCommand.Parameters.AddWithValue("@password", hash.PasswordHashing(password));
                 SqlDataReader reader = sqlCommand.ExecuteReader();
 
-                dt.Columns.Add("personID", typeof(int));
-                dt.Columns.Add("userName", typeof(string));
+                dt.Columns.Add("id", typeof(int));
+                dt.Columns.Add("username", typeof(string));
                 dt.Columns.Add("password", typeof(string));
                 dt.Columns.Add("name", typeof(string));
-                dt.Columns.Add("role", typeof(string));
+                dt.Columns.Add("roleTitle", typeof(string));
 
-                dt.Load(reader);
+                dt.Load(reader);  
             }
             return dt;
         }   
