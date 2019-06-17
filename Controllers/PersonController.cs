@@ -38,7 +38,6 @@ namespace ScheduleManager.Controllers
         public ActionResult GetAllPeoples()
         {
             string whereClause = "";
-            PersonDAL.GetDesiredPersons(whereClause);
             return View(PersonDAL.GetDesiredPersons(whereClause));
         }
 
@@ -64,15 +63,19 @@ namespace ScheduleManager.Controllers
             return PersonDAL.GetDesiredPersons(whereClause);
         }
 
-        /// <summary>
-        /// Returns list of persons based upon inputed id
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public static List<Person> GetAllPeopleById(int Id)
+        public ActionResult GetAllPeopleById()
         {
-            string whereClause = "WHERE Id = " + Id.ToString();
-            return PersonDAL.GetDesiredPersons(whereClause);
+            return View(); 
+        }
+
+        [HttpPost]
+        public ActionResult GetAllPeopleById(Person model)
+        {
+            string whereClause = "WHERE Id = " + model.Id.ToString();
+            List<Person> selectedEmployee = PersonDAL.GetDesiredPersons(whereClause);
+            return View(selectedEmployee[0]);
+
+
         }
 
         /// <summary>

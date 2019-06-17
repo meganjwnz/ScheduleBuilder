@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>PeopleDirectory</h2>
+<h2>People Directory</h2>
+<br />
+<p>
+    <h4>@Html.ActionLink("Get All People", "GetAllPeoples", "Person")</h4>
+</p>
+<p>
+    <h4>@Html.ActionLink("Get Person by Id", "GetPersonById", "Person")</h4>
+</p>
 
-<h4>@Html.ActionLink("Get All People", "GetAllPeoples", "Person")</h4>

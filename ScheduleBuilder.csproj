@@ -194,10 +194,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\ShowPeopleDirectory.cshtml" />
     <Content Include="Views\Home\PeopleDirectory.cshtml" />
     <Content Include="Views\Person\GetAllPeoples.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Person\GetAllPeopleById.cshtml" />
+    <Content Include="Views\Person\GetAllPeopleById_list.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

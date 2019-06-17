@@ -25,5 +25,12 @@ namespace ScheduleBuilder.Controllers
         {
             return View();
         }
+
+
+        //THIS IS FOR MANUAL TESTING
+        public ActionResult testView()
+        {
+            return View();
+        }
     }
 }

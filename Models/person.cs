@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleManager.Model
 {
@@ -11,6 +12,7 @@ namespace ScheduleManager.Model
     /// </summary>
     public class Person
     {
+        [Display(Name = "Employee ID")]
         public int Id {get; set;}
         public string LastName { get; set; }
         public string FirstName { get; set; }
