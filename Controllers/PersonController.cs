@@ -22,10 +22,8 @@ namespace ScheduleManager.Controllers
         /// <param name="addedPerson"></param>
         public ActionResult AddPerson()
         {
-
             ViewBag.Message = "Add Employee";
-            return View();
-            
+            return View();          
         }
 
 
