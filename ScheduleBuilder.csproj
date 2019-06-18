@@ -189,7 +189,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Model\HashingService.cs" />
-    <Compile Include="Model\person.cs" />
+    <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Shift.cs" />
     <Compile Include="ModelViews\personViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -232,7 +232,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\ShowPeopleDirectory.cshtml" />
     <Content Include="Views\Home\PeopleDirectory.cshtml" />
-    <Content Include="Views\Person\GetAllPeoples.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Logout.cshtml" />
@@ -240,6 +239,7 @@
     <Content Include="Views\Person\Details.cshtml" />
     <Content Include="Views\Person\Delete.cshtml" />
     <Content Include="Views\Person\AddPerson.cshtml" />
+    <Content Include="Views\Person\GetAllPeoples.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
