@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using ScheduleManager.Model;
+using ScheduleBuilder.Model;
 
 
-namespace ScheduleManager.Controllers
+namespace ScheduleBuilder.Controllers
 {
     public class MainController : Controller
     {

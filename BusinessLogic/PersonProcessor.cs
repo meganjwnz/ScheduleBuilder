@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using ScheduleBuilder.Models;
-using ScheduleManager.DAL;
-using ScheduleManager.Model;
+using ScheduleBuilder.Model;
+using ScheduleBuilder.DAL;
 
 namespace ScheduleBuilder.BusinessLogic
 {
-    public static class PersonProcessor
+    public class PersonProcessor
     {
         PersonDAL personDAL = new PersonDAL();
         public static int addPerson(string lastName
@@ -38,7 +37,7 @@ namespace ScheduleBuilder.BusinessLogic
                 RoleId = 1
 
             };
-            return PersonDAL
+            return 1;//NOT FINISHED
         }
 
     }

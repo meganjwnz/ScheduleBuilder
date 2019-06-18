@@ -1,5 +1,5 @@
 ﻿using ScheduleBuilder.DAL;
-using ScheduleManager.Model;
+using ScheduleBuilder.Model;
 using System.Data;
 using System.Web.Mvc;
 using System.Web.Security;

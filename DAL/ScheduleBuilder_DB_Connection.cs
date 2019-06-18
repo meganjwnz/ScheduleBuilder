@@ -2,9 +2,9 @@
 using System.Data.SqlClient;
 
 
-namespace ScheduleManager.DAL
+namespace ScheduleBuilder.DAL
 {
-    public static class ScheduleManager_DB_Connection
+    public static class ScheduleBuilder_DB_Connection
     {
         public static SqlConnection GetConnection()
         {

@@ -1,12 +1,11 @@
-﻿using ScheduleManager.Model;
-using ScheduleManager.DAL;
+﻿using ScheduleBuilder.Model;
+using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using ScheduleBuilder.DAL;
 using System.Data;
 using ScheduleBuilder.Controllers;
 
-namespace ScheduleManager.Controllers
+namespace ScheduleBuilder.Controllers
 {
     /// <summary>
     /// This class insures proper access to the DAL 

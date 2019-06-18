@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ScheduleManager.Model
+namespace ScheduleBuilder.Model
 {
     /// <summary>
     /// These are the values of the person class

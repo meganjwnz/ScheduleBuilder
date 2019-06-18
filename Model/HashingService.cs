@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace ScheduleBuilder.Models
+namespace ScheduleBuilder.Model
 {
     public class HashingService
     {

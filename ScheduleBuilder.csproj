@@ -179,7 +179,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PersonDal.cs" />
-    <Compile Include="DAL\ScheduleManager_DB_Connection.cs" />
+    <Compile Include="DAL\ScheduleBuilder_DB_Connection.cs" />
     <Compile Include="DAL\ShiftDAL.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
@@ -188,9 +188,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\HashingService.cs" />
-    <Compile Include="Models\person.cs" />
-    <Compile Include="Models\Shift.cs" />
+    <Compile Include="Model\HashingService.cs" />
+    <Compile Include="Model\person.cs" />
+    <Compile Include="Model\Shift.cs" />
     <Compile Include="ModelViews\personViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

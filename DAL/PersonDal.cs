@@ -1,5 +1,4 @@
-﻿using ScheduleBuilder.Models;
-using ScheduleManager.Model;
+﻿using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -8,7 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace ScheduleManager.DAL
+namespace ScheduleBuilder.DAL
 {
     /// <summary>
     /// This class provides access to the database 
@@ -37,7 +36,7 @@ namespace ScheduleManager.DAL
 
         public List<model> LoadData<model>(string sql)
         {
-            using (IDbConnection cnn = ScheduleManager_DB_Connection.GetConnection())
+            using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 return cnn.Query<model>(sql).AsList();
             }
@@ -45,7 +44,7 @@ namespace ScheduleManager.DAL
 
         public int SaveData<model>(string sql, model data)
         {
-            using (IDbConnection cnn = ScheduleManager_DB_Connection.GetConnection())
+            using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 return cnn.Execute(sql, data);
             }
@@ -74,7 +73,7 @@ namespace ScheduleManager.DAL
                 //", statusId" +
                 //" From dbo.person " + whereClause;
                 
-            using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(desiredEmployees, connection))
@@ -122,7 +121,7 @@ namespace ScheduleManager.DAL
 
             try
             {
-                using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
                 {
                     connection.Open();
                     using (SqlTransaction transaction = connection.BeginTransaction())

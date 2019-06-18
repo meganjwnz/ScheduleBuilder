@@ -1,9 +1,9 @@
-﻿using ScheduleManager.Model;
+﻿using ScheduleBuilder.Model;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace ScheduleManager.DAL
+namespace ScheduleBuilder.DAL
 {
     /// <summary>
     /// This class provides access to the database 
@@ -13,7 +13,7 @@ namespace ScheduleManager.DAL
     {
         public List<Shift> GetShifts()
         {
-            SqlConnection connection = ScheduleManager_DB_Connection.GetConnection();
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
             List<Shift> shiftList = new List<Shift>();
 
             string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
