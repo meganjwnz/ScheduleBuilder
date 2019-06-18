@@ -1,5 +1,5 @@
-﻿using ScheduleBuilder.Models;
-using ScheduleManager.DAL;
+﻿using ScheduleBuilder.Model;
+using ScheduleBuilder.DAL;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -24,7 +24,7 @@ namespace ScheduleBuilder.DAL
                          "JOIN role r ON p.roleID = r.id " +
                          "WHERE username = @username AND password = @password";
 
-            using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
                 SqlCommand sqlCommand = new SqlCommand(selectStatement, connection);

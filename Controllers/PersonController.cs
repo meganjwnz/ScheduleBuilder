@@ -1,12 +1,11 @@
-﻿using ScheduleManager.Model;
-using ScheduleManager.DAL;
+﻿using ScheduleBuilder.Model;
+using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using ScheduleBuilder.DAL;
 using System.Data;
 using ScheduleBuilder.Controllers;
 
-namespace ScheduleManager.Controllers
+namespace ScheduleBuilder.Controllers
 {
     /// <summary>
     /// This class insures proper access to the DAL 
@@ -14,16 +13,19 @@ namespace ScheduleManager.Controllers
     /// </summary>
     public class PersonController : Controller
     {
-        
+        PersonDAL personDAL = new PersonDAL();
 
         /// <summary>
         /// Adds a person to the database
         /// </summary>
         /// <param name="addedPerson"></param>
-        public static void AddPerson(Person addedPerson)
+        public ActionResult AddPerson()
         {
-            PersonDAL.AddPerson(addedPerson);
+            ViewBag.Message = "Add Employee";
+            return View();          
         }
+
+
 
         #region Return specified Persons
         /// <summary>
@@ -41,7 +43,7 @@ namespace ScheduleManager.Controllers
         public ActionResult GetAllPeoples()
         {
             string whereClause = "";
-            return View(PersonDAL.GetDesiredPersons(whereClause));
+            return View(this.personDAL.GetDesiredPersons(whereClause));
         }
 
         public ActionResult Edit()
@@ -69,10 +71,10 @@ namespace ScheduleManager.Controllers
         /// </summary>
         /// <param name="statusId"></param>
         /// <returns></returns>
-        public static List<Person> GetAllPeopleByStatusId(int statusId)
+        public List<Person> GetAllPeopleByStatusId(int statusId)
         {
             string whereClause = "WHERE statusId = " + statusId.ToString();
-            return PersonDAL.GetDesiredPersons(whereClause);
+            return this.personDAL.GetDesiredPersons(whereClause);
         }
 
         /// <summary>
@@ -80,10 +82,10 @@ namespace ScheduleManager.Controllers
         /// </summary>
         /// <param name="roleId"></param>
         /// <returns></returns>
-        public static List<Person> GetAllPeopleByRoleId(int roleId)
+        public List<Person> GetAllPeopleByRoleId(int roleId)
         {
             string whereClause = "WHERE roleId = " + roleId.ToString();
-            return PersonDAL.GetDesiredPersons(whereClause);
+            return this.personDAL.GetDesiredPersons(whereClause);
         }
 
         public ActionResult GetAllPeopleById()
@@ -95,7 +97,7 @@ namespace ScheduleManager.Controllers
         public ActionResult GetAllPeopleById(Person model)
         {
             string whereClause = "WHERE Id = " + model.Id.ToString();
-            List<Person> selectedEmployee = PersonDAL.GetDesiredPersons(whereClause);
+            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
             return View(selectedEmployee[0]);
 
 
@@ -106,10 +108,10 @@ namespace ScheduleManager.Controllers
         /// </summary>
         /// <param name="FirstName"></param>
         /// <returns></returns>
-        public static List<Person> GetAllPeopleByFirstName(string FirstName)
+        public List<Person> GetAllPeopleByFirstName(string FirstName)
         {
             string whereClause = "WHERE first_name = " + FirstName;
-            return PersonDAL.GetDesiredPersons(whereClause);
+            return this.personDAL.GetDesiredPersons(whereClause);
         }
 
         /// <summary>
@@ -117,10 +119,10 @@ namespace ScheduleManager.Controllers
         /// </summary>
         /// <param name="lastName"></param>
         /// <returns></returns>
-        public static List<Person> GetAllPeopleByLastName(string lastName)
+        public List<Person> GetAllPeopleByLastName(string lastName)
         {
             string whereClause = "WHERE last_name = " + lastName;
-            return PersonDAL.GetDesiredPersons(whereClause);
+            return this.personDAL.GetDesiredPersons(whereClause);
         }
 
         /// <summary>
@@ -129,10 +131,10 @@ namespace ScheduleManager.Controllers
         /// <param name="FirstName"></param>
         /// <param name="lastName"></param>
         /// <returns></returns>
-        public static List<Person> GetAllPeopleByFirstAndLastName(string FirstName, string lastName)
+        public List<Person> GetAllPeopleByFirstAndLastName(string FirstName, string lastName)
         {
             string whereClause = "WHERE last_name = " + lastName + " And first_name = " + FirstName;
-            return PersonDAL.GetDesiredPersons(whereClause);
+            return this.personDAL.GetDesiredPersons(whereClause);
         }
         #endregion
     }

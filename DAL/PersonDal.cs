@@ -1,39 +1,22 @@
-﻿using ScheduleBuilder.Models;
-using ScheduleManager.Model;
+﻿using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Dapper;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 
-namespace ScheduleManager.DAL
+namespace ScheduleBuilder.DAL
 {
     /// <summary>
     /// This class provides access to the database 
     /// It is conserned with Person 
     /// </summary>
-    public static class PersonDAL
+    public class PersonDAL
     {
         //Sad about this
-        //string selectedPersons = "Select id" +
-        //        ", last_name" +
-        //        ", first_name" +
-        //        ", date_of_birth" +
-        //        ", ssn" +
-        //        ", gender" +
-        //        ", street_address" +
-        //        ", phone" +
-        //        ", zipcode" +
-        //        ", username" +
-        //        ", password" +
-        //        ", roleId" +
-        //        ", statusId" +
-        //        " From dbo.person ";
-        ///// <summary>
-        /// this method returns all employees
-        /// </summary>
-        /// <returns></returns>
-        public static List<Person> GetDesiredPersons(string whereClause) {
-            List<Person> persons = new List<Person>();
-            string desiredEmployees = "Select id" +
+        string selectedPersons = "Select id" +
                 ", last_name" +
                 ", first_name" +
                 ", date_of_birth" +
@@ -46,9 +29,51 @@ namespace ScheduleManager.DAL
                 ", password" +
                 ", roleId" +
                 ", statusId" +
-                " From dbo.person " + whereClause;
+                ", email"      +    
+                " From dbo.person ";
+
+
+
+        public List<model> LoadData<model>(string sql)
+        {
+            using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                return cnn.Query<model>(sql).AsList();
+            }
+        }
+
+        public int SaveData<model>(string sql, model data)
+        {
+            using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                return cnn.Execute(sql, data);
+            }
+        }
+
+
+
+        /// <summary>
+        /// this method returns all employees
+        /// </summary>
+        /// <returns></returns>
+        public List<Person> GetDesiredPersons(string whereClause) {
+            List<Person> persons = new List<Person>();
+            string desiredEmployees = this.selectedPersons + whereClause; // "Select id" +
+                //", last_name" +
+                //", first_name" +
+                //", date_of_birth" +
+                //", ssn" +
+                //", gender" +
+                //", street_address" +
+                //", phone" +
+                //", zipcode" +
+                //", username" +
+                //", password" +
+                //", roleId" +
+                //", statusId" +
+                //" From dbo.person " + whereClause;
                 
-            using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(desiredEmployees, connection))
@@ -62,7 +87,7 @@ namespace ScheduleManager.DAL
                             person.LastName = reader["last_name"].ToString();
                             person.FirstName = reader["first_name"].ToString();
                             person.DateOfBirth = (DateTime)reader["date_of_birth"];
-                            //person.Ssn = reader["ssn"].ToString();
+                     //       person.Ssn = (char)reader["ssn"];
                             person.Gender = reader["gender"].ToString();
                             person.StreetAddress = reader["street_address"].ToString();
                             person.Phone = reader["phone"].ToString();
@@ -96,24 +121,26 @@ namespace ScheduleManager.DAL
 
             try
             {
-                using (SqlConnection connection = ScheduleManager_DB_Connection.GetConnection())
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
                 {
                     connection.Open();
                     using (SqlTransaction transaction = connection.BeginTransaction())
                     {
                      string insertPerson = "INSERT person(" +
                             "[last_name]" +
-                            " ,[first_name]" +
-                            " ,[date_of_birth]" +
-                            " ,[ssn]" +
-                            " ,[gender]" +
-                            " ,[street_address]" +
-                            " ,[phone]" +
-                            " ,[zipcode]" +
-                            " ,[username]" +
-                            " ,[password]" +
-                            " ,[roleId]" +
-                            " ,[statusId])" +
+                            ", [first_name]" +
+                            ", [date_of_birth]" +
+                            ", [ssn]" +
+                            ", [gender]" +
+                            ", [street_address]" +
+                            ", [phone]" +
+                            ", [zipcode]" +
+                            ", [username]" +
+                            ", [password]" +
+                            ", [roleId]" +
+                            ", [statusId]" +
+                            ", [email])" +
+
                             " VALUES(" +
                             " @last_name" +
                             ", @first_name" +
@@ -126,7 +153,8 @@ namespace ScheduleManager.DAL
                             ", @username" +
                             ", HASHBYTES('SHA2_256', @password)" +
                             ", @roleId" +
-                            ", @statusId)";
+                            ", @statusId" +
+                            ", @email)";
 
                         using (SqlCommand command = new SqlCommand(insertPerson, connection))
                         {
