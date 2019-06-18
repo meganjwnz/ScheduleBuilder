@@ -244,3 +244,6 @@ C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\obj\Debug\Schedu
 C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\obj\Debug\ScheduleBuilder.dll
 C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\obj\Debug\ScheduleBuilder.pdb
+C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\bin\SendGrid.dll
+C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\bin\SendGrid.pdb
+C:\Users\DrewC\source\repos\ScheduleBuilderV.01\schedulebuilder\bin\SendGrid.xml
