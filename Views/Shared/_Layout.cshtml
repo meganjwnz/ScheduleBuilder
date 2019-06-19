@@ -7,15 +7,18 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="https://fonts.googleapis.com/css?family=Capriola&display=swap" rel="stylesheet">
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/ui-bootstrap-tpls-2.5.0.min.js"></script>
+    <script src="~/Scripts/app.js"></script>   
 </head>
 <body>
     @Html.Partial("_NavBar");
 
-    <div class="container body-content">
+    <div class="container body-content" ng-app="app" ng-controller="appCtrl">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Building a better Schedule for Tomorrow</p>
+            <p>&copy; @DateTime.Now.Year - Building a better Schedule for Tomorrow</p> <p>{{test}}</p>
         </footer>
     </div>
 

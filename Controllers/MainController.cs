@@ -17,12 +17,5 @@ namespace ScheduleBuilder.Controllers
         {
             return View();
         }
-
-        [Route("Main/Test")]
-        public ActionResult Test()
-        {
-            List<Shift> shifts = dal.GetShifts();
-            return Json(shifts);
-        }
     }
 }

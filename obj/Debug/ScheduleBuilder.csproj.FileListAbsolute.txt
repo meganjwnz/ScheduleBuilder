@@ -331,3 +331,8 @@ C:\Users\megan\Desktop\ScheduleManager\obj\Debug\ScheduleBuilder.csproj.CoreComp
 C:\Users\megan\Desktop\ScheduleManager\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\megan\Desktop\ScheduleManager\obj\Debug\ScheduleBuilder.dll
 C:\Users\megan\Desktop\ScheduleManager\obj\Debug\ScheduleBuilder.pdb
+C:\Users\mmari\source\repos\schedulebuilder\bin\Dapper.dll
+C:\Users\mmari\source\repos\schedulebuilder\bin\SendGrid.dll
+C:\Users\mmari\source\repos\schedulebuilder\bin\Dapper.xml
+C:\Users\mmari\source\repos\schedulebuilder\bin\SendGrid.pdb
+C:\Users\mmari\source\repos\schedulebuilder\bin\SendGrid.xml
