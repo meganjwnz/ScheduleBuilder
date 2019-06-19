@@ -10,19 +10,11 @@ namespace ScheduleBuilder.Controllers
         private DAL.ShiftDAL dal;
         public MainController()
         {
-            ViewBag.User = Session["user"];
             dal = new DAL.ShiftDAL();
         }
         public ActionResult Index()
         {
             return View();
-        }
-
-        [Route("Main/Test")]
-        public ActionResult Test()
-        {
-            List<Shift> shifts = dal.GetShifts();
-            return Json(shifts);
         }
     }
 }

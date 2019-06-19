@@ -16,6 +16,12 @@ namespace ScheduleBuilder.Model
         public string positionName { get; set; }
         public DateTime scheduledStartTime { get; set; }
         public DateTime scheduledEndTime { get; set; }
+        public DateTime? scheduledLunchBreakStart { get; set; }
+        public DateTime? scheduledLunchBreakEnd { get; set; }
+        public DateTime? actualStartTime { get; set; }
+        public DateTime? actualEndTime { get; set; }
+        public DateTime? actualLunchBreakStart { get; set; }
+        public DateTime? actualLunchBreakEnd { get; set; }
 
     }
 }

@@ -16,9 +16,75 @@ else if (Session["roleTitle"].ToString() == "Manager")
     </div>
     <p class="lead">Today's Schedule</p>
 }
-else if (Session["roleTitle"].ToString() == "Administrator")
+else if (Session["roleTitle"].ToString() == "Adminstrator")
 {
     <div class="jumbotron">
         <h3>Welcome to the Administrator Dashboard!</h3>
     </div>
 }
+
+
+<div>
+    {{test}}
+    <button type="button" class="btn btn-default" ng-click="open()">Add Shift</button>
+
+    <h4>All Shifts:</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>shiftID</th>
+                <th>scheduledShiftID</th>
+                <th>personID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>positionID</th>
+                <th>position Name</th>
+                <th>scheduledStartTime</th>
+                <th>scheduledEndTime</th>
+                <th>scheduledLunchBreakStart</th>
+                <th>scheduledLunchBreakEnd</th>
+                <th>actualStartTime</th>
+                <th>actualEndTime</th>
+                <th>actualLunchBreakStart</th>
+                <th>actualLunchBreakEnd</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="sh in shift">
+                <td>{{sh.shiftID}}</td>
+                <td>{{sh.scheduledShiftID}}</td>
+                <td>{{sh.personID}}</td>
+                <td>{{sh.personFirstName}}</td>
+                <td>{{sh.personLastName}}</td>
+                <td>{{sh.positionID}}</td>
+                <td>{{sh.positionName}}</td>
+                <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
+                <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <ul>
+            <li ng-repeat="item in $ctrl.items">
+                <a href="#" ng-click="$event.preventDefault(); $ctrl.selected.item = item">{{ item }}</a>
+            </li>
+        </ul>
+        Selected: <b>{{ $ctrl.selected.item }}</b>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+    </div>
+</script>
