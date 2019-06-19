@@ -1,7 +1,7 @@
 ﻿console.log("I'm here");
 
-var app = angular.module("app", []);
-app.controller("appCtrl", function ($scope, $http) {
+var app = angular.module("app", ['ui.bootstrap']);
+app.controller("appCtrl", function ($scope, $http, $uibModal) {
     $scope.test = "hello";
     $scope.getShifts = function () {
         $http.post('/Shift/ViewAllShifts').then(function (response) {
@@ -21,5 +21,28 @@ app.controller("appCtrl", function ($scope, $http) {
         }
         
     }
+
+
+
+    $scope.open = function () {
+        var modalInstance = $uibModal.open({
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'myModalContent.html',
+            controller: 'ModalInstanceCtrl',
+            size: 'lg',
+            resolve: {
+                items: function () {
+                    return $scope.test;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+        }, function () {
+            $log.info('Modal dismissed at: ' + new Date());
+        });
+    };
 
 });
