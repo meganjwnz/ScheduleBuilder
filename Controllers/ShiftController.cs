@@ -1,4 +1,5 @@
 ﻿using ScheduleBuilder.DAL;
+using System;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
@@ -11,10 +12,18 @@ namespace ScheduleBuilder.Controllers
         /// <summary>
         /// gets all shifts from the database
         /// </summary>
+        [HttpPost]
         public ActionResult ViewAllShifts()
         {
-            ViewBag.Message = "View All Shifts";
-            return View();
+            try
+            {
+                return Json(shiftDAL.GetAllShifts());
+            }catch(Exception e)
+            {
+                //what is e?
+            }
+            return null;
+
         }
     }
 }

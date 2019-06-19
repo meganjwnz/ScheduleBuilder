@@ -243,6 +243,9 @@
     <Content Include="Views\Person\Delete.cshtml" />
     <Content Include="Views\Person\AddPerson.cshtml" />
     <Content Include="Views\Person\GetAllPeoples.cshtml" />
+    <Content Include="Views\Shift\Create.cshtml" />
+    <Content Include="Views\Shift\Details.cshtml" />
+    <Content Include="Views\Shift\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
