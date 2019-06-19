@@ -22,7 +22,7 @@ namespace ScheduleBuilder.Model
 
         public DateTime DateOfBirth { get; set; }
 
-        public char? Ssn { get; set; }
+        public string Ssn { get; set; }
 
         public string Gender { get; set; }
         

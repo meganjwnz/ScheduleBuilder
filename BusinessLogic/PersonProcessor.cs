@@ -5,15 +5,17 @@ using System.Web;
 using ScheduleBuilder.Model;
 using ScheduleBuilder.DAL;
 
+
 namespace ScheduleBuilder.BusinessLogic
 {
     public class PersonProcessor
     {
         PersonDAL personDAL = new PersonDAL();
-        public static int addPerson(string lastName
+        HashingService hashingService = new HashingService();
+        public int addPerson(string lastName
             , string firstName
             , DateTime dateOfBirth
-            , char ssn
+            , string ssn
             , string gender
             , string phone
             , string streetAddress
@@ -26,18 +28,55 @@ namespace ScheduleBuilder.BusinessLogic
                 LastName = lastName,
                 FirstName = firstName,
                 DateOfBirth = dateOfBirth,
+                Ssn = ssn,
                 Gender = gender,
                 Phone = phone,
                 StreetAddress = streetAddress,
                 Zipcode = zipcode,
                 Username = username,
                 Email = email,
-                Password = "newHire",
+                Password = this.hashingService.PasswordHashing("newHire"),
                 StatusId = 1,
-                RoleId = 1
-
+                RoleId = 3
             };
-            return 1;//NOT FINISHED
+            string sql = @"INSERT INTO dbo.person( 
+                            [last_name] 
+                            , [first_name] 
+                            , [date_of_birth] 
+                            , [ssn] 
+                            , [gender] 
+                            , [street_address] 
+                            , [phone] 
+                            , [zipcode] 
+                            , [username] 
+                            , [password] 
+                            , [roleId] 
+                            , [statusId] 
+                            , [email]) 
+
+                             VALUES( 
+                             @LastName 
+                            , @FirstName 
+                            , @DateOfBirth 
+                            , @Ssn 
+                            , @Gender 
+                            , @StreetAddress 
+                            , @Phone 
+                            , @Zipcode 
+                            , @Username 
+                            , @Password 
+                            , @RoleId 
+                            , @StatusId 
+                            , @Email); ";
+
+
+            return personDAL.SaveData(sql, addedPerson);
+        }
+
+        public List<Person> LoadPeople()
+        {
+            string sql = @"Select * From dbo.person;";
+            return this.personDAL.LoadData<Person>(sql);
         }
 
     }

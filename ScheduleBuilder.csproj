@@ -194,7 +194,7 @@
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Shift.cs" />
-    <Compile Include="ModelViews\personViewModel.cs" />
+    <Compile Include="ModelViews\PersonViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

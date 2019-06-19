@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All Employees</h2>
+<h2>GetAllPeoples</h2>
 @if (Session["roleTitle"].ToString() == "Employee")
 {
     <p></p>
@@ -13,7 +13,7 @@
 else
 {
     <p>
-        @Html.ActionLink("Add Employee", "AddPerson")
+        @Html.ActionLink("Create New", "Create")
     </p>
 }
 <table class="table">
@@ -44,15 +44,6 @@ else
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Username)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoleId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StatusId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
@@ -89,15 +80,6 @@ else
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusId)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)

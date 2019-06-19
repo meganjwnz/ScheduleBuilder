@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ScheduleBuilder.Model
+namespace ScheduleBuilder.ModelViews
 {
     /// <summary>
     /// These are the values of the person class
@@ -29,7 +29,7 @@ namespace ScheduleBuilder.Model
 
 
         [Display(Name = "SSN")]
-        public char? Ssn { get; set; }
+        public string Ssn { get; set; }
 
         [Display(Name = "Gender")]
         [Required(ErrorMessage = "Gender required")]
