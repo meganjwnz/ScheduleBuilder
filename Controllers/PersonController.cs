@@ -15,6 +15,7 @@ namespace ScheduleBuilder.Controllers
     {
         PersonDAL personDAL = new PersonDAL();
         RoleDAL roleDAL = new RoleDAL();
+
         /// <summary>
         /// Adds a person to the database
         /// </summary>
@@ -143,6 +144,7 @@ namespace ScheduleBuilder.Controllers
         }
         #endregion
 
+        #region Return roles
         /// <summary>
         /// Gets all the role values
         /// </summary>
@@ -151,5 +153,6 @@ namespace ScheduleBuilder.Controllers
         {
             return roleDAL.GetRoles();
         }
+        #endregion
     }
 }
