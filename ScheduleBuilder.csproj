@@ -179,6 +179,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PersonDal.cs" />
+    <Compile Include="DAL\RoleDAL.cs" />
     <Compile Include="DAL\ScheduleBuilder_DB_Connection.cs" />
     <Compile Include="DAL\ShiftDAL.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="ModelViews\HomeViewModel.cs" />
     <Compile Include="Model\HashingService.cs" />
     <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Shift.cs" />
     <Compile Include="ModelViews\personViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
