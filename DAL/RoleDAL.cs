@@ -12,7 +12,7 @@ namespace ScheduleBuilder.DAL
         /// Retrieves all roles that a user can be
         /// </summary>
         /// <returns>List of roles</returns>
-        public List<Role> GetRole()
+        public List<Role> GetRoles()
         {
             List<Role> roles = new List<Role>();
             string selectStatement =

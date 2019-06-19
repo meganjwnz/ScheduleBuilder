@@ -3,7 +3,6 @@ using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Data;
-using ScheduleBuilder.Controllers;
 using System.Linq;
 
 namespace ScheduleBuilder.Controllers
@@ -15,7 +14,7 @@ namespace ScheduleBuilder.Controllers
     public class PersonController : Controller
     {
         PersonDAL personDAL = new PersonDAL();
-
+        RoleDAL roleDAL = new RoleDAL();
         /// <summary>
         /// Adds a person to the database
         /// </summary>
@@ -143,5 +142,14 @@ namespace ScheduleBuilder.Controllers
             return this.personDAL.GetDesiredPersons(whereClause);
         }
         #endregion
+
+        /// <summary>
+        /// Gets all the role values
+        /// </summary>
+        /// <returns></returns>
+        public List<Role> GetRoles()
+        {
+            return roleDAL.GetRoles();
+        }
     }
 }
