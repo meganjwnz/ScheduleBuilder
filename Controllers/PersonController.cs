@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Data;
 using ScheduleBuilder.Controllers;
+using System.Linq;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -46,14 +47,17 @@ namespace ScheduleBuilder.Controllers
             return View(this.personDAL.GetDesiredPersons(whereClause));
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
-            return View();
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
         }
 
-        public ActionResult Create()
+        [HttpPost]
+        public ActionResult Edit(Person person)
         {
-            return View();
+            return RedirectToAction("GetAllPeoples");
         }
 
         public ActionResult Details()
