@@ -10,7 +10,6 @@ namespace ScheduleBuilder.Controllers
         private DAL.ShiftDAL dal;
         public MainController()
         {
-            ViewBag.User = Session["user"];
             dal = new DAL.ShiftDAL();
         }
         public ActionResult Index()

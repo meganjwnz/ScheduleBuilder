@@ -3,7 +3,6 @@ using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Data;
-using ScheduleBuilder.Controllers;
 using System.Linq;
 
 namespace ScheduleBuilder.Controllers
@@ -15,6 +14,7 @@ namespace ScheduleBuilder.Controllers
     public class PersonController : Controller
     {
         PersonDAL personDAL = new PersonDAL();
+        RoleDAL roleDAL = new RoleDAL();
 
         /// <summary>
         /// Adds a person to the database
@@ -60,9 +60,11 @@ namespace ScheduleBuilder.Controllers
             return RedirectToAction("GetAllPeoples");
         }
 
-        public ActionResult Details()
+        public ActionResult Details(int id)
         {
-            return View();
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
         }
 
         public ActionResult Delete()
@@ -139,6 +141,17 @@ namespace ScheduleBuilder.Controllers
         {
             string whereClause = "WHERE last_name = " + lastName + " And first_name = " + FirstName;
             return this.personDAL.GetDesiredPersons(whereClause);
+        }
+        #endregion
+
+        #region Return roles
+        /// <summary>
+        /// Gets all the role values
+        /// </summary>
+        /// <returns></returns>
+        public List<Role> GetRoles()
+        {
+            return roleDAL.GetRoles();
         }
         #endregion
     }
