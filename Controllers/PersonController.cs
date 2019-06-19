@@ -60,9 +60,11 @@ namespace ScheduleBuilder.Controllers
             return RedirectToAction("GetAllPeoples");
         }
 
-        public ActionResult Details()
+        public ActionResult Details(int id)
         {
-            return View();
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
         }
 
         public ActionResult Delete()
