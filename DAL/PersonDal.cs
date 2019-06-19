@@ -94,7 +94,7 @@ namespace ScheduleBuilder.DAL
                             person.Password = reader["password"].ToString();
                             person.RoleId = (int)reader["roleId"];
                             person.StatusId = (int)reader["statusId"];
-
+                            person.Email = reader["email"].ToString();
 
                             persons.Add(person);
                         }
