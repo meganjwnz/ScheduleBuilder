@@ -56,20 +56,7 @@ namespace ScheduleBuilder.DAL
         /// <returns></returns>
         public List<Person> GetDesiredPersons(string whereClause) {
             List<Person> persons = new List<Person>();
-            string desiredEmployees = this.selectedPersons + whereClause; // "Select id" +
-                //", last_name" +
-                //", first_name" +
-                //", date_of_birth" +
-                //", ssn" +
-                //", gender" +
-                //", street_address" +
-                //", phone" +
-                //", zipcode" +
-                //", username" +
-                //", password" +
-                //", roleId" +
-                //", statusId" +
-                //" From dbo.person " + whereClause;
+            string desiredEmployees = this.selectedPersons + whereClause; 
                 
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {

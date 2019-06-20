@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<ScheduleBuilder.Model.Person>
 
 @{
-    ViewBag.Title = "GetAllPeoples";
+    ViewBag.Title = "SearchPeople";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>GetAllPeoples</h2>
+<h2>SearchPeople</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
@@ -36,7 +39,15 @@
         <th>
             @Html.DisplayNameFor(model => model.Username)
         </th>
- 
+        <th>
+            @Html.DisplayNameFor(model => model.Password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StatusId)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
@@ -71,6 +82,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Password)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoleId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StatusId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)

@@ -6,6 +6,7 @@ using ScheduleBuilder.BusinessLogic;
 using System.Data;
 using ScheduleBuilder.Controllers;
 using ScheduleBuilder.ModelViews;
+using System.Threading.Tasks;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -18,6 +19,8 @@ namespace ScheduleBuilder.Controllers
         PersonDAL personDAL = new PersonDAL();
         PersonProcessor personProcessor = new PersonProcessor();
 
+
+        #region Add Person
         /// <summary>
         /// Adds a person to the database
         /// </summary>
@@ -49,7 +52,7 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
-
+        #endregion
 
 
         #region Return specified Persons
@@ -57,39 +60,43 @@ namespace ScheduleBuilder.Controllers
         /// returns a list of all persons - no where clause specified
         /// </summary>
         /// <returns></returns>
-        //public static List<Person> GetAllPeoples()
-        //{
-
-        //    string whereClause = "";
-        //    return PersonDAL.GetDesiredPersons(whereClause);
-
-        //}
-
         public ActionResult GetAllPeoples()
         {
+
             string whereClause = "";
             return View(this.personDAL.GetDesiredPersons(whereClause));
+
         }
 
-        public ActionResult Edit()
+        //public ActionResult GetAllPeoples()
+        //{
+        //    string whereClause = "";
+        //    return View(this.personDAL.GetDesiredPersons(whereClause));
+        //}
+        public ActionResult SearchPeople(string searchParam)
         {
-            return View();
+            List<Person> people = StaticPersonDAL.GetDesiredPersons();
+            List<Person> searchedPeople = people.FindAll(x => x.FirstName == searchParam || x.LastName == searchParam);
+            return View(searchedPeople);
         }
 
-        public ActionResult Create()
+
+        public ActionResult GetPersonById()
         {
-            return View();
+            string whereClause = "WHERE Id = 1";// + id.ToString();
+            return View(this.personDAL.GetDesiredPersons(whereClause));
+            //return View();
         }
 
-        public ActionResult Details()
+        [HttpPost]
+        public ActionResult GetPersonById(int id)
         {
-            return View();
+            string whereClause = "WHERE Id = " + id.ToString();
+            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
+            return View(selectedEmployee);
         }
 
-        public ActionResult Delete()
-        {
-            return View();
-        }
+
 
         /// <summary>
         /// Returns list of persons based upon inputed statusid
@@ -113,21 +120,7 @@ namespace ScheduleBuilder.Controllers
             return this.personDAL.GetDesiredPersons(whereClause);
         }
 
-        public ActionResult GetAllPeopleById()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult GetAllPeopleById(Person model)
-        {
-            string whereClause = "WHERE Id = " + model.Id.ToString();
-            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
-            return View(selectedEmployee[0]);
-
-
-        }
-
+ 
         /// <summary>
         /// Returns list of persons based upon inputed first name
         /// </summary>
@@ -160,6 +153,28 @@ namespace ScheduleBuilder.Controllers
         {
             string whereClause = "WHERE last_name = " + lastName + " And first_name = " + FirstName;
             return this.personDAL.GetDesiredPersons(whereClause);
+        }
+        #endregion
+
+        #region CRUD actions
+        public ActionResult Edit()
+        {
+            return View();
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        public ActionResult Details()
+        {
+            return View();
+        }
+
+        public ActionResult Delete()
+        {
+            return View();
         }
         #endregion
     }

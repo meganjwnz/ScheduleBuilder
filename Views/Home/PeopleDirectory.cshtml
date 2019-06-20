@@ -1,4 +1,5 @@
-﻿
+﻿@model ScheduleBuilder.Model.Person
+
 @{
     ViewBag.Title = "PeopleDirectory";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,6 +11,11 @@
     <h4>@Html.ActionLink("Get All People", "GetAllPeoples", "Person")</h4>
 </p>
 <p>
-    <h4>@Html.ActionLink("Get Person by Id", "GetPersonById", "Person")</h4>
+        <form asp-controller="Person" action="SearchPeople">
+            <p>
+                Search by name <input type="text" name="SearchString">
+                <input type="submit" value="Filter" />
+            </p>
+        </form>
 </p>
 

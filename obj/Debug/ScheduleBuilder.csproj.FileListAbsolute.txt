@@ -510,3 +510,7 @@ C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\System.Web.Http.
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\System.Web.Http.WebHost.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\obj\Debug\ScheduleBuilder.csproj.CopyComplete
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.dll
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.SqlServer.dll
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.xml
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.SqlServer.xml

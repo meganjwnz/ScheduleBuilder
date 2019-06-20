@@ -192,6 +192,7 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ShiftController.cs" />
+    <Compile Include="DAL\StaticPersonDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -254,6 +255,10 @@
     <Content Include="Views\Shift\Create.cshtml" />
     <Content Include="Views\Shift\Details.cshtml" />
     <Content Include="Views\Shift\Edit.cshtml" />
+    <Content Include="Views\Person\GetPersonById.cshtml" />
+    <Content Include="Views\Person\GetPerson.cshtml" />
+    <Content Include="Views\Person\SearchPeople.cshtml" />
+    <Content Include="Views\Home\SearchPeople.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

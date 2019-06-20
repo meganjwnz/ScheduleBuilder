@@ -1,5 +1,6 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
+using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -8,6 +9,14 @@ namespace ScheduleBuilder.Controllers
 {
     public class HomeController : Controller
     {
+ 
+        public ActionResult SearchPeople(string searchParam)
+        {
+            List<Person> people = StaticPersonDAL.GetDesiredPersons();
+            List<Person> searchedPeople = people.FindAll(x => x.FirstName.Contains("D") || x.LastName.Contains("C"));
+            return View(searchedPeople);
+        }
+
         public ActionResult Index()
         {
             return View();
