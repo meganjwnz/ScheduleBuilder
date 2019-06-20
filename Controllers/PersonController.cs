@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -81,6 +82,26 @@ namespace ScheduleBuilder.Controllers
         {
             string whereClause = "WHERE statusId = " + statusId.ToString();
             return this.personDAL.GetDesiredPersons(whereClause);
+        }
+
+        /// <summary>
+        /// Return a json list of all active employees that can be scheduled to work.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetAllActivePeople()
+        {
+            try
+            {
+                string whereClause = "WHERE statusId = 1 OR statusId = 5";
+                return Json(this.personDAL.GetDesiredPersons(whereClause));
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            
+
         }
 
         /// <summary>

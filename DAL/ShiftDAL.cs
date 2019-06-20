@@ -1,4 +1,5 @@
 ﻿using ScheduleBuilder.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -35,10 +36,21 @@ namespace ScheduleBuilder.DAL
                         while (reader.Read())
                         {
                             Shift shift = new Shift();
-                            shift.personLastName = reader["lastName"].ToString();
-                            shift.personFirstName = reader["firstName"].ToString();
-
-
+                            shift.shiftID = int.Parse(reader["id"].ToString());
+                            shift.scheduledShiftID = int.Parse(reader["scheduleShiftId"].ToString());
+                            shift.personID = int.Parse(reader["personId"].ToString());
+                            shift.positionID = int.Parse(reader["positionId"].ToString());
+                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                            shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
+                            shift.scheduledLunchBreakEnd = reader["scheduledLunchBreakEndTime"] as DateTime?;
+                            shift.actualStartTime = reader["actualStartTime"] as DateTime?;
+                            shift.actualEndTime = reader["actualEndTime"] as DateTime?;
+                            shift.actualLunchBreakStart = reader["actualLunchBreakStart"] as DateTime?;
+                            shift.actualLunchBreakEnd = reader["acutalLunchBreakEnd"] as DateTime?;
+                            shift.positionName = reader["position_title"].ToString();
+                            shift.personLastName = reader["last_name"].ToString();
+                            shift.personFirstName = reader["first_name"].ToString();
                             shiftList.Add(shift);
                         }
                     }
