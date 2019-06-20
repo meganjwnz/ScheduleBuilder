@@ -28,11 +28,42 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             scope: $scope,
             size: 'lg'
         }).result.then(function () { }, function () { });
+        $scope.getPeople();
     };
 
     $scope.cancel = function () {
         $scope.modalInstance.dismiss('cancel');
     };
+
+    $scope.getPeople = function () {
+        $http.post('/Person/GetAllActivePeople').then(function (response) {
+            console.log(response.data);
+            $scope.activePeople =response.data;
+        }), function (error) {
+            console.log(error);
+        };
+    };
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
+    $scope.popup1 = {
+        opened: false
+    };
+
+    $scope.open1 = function () {
+        $scope.popup1.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+        $scope.dt = new Date(year, month, day);
+    };
+
+
 
     
 
