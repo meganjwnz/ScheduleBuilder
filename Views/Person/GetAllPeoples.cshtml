@@ -46,9 +46,6 @@ else
             @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.RoleId)
         </th>
         <th>
@@ -91,10 +88,7 @@ else
                 @Html.DisplayFor(modelItem => item.Username)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleId)
+                <span style="display:none">@Html.DisplayFor(modelItem => item.RoleId)</span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.StatusId)
@@ -109,8 +103,8 @@ else
                 }
                 else
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <strong>|</strong>
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) <strong>|</strong>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span>|</span>
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) <span>|</span>
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 }
             </td>

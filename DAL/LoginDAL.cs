@@ -1,5 +1,4 @@
 ﻿using ScheduleBuilder.Model;
-using ScheduleBuilder.DAL;
 using System.Data;
 using System.Data.SqlClient;
 

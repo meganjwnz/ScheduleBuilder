@@ -120,7 +120,6 @@ namespace ScheduleBuilder.Controllers
             return View(); 
         }
 
-        [HttpPost]
         public ActionResult GetAllPeopleById(Person model)
         {
             string whereClause = "WHERE Id = " + model.Id.ToString();
@@ -173,6 +172,23 @@ namespace ScheduleBuilder.Controllers
         public List<Role> GetRoles()
         {
             return roleDAL.GetRoles();
+        }
+
+        /// <summary>
+        /// Gets the role by the roleID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetRoleByID(int id)
+        {
+            return roleDAL.GetRoleByID(id);
+        }
+
+        public void SetRole(int id)
+        {
+
+            ViewBag.userRoleTitle = this.GetRoleByID(id);
+
         }
         #endregion
     }

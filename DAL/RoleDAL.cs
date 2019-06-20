@@ -40,5 +40,37 @@ namespace ScheduleBuilder.DAL
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a role by its id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetRoleByID(int id)
+        {
+            Role role = new Role();
+            string selectStatement =
+                         "SELECT id, roleTitle " +
+                         "FROM role " +
+                         "WHERE id = @id";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand(selectStatement, connection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@id", id);
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            role.Id = (int)reader["id"];
+                            role.RoleTitle = reader["roleTitle"].ToString();
+                        }
+                    }
+                }
+                return role.RoleTitle;
+            }
+        }
     }
 }
