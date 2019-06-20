@@ -77,39 +77,49 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         <h3 class="modal-title" id="modal-title">Shift Information</h3>
     </div>
     <div class="modal-body" id="modal-body">
-        <label>Person: </label>&nbsp;&nbsp;
-        <select ng-options="item as item.LastName + ', ' + item.FirstName for item in activePeople track by item.id" ng-model="selected.personID"></select>
-        <br />
-        <label>Position: </label>&nbsp;&nbsp;
-        <select ng-options="" ng-model="selected.positionID"></select>
-        <br />
-        <label>Start Date: </label>&nbsp;&nbsp;
-        <div class="row">
-            <div class="col-md-6">
-                <p class="input-group">
-                    <input type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="dt" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-                
-            </div>
-            <div class="col-md-6">
-                <div uib-timepicker style="width: 100%;" ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
-            </div>
-        </div>
-
-
-
-
-        
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        <label>Person: </label>&nbsp;&nbsp;
+                    </th>
+                    <th>
+                        <select class="form-control" ng-options="item as item.LastName + ', ' + item.FirstName for item in activePeople track by item.id" ng-model="selected.personID"></select>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <label>Position: </label>&nbsp;&nbsp;
+                    </th>
+                    <th>
+                        <select class="form-control" ng-options="" ng-model="selected.positionID"></select>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <label>Start Date: </label>&nbsp;&nbsp;
+                    </th>
+                    <th>
+                        <p class="input-group">
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="dt"
+                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </th>
+                    <th>
+                            <div style="margin-top:-13px"  uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                    </th>
+                    
+                </tr>
+            </tbody>
+        </table>
+    
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="addShift()">Add Shift</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
-
-
-        <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="addShift()">Add Shift</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-        </div>
 </script>
 
 

@@ -418,8 +418,8 @@ C:\Users\megan\Desktop\SCHEDULE\bin\System.Net.Http.Formatting.xml
 C:\Users\megan\Desktop\SCHEDULE\bin\System.Web.Http.xml
 C:\Users\megan\Desktop\SCHEDULE\bin\System.Web.Http.WebHost.xml
 C:\Users\megan\Desktop\SCHEDULE\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.csproj.CoreCompileInputs.cache
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.dll
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.pdb
+C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
