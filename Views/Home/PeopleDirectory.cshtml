@@ -11,9 +11,9 @@
     <h4>@Html.ActionLink("Get All People", "GetAllPeoples", "Person")</h4>
 </p>
 <p>
-        <form asp-controller="Person" action="SearchPeople">
+        <form method="post" action="SearchPeople">
             <p>
-                Search by name <input type="text" name="SearchString">
+                Search by name <input type="text" id="SearchString"/>
                 <input type="submit" value="Filter" />
             </p>
         </form>

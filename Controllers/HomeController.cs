@@ -10,6 +10,7 @@ namespace ScheduleBuilder.Controllers
     public class HomeController : Controller
     {
  
+        [HttpPost]
         public ActionResult SearchPeople(string searchParam)
         {
             List<Person> people = StaticPersonDAL.GetDesiredPersons();
