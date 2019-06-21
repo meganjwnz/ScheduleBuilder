@@ -29,6 +29,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             size: 'lg'
         }).result.then(function () { }, function () { });
         $scope.getPeople();
+        $scope.getPositions();
     };
 
     $scope.cancel = function () {
@@ -39,6 +40,16 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         $http.post('/Person/GetAllActivePeople').then(function (response) {
             console.log(response.data);
             $scope.activePeople =response.data;
+        }), function (error) {
+            console.log(error);
+        };
+    };
+
+    $scope.getPositions = function () {
+        console.log("getpositionscalled");
+        $http.post('/Shift/ViewAllActivePositions').then(function (response) {
+            console.log(response.data);
+            $scope.activePositions = response.data;
         }), function (error) {
             console.log(error);
         };
