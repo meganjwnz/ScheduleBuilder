@@ -82,7 +82,13 @@ input[type="password"] {
     font-size: 15px;
 }
 
-table.a{
-    table-layout: auto;
-    width: 180px;
+/* Table */
+.tablestyle {
+    background-color: #337ab7;
+    color:white; 
+    width:auto;
+}
+
+/* Mobile */
+@media only screen and (max-width: 600px) {
 }

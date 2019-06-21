@@ -31,7 +31,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
     <h4>All Shifts:</h4>
     <table>
         <thead>
-            <tr bgcolor="#337ab7" style="color:white">
+            <tr class="tablestyle">
                 <th>shiftID</th>
                 <th>scheduledShiftID</th>
                 <th>personID</th>
@@ -115,7 +115,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 </tr>
             </tbody>
         </table>
-    
+    </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="addShift()">Add Shift</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>

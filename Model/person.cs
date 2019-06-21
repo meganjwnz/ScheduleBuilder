@@ -26,7 +26,7 @@ namespace ScheduleBuilder.Model
         public string Ssn { get; set; }
 
         public string Gender { get; set; }
-        
+
         public string Phone { get; set; }
 
         public string StreetAddress { get; set; }

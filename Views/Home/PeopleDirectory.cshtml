@@ -1,22 +1,29 @@
 ﻿@model ScheduleBuilder.Model.Person
 
 @{
-    ViewBag.Title = "PeopleDirectory";
+    ViewBag.Title = "Employee Directory";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>People Directory</h2>
+<h2>Employee Directory</h2>
 <br />
-<p>
-    <h4>@Html.ActionLink("Get All People", "GetAllPeoples", "Person")</h4>
-</p>
-<p>
-        <form method="post" action="SearchPeople">
-            <p>
-                Search by name 
-                <input type="text" name="SearchString"/>
-                <input type="submit" value="Filter" />
-            </p>
-        </form>
-</p>
+<ul style="list-style:none;">
+    <li>
+        <div>
+            <h4>@Html.ActionLink("Get All Employees", "GetAllPeoples", "Person")</h4>
+        </div>
+    </li>
+    <li>
+        <div>
+            <form method="post" action="SearchPeople">
+                <span class="input-group col-md-3">
+                    <input style="font-size:16px; padding:15px" class="form-control" type="text" name="SearchString" placeholder="Search by Name"/>
+                    <span class="input-group-btn">
+                        <input style="font-size:16px; padding:15px" class="form-control btn-primary" type="submit" value="Filter" />
+                    </span>
+                </span>
+            </form>
+        </div>
+    </li>
+</ul>
 
