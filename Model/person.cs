@@ -20,6 +20,7 @@ namespace ScheduleBuilder.Model
         
         public string FirstName { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime DateOfBirth { get; set; }
 
         public string Ssn { get; set; }
