@@ -193,7 +193,8 @@ namespace ScheduleBuilder.Controllers
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
 
             return View(person);
-        
+        }
+
 
         [HttpPost]
         public ActionResult Edit(Person person)
