@@ -125,9 +125,9 @@ namespace ScheduleBuilder.Controllers
             }
             catch (Exception e)
             {
+                this.Messagebox(e.ToString());
                 return null;
-            }
-            
+            }       
 
         }
 
@@ -256,5 +256,13 @@ namespace ScheduleBuilder.Controllers
         }
 
         #endregion
+
+
+        public void Messagebox(string xMessage)
+        {
+            Response.Write("<script>alert('" + xMessage + "')</script>");
+        }
+
     }
+
 }

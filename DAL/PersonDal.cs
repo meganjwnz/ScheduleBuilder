@@ -14,11 +14,7 @@ namespace ScheduleBuilder.DAL
     /// </summary>
     public class PersonDAL
     {
-
-
-
-
-        string selectedPersons = "Select id" +
+            string selectedPersons = "Select id" +
                 ", last_name" +
                 ", first_name" +
                 ", date_of_birth" +
@@ -33,7 +29,6 @@ namespace ScheduleBuilder.DAL
                 ", statusId" +
                 ", email" +
                 " From dbo.person ";
-        private object personDAL;
 
         public List<model> LoadData<model>(string sql)
         {
