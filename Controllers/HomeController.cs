@@ -10,12 +10,7 @@ namespace ScheduleBuilder.Controllers
     public class HomeController : Controller
     {
         
-        /// <summary>
-        /// Comment added for Commit
-        /// </summary>
-        /// <param name="searchParam"></param>
-        /// <returns></returns>
- 
+
         [HttpPost]
         public ActionResult SearchPeople(string searchParam)
         {
