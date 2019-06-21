@@ -59,9 +59,35 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         $scope.popup1.opened = true;
     };
 
-    $scope.setDate = function (year, month, day) {
-        $scope.dt = new Date(year, month, day);
+    $scope.popup2 = {
+        opened: false
     };
+
+    $scope.open2 = function () {
+        console.log("open2");
+        $scope.popup2.opened = true;
+    };
+
+    $scope.popup3 = {
+        opened: false
+    };
+
+    $scope.open3 = function () {
+        $scope.popup3.opened = true;
+    };
+
+    $scope.popup4 = {
+        opened: false
+    };
+
+    $scope.open4 = function () {
+        console.log("open4");
+        $scope.popup4.opened = true;
+    };
+
+   // $scope.setDate = function (year, month, day) {
+     //   $scope.dt = new Date(year, month, day);
+    //};
 
 
 
