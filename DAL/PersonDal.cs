@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
-using System.Configuration;
 using System.Data;
 
 namespace ScheduleBuilder.DAL

@@ -4,9 +4,7 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 using ScheduleBuilder.BusinessLogic;
 using System.Data;
-using ScheduleBuilder.Controllers;
-using ScheduleBuilder.ModelViews;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -110,6 +108,26 @@ namespace ScheduleBuilder.Controllers
         }
 
         /// <summary>
+        /// Return a json list of all active employees that can be scheduled to work.
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetAllActivePeople()
+        {
+            try
+            {
+                string whereClause = "WHERE statusId = 1 OR statusId = 5";
+                return Json(this.personDAL.GetDesiredPersons(whereClause));
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            
+
+        }
+
+        /// <summary>
         /// Returns list of persons based upon inputed RoleId
         /// </summary>
         /// <param name="roleId"></param>
@@ -120,7 +138,16 @@ namespace ScheduleBuilder.Controllers
             return this.personDAL.GetDesiredPersons(whereClause);
         }
 
- 
+        [HttpPost]
+        public ActionResult GetAllPeopleById(Person model)
+        {
+            string whereClause = "WHERE Id = " + model.Id.ToString();
+            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
+            return View(selectedEmployee[0]);
+
+
+        }
+
         /// <summary>
         /// Returns list of persons based upon inputed first name
         /// </summary>
@@ -157,9 +184,17 @@ namespace ScheduleBuilder.Controllers
         #endregion
 
         #region CRUD actions
-        public ActionResult Edit()
+        [HttpPost]
+        public ActionResult Edit(Person person)
         {
-            return View();
+            return RedirectToAction("GetAllPeoples");
+        }
+
+        public ActionResult Details(int id)
+        {
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
         }
 
         public ActionResult Create()
@@ -167,14 +202,27 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
-        public ActionResult Details()
-        {
-            return View();
-        }
 
         public ActionResult Delete()
         {
             return View();
+        }
+
+        /// <summary>
+        /// Gets the role by the roleID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string GetRoleByID(int id)
+        {
+            return roleDAL.GetRoleByID(id);
+        }
+
+        public void SetRole(int id)
+        {
+
+            ViewBag.userRoleTitle = this.GetRoleByID(id);
+
         }
         #endregion
     }
