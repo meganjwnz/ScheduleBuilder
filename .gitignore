@@ -5,4 +5,4 @@
 /Properties/PublishProfiles
 /obj/Release
 /bin
-/.vs
+*.vs/
