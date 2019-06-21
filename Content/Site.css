@@ -81,3 +81,8 @@ input[type="password"] {
     width:100%;
     font-size: 15px;
 }
+
+table.a{
+    table-layout: auto;
+    width: 180px;
+}
