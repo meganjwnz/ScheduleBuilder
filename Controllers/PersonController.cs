@@ -191,7 +191,6 @@ namespace ScheduleBuilder.Controllers
         {
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
-
             return View(person);
         }
 
@@ -206,6 +205,7 @@ namespace ScheduleBuilder.Controllers
         {
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            this.SetRole(person);
             return View(person);
         }
 
@@ -220,21 +220,10 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Gets the role by the roleID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public string GetRoleByID(int id)
+        public void SetRole(Person person)
         {
-            return this.roleDAL.GetRoleByID(id);
-        }
-
-        public void SetRole(int id)
-        {
-
-            ViewBag.userRoleTitle = this.GetRoleByID(id);
-
+            string roleTitle =  this.roleDAL.GetRoleByID(person.RoleId);
+            ViewBag.userRoleTitle = roleTitle;
         }
         #endregion
     }

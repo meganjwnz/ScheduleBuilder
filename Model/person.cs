@@ -42,8 +42,5 @@ namespace ScheduleBuilder.Model
         public int StatusId { get; set; }
 
         public string Email { get; set; }
-
-
-
     }
 }
