@@ -199,6 +199,7 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult Edit(Person person)
         {
+            this.personDAL.EditPerson(person);
             return RedirectToAction("GetAllPeoples");
         }
 

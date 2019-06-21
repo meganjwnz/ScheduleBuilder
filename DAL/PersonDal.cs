@@ -31,7 +31,7 @@ namespace ScheduleBuilder.DAL
                 ", password" +
                 ", roleId" +
                 ", statusId" +
-                ", email"      +    
+                ", email" +
                 " From dbo.person ";
         private object personDAL;
 
@@ -57,10 +57,11 @@ namespace ScheduleBuilder.DAL
         /// this method returns all employees
         /// </summary>
         /// <returns></returns>
-        public List<Person> GetDesiredPersons(string whereClause) {
+        public List<Person> GetDesiredPersons(string whereClause)
+        {
             List<Person> persons = new List<Person>();
-            string desiredEmployees = this.selectedPersons + whereClause; 
-                
+            string desiredEmployees = this.selectedPersons + whereClause;
+
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
@@ -94,6 +95,66 @@ namespace ScheduleBuilder.DAL
                 }
             }
         }
+
+        public void EditPerson(Person editPerson)
+        {
+            string update = @"UPDATE dbo.person
+                            SET last_name = @lastName
+                            , first_name = @firstName
+                            , date_of_birth = @dateOfBirth
+                            , ssn = @ssn
+                            , gender = @gender
+                            , street_address = @streetAddress
+                            , phone = @phone
+                            , zipcode = @zipcode
+                            , username = @username
+                            , email = @email
+                            WHERE id = @id 
+                            AND  password = @password
+                            AND roleId = @roleId
+                            AND statusId = @statusId";
+            int count = 0;
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                {
+                    connection.Open();
+                    using (SqlCommand updateCommand = new SqlCommand(update, connection))
+                    {
+                        updateCommand.Parameters.AddWithValue("@lastName", editPerson.LastName);
+                        updateCommand.Parameters.AddWithValue("@firstName", editPerson.FirstName);
+                        updateCommand.Parameters.AddWithValue("@dateOfBirth", editPerson.DateOfBirth);
+
+                        if (editPerson.Ssn == "")
+                        {
+                            updateCommand.Parameters.AddWithValue("@ssn", DBNull.Value);
+                        }
+                        else
+                        {
+                            updateCommand.Parameters.AddWithValue("@ssn", editPerson.Ssn);
+                        }
+
+                        updateCommand.Parameters.AddWithValue("@gender", editPerson.Gender);
+                        updateCommand.Parameters.AddWithValue("@streetAddress", editPerson.StreetAddress);
+                        updateCommand.Parameters.AddWithValue("@phone", editPerson.Phone);
+                        updateCommand.Parameters.AddWithValue("@zipcode", editPerson.Zipcode);
+                        updateCommand.Parameters.AddWithValue("@username", editPerson.Username);
+                        updateCommand.Parameters.AddWithValue("@email", editPerson.Email);
+                        updateCommand.Parameters.AddWithValue("@id", editPerson.Id);
+                        updateCommand.Parameters.AddWithValue("@roleId", editPerson.RoleId);
+                        updateCommand.Parameters.AddWithValue("@statusId", editPerson.StatusId);
+                        updateCommand.Parameters.AddWithValue("@password", editPerson.Password);
+
+                        count = updateCommand.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
         /// <summary>
         /// This method adds an accepted person to the database
         /// 
@@ -114,35 +175,35 @@ namespace ScheduleBuilder.DAL
                     connection.Open();
                     using (SqlTransaction transaction = connection.BeginTransaction())
                     {
-                     string insertPerson = "INSERT person(" +
-                            "[last_name]" +
-                            ", [first_name]" +
-                            ", [date_of_birth]" +
-                            ", [ssn]" +
-                            ", [gender]" +
-                            ", [street_address]" +
-                            ", [phone]" +
-                            ", [zipcode]" +
-                            ", [username]" +
-                            ", [password]" +
-                            ", [roleId]" +
-                            ", [statusId]" +
-                            ", [email])" +
+                        string insertPerson = "INSERT person(" +
+                               "[last_name]" +
+                               ", [first_name]" +
+                               ", [date_of_birth]" +
+                               ", [ssn]" +
+                               ", [gender]" +
+                               ", [street_address]" +
+                               ", [phone]" +
+                               ", [zipcode]" +
+                               ", [username]" +
+                               ", [password]" +
+                               ", [roleId]" +
+                               ", [statusId]" +
+                               ", [email])" +
 
-                            " VALUES(" +
-                            " @last_name" +
-                            ", @first_name" +
-                            ", @date_of_birth" +
-                            ", @ssn" +
-                            ", @gender" +
-                            ", @street_address" +
-                            ", @phone" +
-                            ", @zipcode" +
-                            ", @username" +
-                            ", HASHBYTES('SHA2_256', @password)" +
-                            ", @roleId" +
-                            ", @statusId" +
-                            ", @email)";
+                               " VALUES(" +
+                               " @last_name" +
+                               ", @first_name" +
+                               ", @date_of_birth" +
+                               ", @ssn" +
+                               ", @gender" +
+                               ", @street_address" +
+                               ", @phone" +
+                               ", @zipcode" +
+                               ", @username" +
+                               ", HASHBYTES('SHA2_256', @password)" +
+                               ", @roleId" +
+                               ", @statusId" +
+                               ", @email)";
 
                         using (SqlCommand command = new SqlCommand(insertPerson, connection))
                         {
@@ -174,7 +235,7 @@ namespace ScheduleBuilder.DAL
             catch (Exception ex)
             {
                 //Message Box won't work - thats wierd
-               // MessageBox.Show(ex.Message, "Error");
+                // MessageBox.Show(ex.Message, "Error");
             }
         }
     }
