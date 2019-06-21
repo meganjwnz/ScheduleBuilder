@@ -75,7 +75,6 @@ C:\Users\DrewC\source\repos\ScheduleBuilder\bin\System.Net.Http.Formatting.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\System.Web.Http.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\System.Web.Http.WebHost.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\DrewC\source\repos\ScheduleBuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
 C:\Users\DrewC\source\repos\ScheduleBuilder\obj\Debug\ScheduleBuilder.csproj.CoreCompileInputs.cache
 C:\Users\DrewC\source\repos\ScheduleBuilder\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\DrewC\source\repos\ScheduleBuilder\obj\Debug\ScheduleBuilder.dll
@@ -423,3 +422,12 @@ C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.dll
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.pdb
 C:\Users\megan\Desktop\SCHEDULE\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\Dapper.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.SqlServer.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\Dapper.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.pdb
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.xml
