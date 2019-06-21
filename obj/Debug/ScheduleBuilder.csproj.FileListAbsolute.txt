@@ -432,3 +432,12 @@ C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.pdb
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
+C:\Users\megan\Desktop\ScheduleBuilder\bin\Dapper.dll
+C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.dll
+C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.SqlServer.dll
+C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.dll
+C:\Users\megan\Desktop\ScheduleBuilder\bin\Dapper.xml
+C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.xml
+C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
+C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.pdb
+C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.xml
