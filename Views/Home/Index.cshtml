@@ -97,11 +97,11 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 </tr>
                 <tr>
                     <th>
-                        <label>Start Date: </label>&nbsp;&nbsp;
+                        <label>Start Date/Time: </label>&nbsp;&nbsp;
                     </th>
                     <th>
                         <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="dt"
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="selected.startdt"
                                    is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -109,10 +109,65 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         </p>
                     </th>
                     <th>
-                            <div style="margin-top:-13px"  uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
                     </th>
-                    
+
                 </tr>
+                <tr>
+                    <th>
+                        <label>End Date/Time: </label>&nbsp;&nbsp;
+                    </th>
+                    <th>
+                        <p class="input-group">
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="selected.enddt"
+                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </th>
+                    <th>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                    </th>
+
+                </tr>
+                <tr>
+                    <th>
+                        <label>Start Lunch Date/Time*: </label>&nbsp;&nbsp;
+                    </th>
+                    <th>
+                        <p class="input-group">
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy hh:mm:ss" ng-model="selected.startlunchdt"
+                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </th>
+                    <th>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.startlunchdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                    </th>
+
+                </tr>
+                <tr>
+                    <th>
+                        <label>End Lunch Date/Time*: </label>&nbsp;&nbsp;
+                    </th>
+                    <th>
+                        <p class="input-group">
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="selected.lunchenddt"
+                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <span class="input-group-btn">
+                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </th>
+                    <th>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                    </th>
+
+                </tr>
+                <tr><th>*Optional fields</th></tr>
             </tbody>
         </table>
     </div>
