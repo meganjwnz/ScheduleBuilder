@@ -208,6 +208,7 @@ namespace ScheduleBuilder.Controllers
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             this.SetRole(person);
             this.SetStatus(person);
+            this.ConvertSSN(person);
             return View(person);
         }
 
@@ -235,6 +236,15 @@ namespace ScheduleBuilder.Controllers
         {
             string statusDescription = this.statusDAL.GetStatusByID(person.RoleId).StatusDescription;
             ViewBag.userStatusDescription = statusDescription;
+        }
+
+        private void ConvertSSN(Person person)
+        {
+
+            string formattedSSN = person.Ssn.Replace(person.Ssn.Substring(0, 3), "###").Substring(0, person.Ssn.Length - 6) + "-" +
+                person.Ssn.Replace(person.Ssn.Substring(3, 2), "##").Substring(0, person.Ssn.Length - 4).Substring(3) + "-" +
+                person.Ssn.Substring(5);
+            ViewBag.userSSn = formattedSSN;
         }
 
         #endregion
