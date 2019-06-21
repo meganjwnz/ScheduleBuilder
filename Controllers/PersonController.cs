@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using ScheduleBuilder.BusinessLogic;
 using System.Data;
 using System.Linq;
+using ScheduleBuilder.ModelViews;
+using System;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -16,6 +18,7 @@ namespace ScheduleBuilder.Controllers
     {
         PersonDAL personDAL = new PersonDAL();
         PersonProcessor personProcessor = new PersonProcessor();
+        RoleDAL roleDAL = new RoleDAL();
 
 
         #region Add Person
@@ -184,6 +187,14 @@ namespace ScheduleBuilder.Controllers
         #endregion
 
         #region CRUD actions
+        public ActionResult Edit(int id)
+        {
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+
+            return View(person);
+        
+
         [HttpPost]
         public ActionResult Edit(Person person)
         {
@@ -215,7 +226,7 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public string GetRoleByID(int id)
         {
-            return roleDAL.GetRoleByID(id);
+            return this.roleDAL.GetRoleByID(id);
         }
 
         public void SetRole(int id)

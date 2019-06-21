@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
 using System.Data;
+using System.Web.Mvc;
 
 namespace ScheduleBuilder.DAL
 {
@@ -13,6 +14,10 @@ namespace ScheduleBuilder.DAL
     /// </summary>
     public class PersonDAL
     {
+
+
+
+
         string selectedPersons = "Select id" +
                 ", last_name" +
                 ", first_name" +
@@ -28,8 +33,7 @@ namespace ScheduleBuilder.DAL
                 ", statusId" +
                 ", email"      +    
                 " From dbo.person ";
-
-
+        private object personDAL;
 
         public List<model> LoadData<model>(string sql)
         {
