@@ -209,6 +209,7 @@ namespace ScheduleBuilder.Controllers
             this.SetRole(person);
             this.SetStatus(person);
             this.ConvertSSN(person);
+            this.FormatPhone(person);
             return View(person);
         }
 
@@ -245,6 +246,12 @@ namespace ScheduleBuilder.Controllers
                 person.Ssn.Replace(person.Ssn.Substring(3, 2), "##").Substring(0, person.Ssn.Length - 4).Substring(3) + "-" +
                 person.Ssn.Substring(5);
             ViewBag.userSSn = formattedSSN;
+        }
+
+        private void FormatPhone(Person person)
+        {
+            string formattedPhone = "(" + person.Phone.Substring(0, 3) + ") " + person.Phone.Substring(3, 3) + "-" + person.Phone.Substring(6);
+            ViewBag.userPhone = formattedPhone;
         }
 
         #endregion
