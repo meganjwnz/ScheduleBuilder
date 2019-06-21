@@ -514,3 +514,12 @@ C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.SqlServer.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder3\bin\EntityFramework.SqlServer.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\Dapper.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.SqlServer.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.dll
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\Dapper.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.pdb
+C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.xml
