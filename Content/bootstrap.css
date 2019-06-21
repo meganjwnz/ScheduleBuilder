@@ -2509,6 +2509,7 @@ th {
 .table > tfoot > tr.warning > th {
   background-color: #fcf8e3;
 }
+
 .table-hover > tbody > tr > td.warning:hover,
 .table-hover > tbody > tr > th.warning:hover,
 .table-hover > tbody > tr.warning:hover > td,
