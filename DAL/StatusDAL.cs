@@ -31,7 +31,7 @@ namespace ScheduleBuilder.DAL
                             status.Id = (int)reader["id"];
                             status.StatusDescription = reader["status_description"].ToString();
                             status.IsAbleToWork = (bool)reader["isAbleToWork"];
-                            status.StatusTitle = reader["title"].ToString();
+                            status.StatusTitle = reader["status_title"].ToString();
                         }
                     }
                 }

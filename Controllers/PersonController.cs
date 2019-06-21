@@ -19,6 +19,7 @@ namespace ScheduleBuilder.Controllers
         PersonDAL personDAL = new PersonDAL();
         PersonProcessor personProcessor = new PersonProcessor();
         RoleDAL roleDAL = new RoleDAL();
+        StatusDAL statusDAL = new StatusDAL();
 
 
         #region Add Person
@@ -206,6 +207,7 @@ namespace ScheduleBuilder.Controllers
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             this.SetRole(person);
+            this.SetStatus(person);
             return View(person);
         }
 
@@ -223,13 +225,17 @@ namespace ScheduleBuilder.Controllers
 
         #region person related model methods
 
-        public void SetRole(Person person)
+        private void SetRole(Person person)
         {
             string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;
         }
 
-
+        private void SetStatus(Person person)
+        {
+            string statusDescription = this.statusDAL.GetStatusByID(person.RoleId).StatusDescription;
+            ViewBag.userStatusDescription = statusDescription;
+        }
 
         #endregion
     }
