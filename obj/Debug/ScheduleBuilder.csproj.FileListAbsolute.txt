@@ -431,3 +431,4 @@ C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.pdb
 C:\Users\DrewC\source\repos\ScheduleBuilder\bin\SendGrid.xml
+C:\Users\DrewC\source\repos\ScheduleBuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache

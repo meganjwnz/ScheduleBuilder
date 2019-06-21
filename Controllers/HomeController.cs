@@ -15,7 +15,7 @@ namespace ScheduleBuilder.Controllers
         {
             string param = Request.Form["SearchString"];
             List <Person> people = StaticPersonDAL.GetDesiredPersons();
-            List<Person> searchedPeople = people.FindAll(x => x.FirstName.Contains(param) && x.LastName.Contains(param));
+            List<Person> searchedPeople = people.FindAll(x => x.FirstName.Contains(param) || x.LastName.Contains(param));
             return View(searchedPeople);
         }
 
