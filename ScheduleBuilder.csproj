@@ -193,6 +193,7 @@
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ShiftController.cs" />
     <Compile Include="DAL\StaticPersonDAL.cs" />
+    <Compile Include="DAL\StatusDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -202,6 +203,7 @@
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Shift.cs" />
     <Compile Include="ModelViews\PersonViewModel.cs" />
+    <Compile Include="Model\Status.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

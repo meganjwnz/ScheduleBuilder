@@ -219,12 +219,18 @@ namespace ScheduleBuilder.Controllers
         {
             return View();
         }
+        #endregion
+
+        #region person related model methods
 
         public void SetRole(Person person)
         {
-            string roleTitle =  this.roleDAL.GetRoleByID(person.RoleId);
+            string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;
         }
+
+
+
         #endregion
     }
 }
