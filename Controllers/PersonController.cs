@@ -190,8 +190,10 @@ namespace ScheduleBuilder.Controllers
         #region CRUD actions
         public ActionResult Edit(int id)
         {
+            ViewBag.roleDropDown = this.roleDAL.GetRoles();
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            ViewBag.roleID = person.RoleId;
             return View(person);
         }
 
@@ -199,6 +201,11 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult Edit(Person person)
         {
+            string roleTitle = Request.Form["currentRole"];
+            int roleID = Convert.ToInt32(roleTitle);
+
+            this.personDAL.EditPerson(person.Id, person.LastName, person.FirstName, person.DateOfBirth, person.Ssn, person.Gender, person.StreetAddress, person.Phone, person.Zipcode, roleID, person.StatusId);
+
             return RedirectToAction("GetAllPeoples");
         }
 
@@ -211,11 +218,6 @@ namespace ScheduleBuilder.Controllers
             this.ConvertSSN(person);
             this.FormatPhone(person);
             return View(person);
-        }
-
-        public ActionResult Create()
-        {
-            return View();
         }
 
 
