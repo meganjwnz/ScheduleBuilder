@@ -179,31 +179,31 @@ namespace ScheduleBuilder.DAL
                         connection.Open();
                         using (SqlCommand updateCommand = new SqlCommand(update, connection))
                         {
-                            //updateCommand.Parameters.AddWithValue("@lastName", seperatePerson.LastName);
-                            //updateCommand.Parameters.AddWithValue("@firstName", seperatePerson.FirstName);
-                            //updateCommand.Parameters.AddWithValue("@dateOfBirth", seperatePerson.DateOfBirth);
+                        updateCommand.Parameters.AddWithValue("@lastName", seperatePerson.LastName);
+                        updateCommand.Parameters.AddWithValue("@firstName", seperatePerson.FirstName);
+                        updateCommand.Parameters.AddWithValue("@dateOfBirth", seperatePerson.DateOfBirth);
 
-                            //if (seperatePerson.Ssn == "")
-                            //{
-                            //    updateCommand.Parameters.AddWithValue("@ssn", DBNull.Value);
-                            //}
-                            //else
-                            //{
-                            //    updateCommand.Parameters.AddWithValue("@ssn", seperatePerson.Ssn);
-                            //}
+                        if (seperatePerson.Ssn == "")
+                        {
+                            updateCommand.Parameters.AddWithValue("@ssn", DBNull.Value);
+                        }
+                        else
+                        {
+                            updateCommand.Parameters.AddWithValue("@ssn", seperatePerson.Ssn);
+                        }
 
-                            //updateCommand.Parameters.AddWithValue("@gender", seperatePerson.Gender);
-                            //updateCommand.Parameters.AddWithValue("@streetAddress", seperatePerson.StreetAddress);
-                            //updateCommand.Parameters.AddWithValue("@phone", seperatePerson.Phone);
-                            //updateCommand.Parameters.AddWithValue("@zipcode", seperatePerson.Zipcode);
-                            //updateCommand.Parameters.AddWithValue("@username", seperatePerson.Username);
-                            //updateCommand.Parameters.AddWithValue("@email", seperatePerson.Email);
-                            updateCommand.Parameters.AddWithValue("@id", seperatePerson.Id);
-                            //updateCommand.Parameters.AddWithValue("@roleId", seperatePerson.RoleId);
-                         //   updateCommand.Parameters.AddWithValue("@statusId", 4);
-                            //updateCommand.Parameters.AddWithValue("@password", seperatePerson.Password);
+                        updateCommand.Parameters.AddWithValue("@gender", seperatePerson.Gender);
+                        updateCommand.Parameters.AddWithValue("@streetAddress", seperatePerson.StreetAddress);
+                        updateCommand.Parameters.AddWithValue("@phone", seperatePerson.Phone);
+                        updateCommand.Parameters.AddWithValue("@zipcode", seperatePerson.Zipcode);
+                        updateCommand.Parameters.AddWithValue("@username", seperatePerson.Username);
+                        updateCommand.Parameters.AddWithValue("@email", seperatePerson.Email);
+                        updateCommand.Parameters.AddWithValue("@id", seperatePerson.Id);
+                        updateCommand.Parameters.AddWithValue("@roleId", seperatePerson.RoleId);
+                        updateCommand.Parameters.AddWithValue("@statusId", 4);
+                        updateCommand.Parameters.AddWithValue("@password", seperatePerson.Password);
 
-                            count = updateCommand.ExecuteNonQuery();
+                        count = updateCommand.ExecuteNonQuery();
                         }
                         connection.Close();
                     }
