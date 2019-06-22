@@ -187,11 +187,16 @@ namespace ScheduleBuilder.Controllers
 
         private void ConvertSSN(Person person)
         {
+            string formattedSSN = "";
+            if (person.Ssn.Length == 9)
+            {
+                formattedSSN = person.Ssn.Replace(person.Ssn.Substring(0, 3), "###").Substring(0, person.Ssn.Length - 6) + "-" +
+                   person.Ssn.Replace(person.Ssn.Substring(3, 2), "##").Substring(0, person.Ssn.Length - 4).Substring(3) + "-" +
+                    person.Ssn.Substring(5);
 
-            string formattedSSN = person.Ssn.Replace(person.Ssn.Substring(0, 3), "###").Substring(0, person.Ssn.Length - 6) + "-" +
-                person.Ssn.Replace(person.Ssn.Substring(3, 2), "##").Substring(0, person.Ssn.Length - 4).Substring(3) + "-" +
-                person.Ssn.Substring(5);
-            ViewBag.userSSn = formattedSSN;
+            }
+
+             ViewBag.userSSn = formattedSSN;
         }
 
         private void FormatPhone(Person person)
