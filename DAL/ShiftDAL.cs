@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace ScheduleBuilder.DAL
 {
@@ -151,9 +152,9 @@ namespace ScheduleBuilder.DAL
                         insertCommand.Transaction = transaction;
                         insertCommand.Parameters.AddWithValue("@scheduledStartTime", shift.scheduledStartTime);
                         insertCommand.Parameters.AddWithValue("@scheduledEndTime", shift.scheduledEndTime);
-                        insertCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", shift.scheduledLunchBreakStart);
-                        insertCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", shift.scheduledLunchBreakEnd);
-
+                        insertCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", ((object)shift.scheduledLunchBreakStart) ?? DBNull.Value);
+                        insertCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", ((object)shift.scheduledLunchBreakEnd) ?? DBNull.Value);
+                        //THE EXECUTION OF THIS QUERY IS CAUSING THE ISSUE
                         pk = Convert.ToInt32(insertCommand.ExecuteScalar());
                         shiftHoursResult = 1;
                     }
@@ -169,8 +170,9 @@ namespace ScheduleBuilder.DAL
 
                     transaction.Commit();
                 }
-                catch
+                catch (Exception e)
                 {
+                    MessageBox.Show(e.ToString());
                     transaction.Rollback();
                 }
             }

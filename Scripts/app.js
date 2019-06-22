@@ -100,6 +100,23 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
      //   $scope.dt = new Date(year, month, day);
     //};
 
+    $scope.addShift = function (selected) {
+        
+        var personID = selected.personID;
+        var positionID = selected.positionID;
+        var startdt = selected.startdt.getTime();
+        var enddt = selected.enddt.getTime();
+        var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
+        var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime(): null;
+
+        $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt }).then(function (response) {
+           
+            $scope.success = response.data;
+            console.log($scope.success);
+        }), function (error) {
+            console.log(error);
+        };
+    };
 
 
     

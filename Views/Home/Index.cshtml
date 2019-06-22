@@ -35,10 +35,9 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
 
 <div>
-    {{test}}
     <button type="button" class="btn btn-default" ng-click="openModal()">Add Shift</button>
     <h4>All Shifts:</h4>
-    <table>
+    <table style="width:100%;">
 
         <thead class="tablestyle">
             <tr>
@@ -185,7 +184,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         {{selected}}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="addShift()">Add Shift</button>
+        <button class="btn btn-primary" type="button" ng-click="addShift(selected)">Add Shift</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
