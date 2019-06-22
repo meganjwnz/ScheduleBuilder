@@ -3,22 +3,23 @@
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
 }
 @using (Html.BeginForm())
 {
-<div class="wrapper" >
-    <h2 class="login_welcome">Welcome to Schedule Manager!</h2>
-    <div class="login">
-        <h3 class="form-signin-heading">Please Login</h3>
-        <h4 class="text-danger">@ViewBag.Error</h4>
-
-        <input required="" class="form-control" style="font-size:16px; padding:15px" name="Username" type="text" placeholder="Username" />
-
-        <input required="" class="form-control" style="font-size:16px; padding:15px" name="Password" type="password" placeholder="Password" />
-
-        <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Login" />
-
+    <div class="logo"> 
+        <img src="@Url.Content("~/Content/Images/SM_Logo2.png")"/>
     </div>
-</div>
+    <div class="wrapper">
+        <div class="login">
+            <h3 class="form-signin-heading">Please Login</h3>
+            <h4 class="text-danger">@ViewBag.Error</h4>
+
+            <input required="" class="form-control" style="font-size:16px; padding:15px" name="Username" type="text" placeholder="Username" />
+
+            <input required="" class="form-control" style="font-size:16px; padding:15px" name="Password" type="password" placeholder="Password" />
+
+            <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Login" />
+
+        </div>
+    </div>
 }
