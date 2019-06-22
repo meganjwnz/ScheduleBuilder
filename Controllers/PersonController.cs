@@ -166,8 +166,7 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Delete(Person person)
         {
             person = this.personDAL.SeperateEmployee(person);
-            //
-            return View(person);
+            return RedirectToAction("GetAllActivePeoplePage");
         }
             #endregion
 
