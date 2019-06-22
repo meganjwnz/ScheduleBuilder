@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: 'Capriola', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -28,6 +28,11 @@ textarea {
     float: right;
 }
 
+h2 {
+    font-size: 40px;
+    text-shadow: 1px 1px #337ab7;
+}
+
 /*Login Form*/
 
 body {
@@ -40,7 +45,7 @@ body {
 }
 
 .login {
-    font-family: 'Capriola', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     margin: 0 auto;
     max-width: 380px;
     padding: 15px 35px 45px;
@@ -50,7 +55,7 @@ body {
 }
 
 .login_welcome {
-    font-family: 'Capriola', sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
     margin: 0 auto;
     margin-bottom: 30px;
     text-align: center;
@@ -102,6 +107,11 @@ tr:nth-child(even) {
     background-color: #d9d9d9;
 }
 
+table.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Logo */
 
 .logo {
@@ -111,9 +121,25 @@ tr:nth-child(even) {
     width: 100%;
 }
 
-img {
+.logo_img {
     width: 359px;
     height: 176px;
+}
+
+.logo_calendar {
+    margin: auto;
+    margin-top: 5px;
+    text-align: center;
+}
+.calendar {
+    width: 251px;
+    height: 240px;
+}
+
+.center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Mobile */

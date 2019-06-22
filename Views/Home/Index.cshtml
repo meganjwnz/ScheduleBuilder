@@ -4,32 +4,42 @@
 
 @if (Session["roleTitle"].ToString() == "Employee")
 {
-    <div class="jumbotron">
-        <h3>Welcome to the Employee Dashboard!</h3>
+    <div class="jumbotron center">
+        <div>
+            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+        </div>
+        <h2>Welcome to the Employee Dashboard</h2>
     </div>
     <p class="lead">Today's Schedule</p>
 }
 else if (Session["roleTitle"].ToString() == "Manager")
 {
-    <div class="jumbotron">
-        <h3>Welcome to the Manager Dashboard!</h3>
+<div class="jumbotron center">
+    <div>
+        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
     </div>
+    <h2>Welcome to the Manager Dashboard</h2>
+</div>
     <p class="lead">Today's Schedule</p>
 }
 else if (Session["roleTitle"].ToString() == "Adminstrator")
 {
-    <div class="jumbotron">
-        <h3>Welcome to the Administrator Dashboard!</h3>
+
+<div class="jumbotron center">
+    <div>
+        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
     </div>
+    <h2>Welcome to the Administrator Dashboard</h2>
+</div>
 }
 
 
 <div>
     {{test}}
     <button type="button" class="btn btn-default" ng-click="openModal()">Add Shift</button>
-
     <h4>All Shifts:</h4>
     <table>
+
         <thead class="tablestyle">
             <tr>
                 <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
