@@ -181,7 +181,7 @@ namespace ScheduleBuilder.Controllers
 
         private void SetStatus(Person person)
         {
-            string statusDescription = this.statusDAL.GetStatusByID(person.RoleId).StatusDescription;
+            string statusDescription = this.statusDAL.GetStatusByID(person.StatusId).StatusDescription;
             ViewBag.userStatusDescription = statusDescription;
         }
 
