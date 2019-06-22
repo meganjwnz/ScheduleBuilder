@@ -151,9 +151,68 @@ namespace ScheduleBuilder.DAL
             }
         }
 
-        internal void SeperateEmployee(Person person)
+        public Person SeperateEmployee(Person seperatePerson)
         {
-            throw new NotImplementedException();
-        }
+            string update = @"UPDATE dbo.person 
+                            Set statusId = 4 
+                            WHERE id = @id";
+                        //string update = @"UPDATE dbo.person
+                        //    SET last_name = @lastName
+                        //    , first_name = @firstName
+                        //    , ssn = @ssn
+                        //    , gender = @gender
+                        //    , street_address = @streetAddress
+                        //    , phone = @phone
+                        //    , zipcode = @zipcode
+                        //    , statusId = @statusId
+                        //    , username = @username
+                        //    , email = @email
+                        //    WHERE id = @id 
+                        //    AND password = @password
+                        //    AND roleId = @roleId
+                        //    AND date_of_birth = @dateOfBirth";
+                int count = 0;
+                try
+                {
+                    using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                    {
+                        connection.Open();
+                        using (SqlCommand updateCommand = new SqlCommand(update, connection))
+                        {
+                            //updateCommand.Parameters.AddWithValue("@lastName", seperatePerson.LastName);
+                            //updateCommand.Parameters.AddWithValue("@firstName", seperatePerson.FirstName);
+                            //updateCommand.Parameters.AddWithValue("@dateOfBirth", seperatePerson.DateOfBirth);
+
+                            //if (seperatePerson.Ssn == "")
+                            //{
+                            //    updateCommand.Parameters.AddWithValue("@ssn", DBNull.Value);
+                            //}
+                            //else
+                            //{
+                            //    updateCommand.Parameters.AddWithValue("@ssn", seperatePerson.Ssn);
+                            //}
+
+                            //updateCommand.Parameters.AddWithValue("@gender", seperatePerson.Gender);
+                            //updateCommand.Parameters.AddWithValue("@streetAddress", seperatePerson.StreetAddress);
+                            //updateCommand.Parameters.AddWithValue("@phone", seperatePerson.Phone);
+                            //updateCommand.Parameters.AddWithValue("@zipcode", seperatePerson.Zipcode);
+                            //updateCommand.Parameters.AddWithValue("@username", seperatePerson.Username);
+                            //updateCommand.Parameters.AddWithValue("@email", seperatePerson.Email);
+                            updateCommand.Parameters.AddWithValue("@id", seperatePerson.Id);
+                            //updateCommand.Parameters.AddWithValue("@roleId", seperatePerson.RoleId);
+                         //   updateCommand.Parameters.AddWithValue("@statusId", 4);
+                            //updateCommand.Parameters.AddWithValue("@password", seperatePerson.Password);
+
+                            count = updateCommand.ExecuteNonQuery();
+                        }
+                        connection.Close();
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            return seperatePerson;
+            }
     }
 }

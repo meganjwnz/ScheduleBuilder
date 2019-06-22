@@ -165,8 +165,9 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult Delete(Person person)
         {
-            this.personDAL.SeperateEmployee(person);
-            return this.GetAllActivePeople();
+            person = this.personDAL.SeperateEmployee(person);
+            //
+            return View(person);
         }
             #endregion
 
