@@ -70,11 +70,6 @@ namespace ScheduleBuilder.Controllers
 
         }
 
-        //public ActionResult GetAllPeoples()
-        //{
-        //    string whereClause = "";
-        //    return View(this.personDAL.GetDesiredPersons(whereClause));
-        //}
         [HttpPost]
         public ActionResult SearchPeople()
         {
@@ -88,24 +83,6 @@ namespace ScheduleBuilder.Controllers
             }
             return View(searchedPeople);
         }
-
-
-        public ActionResult GetPersonById()
-        {
-            string whereClause = "WHERE Id = 1";// + id.ToString();
-            return View(this.personDAL.GetDesiredPersons(whereClause));
-            //return View();
-        }
-
-        [HttpPost]
-        public ActionResult GetPersonById(int id)
-        {
-            string whereClause = "WHERE Id = " + id.ToString();
-            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
-            return View(selectedEmployee);
-        }
-
-
 
         /// <summary>
         /// Returns list of persons based upon inputed statusid
