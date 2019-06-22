@@ -77,10 +77,18 @@ namespace ScheduleBuilder.Controllers
         /// returns a list of all persons - no where clause specified
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetAllPeoples()
+        public ActionResult GetAllPeoples(string searchParams)
+        {
+            string whereClause = searchParams;
+            return View(this.personDAL.GetDesiredPersons(whereClause));
+
+        }
+
+        //Returns all active employees
+        public ActionResult GetAllActivePeoplePage()
         {
 
-            string whereClause = "";
+            string whereClause = "WHERE statusId = 1 OR statusId = 5";
             return View(this.personDAL.GetDesiredPersons(whereClause));
 
         }
@@ -157,10 +165,8 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult Delete(Person person)
         {
-            string whereClause = "";
-          //  this.personDAL.SeperateEmployee(person);
-           // Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
-            return View();
+            this.personDAL.SeperateEmployee(person);
+            return this.GetAllActivePeople();
         }
             #endregion
 

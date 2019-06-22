@@ -7,17 +7,27 @@
 
 <h2>Employee Directory</h2>
 <br />
-<ul style="list-style:none;">
-    <li>
+<ul style="list-style:none; ">
+    <li class="spacing">
         <div>
-            <h4>@Html.ActionLink("Get All Employees", "GetAllPeoples", "Person")</h4>
+            <a href='@Url.Action("GetAllActivePeoplePage", "Person")'>
+                <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Get Active Employees" />
+            </a>
         </div>
     </li>
-    <li>
+    <li class="spacing">
         <div>
-            <form method="post" action="@Url.Action("SearchPeople", "Person")" >
+            <a href='@Url.Action("GetAllPeoples", "Person")'>
+                <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Get Every Employee" />
+            </a>
+        </div>
+
+    </li>
+    <li class="spacing">
+        <div>
+            <form method="post" action="@Url.Action("SearchPeople", "Person")">
                 <span class="input-group col-md-3">
-                    <input style="font-size:16px; padding:15px" class="form-control" type="text" name="SearchString" placeholder="Search by Name"/>
+                    <input style="font-size:16px; padding:15px" class="form-control" type="text" name="SearchString" placeholder="Search by Name" />
                     <span class="input-group-btn">
                         <input style="font-size:16px; padding:15px" class="form-control btn-primary" type="submit" value="Filter" />
                     </span>
