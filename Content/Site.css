@@ -35,7 +35,7 @@ body {
 }
 
 .wrapper {
-    margin-top: 80px;
+    margin-top: 20px;
     margin-bottom: 80px;
 }
 
@@ -85,8 +85,35 @@ input[type="password"] {
 /* Table */
 .tablestyle {
     background-color: #337ab7;
-    color:white; 
+    color: white;
+    width: 100%;
+}
+
+th {
     width:auto;
+    padding:8px;
+}
+
+td {
+    padding:8px;
+}
+
+tr:nth-child(even) {
+    background-color: #d9d9d9;
+}
+
+/* Logo */
+
+.logo {
+    margin: auto;
+    margin-top: 80px;
+    text-align: center;
+    width: 100%;
+}
+
+img {
+    width: 359px;
+    height: 176px;
 }
 
 /* Mobile */

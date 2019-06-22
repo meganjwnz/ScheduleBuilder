@@ -8,6 +8,7 @@ namespace ScheduleBuilder.Controllers
     {
 
         ShiftDAL shiftDAL = new ShiftDAL();
+        PositionDAL positionDAL = new PositionDAL();
 
         /// <summary>
         /// gets all shifts from the database
@@ -30,6 +31,24 @@ namespace ScheduleBuilder.Controllers
         public void Messagebox(string xMessage)
         {
             Response.Write("<script>alert('" + xMessage + "')</script>");
+        }
+
+        /// <summary>
+        /// gets all positions from the database
+        /// </summary>
+        [HttpPost]
+        public ActionResult ViewAllActivePositions()
+        {
+            try
+            {
+                return Json(positionDAL.GetAllActivePositions());
+            }
+            catch (Exception e)
+            {
+                
+            }
+            return null;
+
         }
     }
 }

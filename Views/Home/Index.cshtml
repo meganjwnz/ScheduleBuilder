@@ -30,42 +30,40 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
     <h4>All Shifts:</h4>
     <table>
-        <thead>
-            <tr class="tablestyle">
-                <th>shiftID</th>
+        <thead class="tablestyle">
+            <tr>
+                <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
                 <th>scheduledShiftID</th>
-                <th>personID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>positionID</th>
-                <th>position Name</th>
+                <th>personID</th> -->
+                <th>Name</th>
+                <!-- <th>positionID</th> -->
+                <th>Position</th>
                 <th>scheduledStartTime</th>
                 <th>scheduledEndTime</th>
                 <th>scheduledLunchBreakStart</th>
                 <th>scheduledLunchBreakEnd</th>
-                <th>actualStartTime</th>
+                <!-- <th>actualStartTime</th>
                 <th>actualEndTime</th>
                 <th>actualLunchBreakStart</th>
-                <th>actualLunchBreakEnd</th>
+                <th>actualLunchBreakEnd</th> -->
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="sh in shift">
-                <td>{{sh.shiftID}}</td>
+                <!-- <td>{{sh.shiftID}}</td>
                 <td>{{sh.scheduledShiftID}}</td>
-                <td>{{sh.personID}}</td>
-                <td>{{sh.personFirstName}}</td>
-                <td>{{sh.personLastName}}</td>
-                <td>{{sh.positionID}}</td>
+                <td>{{sh.personID}}</td> -->
+                <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
+                <!-- <td>{{sh.positionID}}</td> -->
                 <td>{{sh.positionName}}</td>
                 <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
+                <!-- <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
             </tr>
         </tbody>
     </table>
@@ -84,7 +82,9 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         <label>Person: </label>&nbsp;&nbsp;
                     </th>
                     <th>
-                        <select class="form-control" ng-options="item as item.LastName + ', ' + item.FirstName for item in activePeople track by item.id" ng-model="selected.personID"></select>
+                        <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID">
+                            <option value="">-- Please select a person --</option>
+                        </select>
                     </th>
                 </tr>
                 <tr>
@@ -92,7 +92,9 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         <label>Position: </label>&nbsp;&nbsp;
                     </th>
                     <th>
-                        <select class="form-control" ng-options="" ng-model="selected.positionID"></select>
+                        <select class="form-control" ng-options="item.positionID as item.positionTitle for item in activePositions" ng-model="selected.positionID">
+                            <option value="">-- Please select a position --</option>
+                        </select>
                     </th>
                 </tr>
                 <tr>
@@ -101,7 +103,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     </th>
                     <th>
                         <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="selected.startdt"
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startdt"
                                    is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -109,7 +111,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         </p>
                     </th>
                     <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                     </th>
 
                 </tr>
@@ -119,15 +121,15 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     </th>
                     <th>
                         <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="selected.enddt"
-                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.enddt"
+                                   is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                <button type="button" class="form-control btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
                     </th>
                     <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.enddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                     </th>
 
                 </tr>
@@ -137,15 +139,15 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     </th>
                     <th>
                         <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy hh:mm:ss" ng-model="selected.startlunchdt"
-                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startlunchdt"
+                                   is-open="popup3.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                <button type="button" class="form-control btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
                     </th>
                     <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.startlunchdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.startlunchdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                     </th>
 
                 </tr>
@@ -155,21 +157,22 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     </th>
                     <th>
                         <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="shortDate" ng-model="selected.lunchenddt"
-                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.lunchenddt"
+                                   is-open="popup4.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                <button type="button" class="form-control btn btn-default" ng-click="open4()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
                     </th>
                     <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></div>
+                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.lunchenddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                     </th>
 
                 </tr>
                 <tr><th>*Optional fields</th></tr>
             </tbody>
         </table>
+        {{selected}}
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="addShift()">Add Shift</button>

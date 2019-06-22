@@ -29,6 +29,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             size: 'lg'
         }).result.then(function () { }, function () { });
         $scope.getPeople();
+        $scope.getPositions();
     };
 
     $scope.cancel = function () {
@@ -39,6 +40,16 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         $http.post('/Person/GetAllActivePeople').then(function (response) {
             console.log(response.data);
             $scope.activePeople =response.data;
+        }), function (error) {
+            console.log(error);
+        };
+    };
+
+    $scope.getPositions = function () {
+        console.log("getpositionscalled");
+        $http.post('/Shift/ViewAllActivePositions').then(function (response) {
+            console.log(response.data);
+            $scope.activePositions = response.data;
         }), function (error) {
             console.log(error);
         };
@@ -59,9 +70,35 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         $scope.popup1.opened = true;
     };
 
-    $scope.setDate = function (year, month, day) {
-        $scope.dt = new Date(year, month, day);
+    $scope.popup2 = {
+        opened: false
     };
+
+    $scope.open2 = function () {
+        console.log("open2");
+        $scope.popup2.opened = true;
+    };
+
+    $scope.popup3 = {
+        opened: false
+    };
+
+    $scope.open3 = function () {
+        $scope.popup3.opened = true;
+    };
+
+    $scope.popup4 = {
+        opened: false
+    };
+
+    $scope.open4 = function () {
+        console.log("open4");
+        $scope.popup4.opened = true;
+    };
+
+   // $scope.setDate = function (year, month, day) {
+     //   $scope.dt = new Date(year, month, day);
+    //};
 
 
 
