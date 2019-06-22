@@ -75,10 +75,17 @@ namespace ScheduleBuilder.Controllers
         //    string whereClause = "";
         //    return View(this.personDAL.GetDesiredPersons(whereClause));
         //}
-        public ActionResult SearchPeople(string searchParam)
+        [HttpPost]
+        public ActionResult SearchPeople()
         {
-            List<Person> people = StaticPersonDAL.GetDesiredPersons();
-            List<Person> searchedPeople = people.FindAll(x => x.FirstName == searchParam || x.LastName == searchParam);
+            string param = Request.Form["SearchString"];
+            List<Person> searchedPeople = new List<Person>();
+            if (param != null)
+            {
+                List<Person> people = StaticPersonDAL.GetDesiredPersons();
+                searchedPeople = people.FindAll(x => x.FirstName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0);
+                searchedPeople.AddRange(people.FindAll(x => x.LastName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0));
+            }
             return View(searchedPeople);
         }
 
