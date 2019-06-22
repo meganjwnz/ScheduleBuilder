@@ -56,6 +56,21 @@ namespace ScheduleBuilder.Controllers
 
         #endregion
 
+        #region Search People
+        [HttpPost]
+        public ActionResult SearchPeople()
+        {
+            string param = Request.Form["SearchString"];
+            List<Person> searchedPeople = new List<Person>();
+            if (param != null)
+            {
+                List<Person> people = StaticPersonDAL.GetDesiredPersons();
+                searchedPeople = people.FindAll(x => x.FirstName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0);
+                searchedPeople.AddRange(people.FindAll(x => x.LastName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+            return View(searchedPeople);
+        }
+        #endregion
 
         #region Return specified Persons
         /// <summary>
@@ -70,20 +85,6 @@ namespace ScheduleBuilder.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult SearchPeople()
-        {
-            string param = Request.Form["SearchString"];
-            List<Person> searchedPeople = new List<Person>();
-            if (param != null)
-            {
-                List<Person> people = StaticPersonDAL.GetDesiredPersons();
-                searchedPeople = people.FindAll(x => x.FirstName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0);
-                searchedPeople.AddRange(people.FindAll(x => x.LastName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0));
-            }
-            return View(searchedPeople);
-        }
-
         /// <summary>
         /// Returns list of persons based upon inputed statusid
         /// </summary>
@@ -94,6 +95,7 @@ namespace ScheduleBuilder.Controllers
             string whereClause = "WHERE statusId = " + statusId.ToString();
             return this.personDAL.GetDesiredPersons(whereClause);
         }
+    
 
         /// <summary>
         /// Return a json list of all active employees that can be scheduled to work.
@@ -111,64 +113,10 @@ namespace ScheduleBuilder.Controllers
             {
                 this.Messagebox(e.ToString());
                 return null;
-            }       
+            }
 
         }
 
-        /// <summary>
-        /// Returns list of persons based upon inputed RoleId
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByRoleId(int roleId)
-        {
-            string whereClause = "WHERE roleId = " + roleId.ToString();
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-
-        [HttpPost]
-        public ActionResult GetAllPeopleById(Person model)
-        {
-            string whereClause = "WHERE Id = " + model.Id.ToString();
-            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
-            return View(selectedEmployee[0]);
-
-
-        }
-
-        /// <summary>
-        /// Returns list of persons based upon inputed first name
-        /// </summary>
-        /// <param name="FirstName"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByFirstName(string FirstName)
-        {
-            string whereClause = "WHERE first_name = " + FirstName;
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-
-        /// <summary>
-        /// Returns list of persons based upon inputed last name
-        /// </summary>
-        /// <param name="lastName"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByLastName(string lastName)
-        {
-            string whereClause = "WHERE last_name = " + lastName;
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-
-        /// <summary>
-        /// Returns list of persons based upon inputed first and last name
-        /// </summary>
-        /// <param name="FirstName"></param>
-        /// <param name="lastName"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByFirstAndLastName(string FirstName, string lastName)
-        {
-            string whereClause = "WHERE last_name = " + lastName + " And first_name = " + FirstName;
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
         #endregion
 
         #region CRUD actions
@@ -198,21 +146,27 @@ namespace ScheduleBuilder.Controllers
             return View(person);
         }
 
-        public ActionResult Create()
+        public ActionResult Delete(int id)
         {
-            return View();
+           
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
         }
 
-
-        public ActionResult Delete()
+        [HttpPost]
+        public ActionResult Delete(Person person)
         {
+            string whereClause = "";
+          //  this.personDAL.SeperateEmployee(person);
+           // Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View();
         }
-        #endregion
+            #endregion
 
-        #region person related model methods
+            #region person related model methods
 
-        private void SetRole(Person person)
+            private void SetRole(Person person)
         {
             string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;

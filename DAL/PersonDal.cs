@@ -96,7 +96,6 @@ namespace ScheduleBuilder.DAL
             string update = @"UPDATE dbo.person
                             SET last_name = @lastName
                             , first_name = @firstName
-                            , date_of_birth = @dateOfBirth
                             , ssn = @ssn
                             , gender = @gender
                             , street_address = @streetAddress
@@ -107,7 +106,8 @@ namespace ScheduleBuilder.DAL
                             WHERE id = @id 
                             AND  password = @password
                             AND roleId = @roleId
-                            AND statusId = @statusId";
+                            AND statusId = @statusId
+                            AND date_of_birth = @dateOfBirth";
             int count = 0;
             try
             {
@@ -149,6 +149,11 @@ namespace ScheduleBuilder.DAL
             {
                 throw ex;
             }
+        }
+
+        internal void SeperateEmployee(Person person)
+        {
+            throw new NotImplementedException();
         }
     }
 }

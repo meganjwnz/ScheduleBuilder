@@ -259,7 +259,6 @@
     <Content Include="Views\Shift\Edit.cshtml" />
     <Content Include="Views\Person\GetPerson.cshtml" />
     <Content Include="Views\Person\SearchPeople.cshtml" />
-    <Content Include="Views\Home\SearchPeople.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

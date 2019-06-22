@@ -25,6 +25,7 @@ namespace ScheduleBuilder.ModelViews
         [Display(Name = "Date of Birth")]
         [Required(ErrorMessage = "Date of Birth required")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime DateOfBirth { get; set; }
 
 
