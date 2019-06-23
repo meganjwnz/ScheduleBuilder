@@ -8,3 +8,4 @@
 *.vs/
 /ScheduleBuilderTests/bin/Debug
 /ScheduleBuilderTests/obj/Debug
+/obj/Debug
