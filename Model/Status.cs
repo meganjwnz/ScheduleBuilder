@@ -2,6 +2,9 @@
 
 namespace ScheduleBuilder.Model
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Status
     {
         public int Id { get; set; }

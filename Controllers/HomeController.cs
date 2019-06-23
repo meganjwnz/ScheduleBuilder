@@ -83,6 +83,10 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Clears out a session and logs the user out
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOut()
         {
             Session.Clear();
