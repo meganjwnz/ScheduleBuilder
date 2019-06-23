@@ -2,7 +2,6 @@
 using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using ScheduleBuilder.BusinessLogic;
 using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
@@ -17,7 +16,7 @@ namespace ScheduleBuilder.Controllers
     public class PersonController : Controller
     {
         PersonDAL personDAL = new PersonDAL();
-        PersonProcessor personProcessor = new PersonProcessor();
+        //PersonProcessor personProcessor = new PersonProcessor(); no longer in use
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
 
@@ -39,7 +38,7 @@ namespace ScheduleBuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-                int numPersonCreated = this.personProcessor.addPerson(personViewModel.LastName
+              this.personDAL.AddPerson(personViewModel.LastName
                       , personViewModel.FirstName
                       , personViewModel.DateOfBirth
                       , personViewModel.Ssn
@@ -49,7 +48,7 @@ namespace ScheduleBuilder.Controllers
                       , personViewModel.Zipcode
                       , personViewModel.Username
                       , personViewModel.Email);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("GetAllPeoples");
             }
             return View();
         }
@@ -57,6 +56,11 @@ namespace ScheduleBuilder.Controllers
         #endregion
 
         #region Search People
+
+        /// <summary>
+        /// Returns all persons with a first or last name containing the accepted searchstring
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SearchPeople()
         {
@@ -64,7 +68,7 @@ namespace ScheduleBuilder.Controllers
             List<Person> searchedPeople = new List<Person>();
             if (param != null)
             {
-                List<Person> people = StaticPersonDAL.GetDesiredPersons();
+                List<Person> people = this.personDAL.GetDesiredPersons("");
                 searchedPeople = people.FindAll(x => x.FirstName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0);
                 searchedPeople.AddRange(people.FindAll(x => x.LastName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0));
             }
@@ -77,11 +81,9 @@ namespace ScheduleBuilder.Controllers
         /// returns a list of all persons - no where clause specified
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetAllPeoples(string searchParams)
+        public ActionResult GetAllPeoples()
         {
-            string whereClause = searchParams;
-            return View(this.personDAL.GetDesiredPersons(whereClause));
-
+            return View(this.personDAL.GetDesiredPersons(""));
         }
 
         //Returns all active employees
@@ -93,17 +95,6 @@ namespace ScheduleBuilder.Controllers
 
         }
 
-        /// <summary>
-        /// Returns list of persons based upon inputed statusid
-        /// </summary>
-        /// <param name="statusId"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByStatusId(int statusId)
-        {
-            string whereClause = "WHERE statusId = " + statusId.ToString();
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-    
 
         /// <summary>
         /// Return a json list of all active employees that can be scheduled to work.

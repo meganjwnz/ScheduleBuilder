@@ -8,6 +8,8 @@ using Xunit;
 
 namespace ScheduleBuilderTests
 {
+    //This testing framework was develeped using methods from Tim Corey Course found
+    //https://www.youtube.com/watch?v=ub3P8c87cwk
     public class PersonTests
     {
         public Person person = new Person
@@ -42,7 +44,6 @@ namespace ScheduleBuilderTests
             Assert.Equal(expected, actual);
         }
 
-        //Comment added for commit
         [Fact]
         public void TestShouldReturnFirstName()
         {
@@ -50,6 +51,19 @@ namespace ScheduleBuilderTests
 
             //Act - do the action which is being tested
             string actual = this.person.FirstName;
+
+
+            //Assert - test expected value
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestShouldReturnLasttName()
+        {
+            string expected = "Coleman";
+
+            //Act - do the action which is being tested
+            string actual = this.person.LastName;
 
 
             //Assert - test expected value

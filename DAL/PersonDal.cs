@@ -11,9 +11,10 @@ namespace ScheduleBuilder.DAL
     /// This class provides access to the database 
     /// It is conserned with Person 
     /// </summary>
-    public class PersonDAL
+    public class PersonDAL : IPersonDAL
     {
-            string selectedPersons = "Select id" +
+        HashingService hashingService = new HashingService();
+        string selectedPersons = "Select id" +
                 ", last_name" +
                 ", first_name" +
                 ", date_of_birth" +
@@ -37,6 +38,91 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+
+        /// <summary>
+        /// Adds a person to the database 
+        /// all new persons have roleId = 3
+        /// statusId = 1
+        /// password = 'newHire'
+        /// </summary>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="dateOfBirth"></param>
+        /// <param name="ssn"></param>
+        /// <param name="gender"></param>
+        /// <param name="phone"></param>
+        /// <param name="streetAddress"></param>
+        /// <param name="zipcode"></param>
+        /// <param name="username"></param>
+        /// <param name="email"></param>
+        public void AddPerson(string lastName
+            , string firstName
+            , DateTime dateOfBirth
+            , string ssn
+            , string gender
+            , string phone
+            , string streetAddress
+            , string zipcode
+            , string username
+            , string email)
+        {
+            Person addedPerson = new Person
+            {
+                LastName = lastName,
+                FirstName = firstName,
+                DateOfBirth = dateOfBirth,
+                Ssn = ssn,
+                Gender = gender,
+                Phone = phone,
+                StreetAddress = streetAddress,
+                Zipcode = zipcode,
+                Username = username,
+                Email = email,
+                Password = this.hashingService.PasswordHashing("newHire"),
+                StatusId = 1,
+                RoleId = 3
+            };
+            string sql = @"INSERT INTO dbo.person( 
+                            [last_name] 
+                            , [first_name] 
+                            , [date_of_birth] 
+                            , [ssn] 
+                            , [gender] 
+                            , [street_address] 
+                            , [phone] 
+                            , [zipcode] 
+                            , [username] 
+                            , [password] 
+                            , [roleId] 
+                            , [statusId] 
+                            , [email]) 
+
+                             VALUES( 
+                             @LastName 
+                            , @FirstName 
+                            , @DateOfBirth 
+                            , @Ssn 
+                            , @Gender 
+                            , @StreetAddress 
+                            , @Phone 
+                            , @Zipcode 
+                            , @Username 
+                            , @Password 
+                            , @RoleId 
+                            , @StatusId 
+                            , @Email); ";
+
+
+           this.SaveData(sql, addedPerson);
+        }
+
+        /// <summary>
+        /// Saves the accepted data with the accepted sql statement
+        /// </summary>
+        /// <typeparam name="model"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public int SaveData<model>(string sql, model data)
         {
             using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
@@ -44,8 +130,6 @@ namespace ScheduleBuilder.DAL
                 return cnn.Execute(sql, data);
             }
         }
-
-
 
         /// <summary>
         /// this method returns all employees
@@ -90,6 +174,10 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// Allows users to edit a previously created person
+        /// </summary>
+        /// <param name="editPerson"></param>
         public void EditPerson(Person editPerson)
         {
             string update = @"UPDATE dbo.person
@@ -150,6 +238,11 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// Sets the accepted person's status as seperated
+        /// </summary>
+        /// <param name="seperatePerson"></param>
+        /// <returns></returns>
         public Person SeperateEmployee(Person seperatePerson)
         {
             string update = @"UPDATE dbo.person 
