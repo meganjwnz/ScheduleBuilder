@@ -235,6 +235,11 @@ namespace ScheduleBuilder.DAL
             return (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
         }
 
+        /// <summary>
+        /// Deletes a shift  
+        /// </summary>
+        /// <param name="shift"></param>
+        /// <returns></returns>
         public bool DeleteShift(Shift shift)
         {
             int shiftHoursResult = 0;

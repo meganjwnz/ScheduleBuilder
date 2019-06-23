@@ -7,6 +7,10 @@ namespace ScheduleBuilder.DAL
 {
     public static class ScheduleBuilder_DB_Connection
     {
+        /// <summary>
+        /// Gets the database connection
+        /// </summary>
+        /// <returns></returns>
         public static SqlConnection GetConnection()
         {
 #if DEBUG

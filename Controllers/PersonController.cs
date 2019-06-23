@@ -16,7 +16,6 @@ namespace ScheduleBuilder.Controllers
     public class PersonController : Controller
     {
         PersonDAL personDAL = new PersonDAL();
-        //PersonProcessor personProcessor = new PersonProcessor(); no longer in use
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
 
@@ -119,6 +118,11 @@ namespace ScheduleBuilder.Controllers
         #endregion
 
         #region CRUD actions
+        /// <summary>
+        /// Allows user to edit the person equal to the accepted id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Edit(int id)
         {
             string whereClause = "";
@@ -127,6 +131,12 @@ namespace ScheduleBuilder.Controllers
         }
 
 
+        /// <summary>
+        /// Sends the accepted person to the personDAL for update
+        /// redirects to the getALLPeoples page
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Person person)
@@ -142,6 +152,11 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets the details of the accepted person id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Details(int id)
         {
             string whereClause = "";
@@ -153,6 +168,11 @@ namespace ScheduleBuilder.Controllers
             return View(person);
         }
 
+        /// <summary>
+        /// DEACTIVATES - not deletes - the accepted person id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Delete(int id)
         {
            
@@ -161,6 +181,11 @@ namespace ScheduleBuilder.Controllers
             return View(person);
         }
 
+        /// <summary>
+        /// Marks the accepted person as seperated from company
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Delete(Person person)
         {
@@ -176,6 +201,7 @@ namespace ScheduleBuilder.Controllers
             string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;
         }
+
 
         private void SetStatus(Person person)
         {

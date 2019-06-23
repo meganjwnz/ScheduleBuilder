@@ -12,6 +12,10 @@ namespace ScheduleBuilder.DAL
     /// </summary>
     public class PositionDAL
     {
+        /// <summary>
+        /// Returns all ActivePositions
+        /// </summary>
+        /// <returns></returns>
         public List<Position> GetAllActivePositions()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
