@@ -17,7 +17,7 @@ namespace ScheduleBuilder.Controllers
     public class PersonController : Controller
     {
         PersonDAL personDAL = new PersonDAL();
-        PersonProcessor personProcessor = new PersonProcessor();
+        //PersonProcessor personProcessor = new PersonProcessor(); no longer in use
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
 
@@ -39,7 +39,7 @@ namespace ScheduleBuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-                int numPersonCreated = this.personProcessor.addPerson(personViewModel.LastName
+                int numPersonCreated = this.personDAL.AddPerson(personViewModel.LastName
                       , personViewModel.FirstName
                       , personViewModel.DateOfBirth
                       , personViewModel.Ssn

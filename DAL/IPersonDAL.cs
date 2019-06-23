@@ -10,5 +10,17 @@ namespace ScheduleBuilder.DAL
     public interface IPersonDAL
     {
         List<Person> GetDesiredPersons(string whereClause);
+
+        int AddPerson(string lastName
+            , string firstName
+            , DateTime dateOfBirth
+            , string ssn
+            , string gender
+            , string phone
+            , string streetAddress
+            , string zipcode
+            , string username
+            , string email);
+        
     }
 }
