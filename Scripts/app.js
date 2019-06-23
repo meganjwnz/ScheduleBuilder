@@ -3,6 +3,7 @@
 var app = angular.module("app", ['ui.bootstrap']);
 app.controller("appCtrl", function ($scope, $http, $uibModal) {
     $scope.test = "hello";
+
     $scope.getShifts = function () {
         $http.post('/Shift/ViewAllShifts').then(function (response) {
             $scope.shift = response.data;
@@ -33,7 +34,8 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     };
 
     $scope.cancel = function () {
-        $scope.modalInstance.dismiss('cancel');
+        console.log($scope.modalInstance);
+        $scope.modalInstance.$uibModal.dismiss('cancel');
     };
 
     $scope.getPeople = function () {
@@ -100,6 +102,27 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
      //   $scope.dt = new Date(year, month, day);
     //};
 
+    $scope.addShift = function (selected) {
+        console.log("Add shift");
+        var personID = selected.personID;
+        var positionID = selected.positionID;
+        var startdt = selected.startdt.getTime();
+        var enddt = selected.enddt.getTime();
+        var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
+        var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime(): null;
+
+        $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt }).then(function (response) {           
+            $scope.success = response.data;
+            if ($scope.success) {
+                alert("Shift added successfully");
+                $scope.cancel();
+            } else {
+                alert("There was an error adding your shift. Please try again.");
+            }
+        }), function (error) {
+            alert(error);
+        };
+    };
 
 
     

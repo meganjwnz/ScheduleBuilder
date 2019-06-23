@@ -4,36 +4,45 @@
 
 @if (Session["roleTitle"].ToString() == "Employee")
 {
-    <div class="jumbotron">
-        <h3>Welcome to the Employee Dashboard!</h3>
+    <div class="jumbotron center">
+        <div>
+            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+        </div>
+        <h2>Welcome to the Employee Dashboard</h2>
     </div>
     <p class="lead">Today's Schedule</p>
 }
 else if (Session["roleTitle"].ToString() == "Manager")
 {
-    <div class="jumbotron">
-        <h3>Welcome to the Manager Dashboard!</h3>
+<div class="jumbotron center">
+    <div>
+        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
     </div>
+    <h2>Welcome to the Manager Dashboard</h2>
+</div>
     <p class="lead">Today's Schedule</p>
 }
 else if (Session["roleTitle"].ToString() == "Adminstrator")
 {
-    <div class="jumbotron">
-        <h3>Welcome to the Administrator Dashboard!</h3>
+
+<div class="jumbotron center">
+    <div>
+        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
     </div>
+    <h2>Welcome to the Administrator Dashboard</h2>
+</div>
 }
 
 
 <div>
-    {{test}}
     <button type="button" class="btn btn-default" ng-click="openModal()">Add Shift</button>
-
     <h4>All Shifts:</h4>
-    <table>
+    <table style="width:100%;">
+
         <thead class="tablestyle">
             <tr>
                 <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
-                <th>scheduledShiftID</th>
+                <th>scheduleShiftID</th>
                 <th>personID</th> -->
                 <th>Name</th>
                 <!-- <th>positionID</th> -->
@@ -51,7 +60,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         <tbody>
             <tr ng-repeat="sh in shift">
                 <!-- <td>{{sh.shiftID}}</td>
-                <td>{{sh.scheduledShiftID}}</td>
+                <td>{{sh.scheduleShiftID}}</td>
                 <td>{{sh.personID}}</td> -->
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
                 <!-- <td>{{sh.positionID}}</td> -->
@@ -175,7 +184,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         {{selected}}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="addShift()">Add Shift</button>
+        <button class="btn btn-primary" type="button" ng-click="addShift(selected)">Add Shift</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>

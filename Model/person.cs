@@ -66,5 +66,12 @@ namespace ScheduleBuilder.Model
         [Required(ErrorMessage = "Email required")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        //Returns the full name of the person
+        //$ style is much better data usage 
+        public string GetFullName()
+        {
+            return($"{ this.FirstName } { this.LastName}");
+        }
     }
 }
