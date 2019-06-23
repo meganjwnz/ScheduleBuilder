@@ -18,10 +18,15 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             return new Date(parseInt(dateIn.substr(6)));
         } else {
             return "";
-        }   
+        }
     }
 
-    $scope.openModal = function (type) {
+    $scope.checkDate = function (checkDate) {
+        return checkDate < Date.now();
+    }
+
+    $scope.openModal = function (type, shift) {
+        $scope.selectedShift = shift;
         $scope.type = type;
         $scope.modalInstance = $uibModal.open({
             ariaLabelledBy: 'modal-title',
@@ -29,7 +34,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             templateUrl: 'myModalContent.html',
             scope: $scope,
             size: 'lg',
-            controller: 'ModalInstanceCtrl'
+            controller: 'ModalInstanceCtrl',
         }).result.then(function () { }, function () { });
         $scope.getPeople();
         $scope.getPositions();
@@ -37,7 +42,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.getPeople = function () {
         $http.post('/Person/GetAllActivePeople').then(function (response) {
-            $scope.activePeople =response.data;
+            $scope.activePeople = response.data;
         }), function (error) {
             console.log(error);
         };
@@ -58,6 +63,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         startingDay: 1
     };
 
+    //Calendar PopUp Start
     $scope.popup1 = {
         opened: false
     };
@@ -88,11 +94,23 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.open4 = function () {
         $scope.popup4.opened = true;
-    };    
-
+    };
+    //Calendar PopUp End
 });
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
+
+    $scope.hell = $scope.selectedShift;
+    console.log($scope.selectedShift);
+    $scope.selected = {};
+    $scope.selected.shiftID = $scope.selectedShift.shiftID;
+    $scope.selected.scheduledShiftID = $scope.selectedShift.scheduleShiftID;
+    $scope.selected.personID = $scope.selectedShift.personID;
+    $scope.selected.positionID = $scope.selectedShift.positionID;
+    $scope.selected.startdt = $scope.jsDate($scope.selectedShift.scheduledStartTime);
+    $scope.selected.enddt = $scope.jsDate($scope.selectedShift.scheduledEndTime);
+    $scope.selected.startlunchdt = $scope.jsDate($scope.selectedShift.scheduledLunchBreakStart);
+    $scope.selected.lunchenddt = $scope.jsDate($scope.selectedShift.scheduledLunchBreakEnd);
 
     $scope.addShift = function (selected) {
         var personID = selected.personID;
@@ -110,6 +128,34 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
                 $scope.refreshView();
             } else {
                 alert("There was an error adding your shift. Please try again.");
+            }
+        }), function (error) {
+            alert(error);
+        };
+    };
+
+    $scope.updateShift = function (selected) {
+        var shiftID = selected.shiftID;
+        var scheduleShiftID = selected.scheduledShiftID;
+        var isDelete = selected.delete;
+        var personID = selected.personID;
+        var positionID = selected.positionID;
+        var startdt = selected.startdt.getTime();
+        var enddt = selected.enddt.getTime();
+        var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
+        var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
+
+        $http.post('/Shift/UpdateShift', {
+            personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
+            endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID
+        }).then(function (response) {
+            $scope.success = response.data;
+            if ($scope.success) {
+                alert("Shift updated successfully");
+                $scope.cancel();
+                $scope.refreshView();
+            } else {
+                alert("There was an error updating your shift. Please try again.");
             }
         }), function (error) {
             alert(error);
