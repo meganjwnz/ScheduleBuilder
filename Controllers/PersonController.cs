@@ -56,6 +56,11 @@ namespace ScheduleBuilder.Controllers
         #endregion
 
         #region Search People
+
+        /// <summary>
+        /// Returns all persons with a first or last name containing the accepted searchstring
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SearchPeople()
         {
@@ -90,17 +95,6 @@ namespace ScheduleBuilder.Controllers
 
         }
 
-        /// <summary>
-        /// Returns list of persons based upon inputed statusid
-        /// </summary>
-        /// <param name="statusId"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByStatusId(int statusId)
-        {
-            string whereClause = "WHERE statusId = " + statusId.ToString();
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-    
 
         /// <summary>
         /// Return a json list of all active employees that can be scheduled to work.

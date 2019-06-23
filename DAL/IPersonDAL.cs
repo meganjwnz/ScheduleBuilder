@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ScheduleBuilder.DAL
 {
+    /// <summary>
+    /// This interface is for the PersonDAL class
+    /// </summary>
     public interface IPersonDAL
     {
         List<Person> GetDesiredPersons(string whereClause);

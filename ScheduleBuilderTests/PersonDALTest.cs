@@ -20,8 +20,41 @@ namespace ScheduleBuilderTests
         //AutoMock is a framework for creating mock items
         //.Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople()); - the It.isAny<String> IS REQUIRED DO NOT TOUCH
 
+
+        /// <summary>
+        /// Insures that GetAllPeople returns all the people within the database
+        /// </summary>
         [Fact]
         public void TestGetAllPeople()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IPersonDAL>() 
+                    .Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople());
+
+                var personDAL = mock.Create<IPersonDAL>();
+
+                var expected = GetSamplePeople();
+                var actual = personDAL.GetDesiredPersons("");
+
+
+                Assert.True(actual != null);
+                Assert.Equal(expected.Count, actual.Count);
+
+                for (int count = 0; count < expected.Count; count++)
+                {
+                    Assert.Equal(expected[count].FirstName, actual[count].FirstName);
+                    Assert.Equal(expected[count].LastName, actual[count].LastName);
+                    Assert.Equal(expected[count].RoleId, actual[count].RoleId);
+                    Assert.Equal(expected[count].StatusId, actual[count].StatusId);
+                    Assert.Equal(expected[count].Email, actual[count].Email);
+                }
+            }
+        }
+
+
+        [Fact]
+        public void TestGetAll_Active_People()
         {
             using (var mock = AutoMock.GetLoose())
             {
