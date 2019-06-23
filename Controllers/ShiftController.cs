@@ -81,8 +81,40 @@ namespace ScheduleBuilder.Controllers
             }
 
             return Json(shiftDAL.AddShift(shift));
-            
-            
+           
+        }
+
+        /// <summary>
+        /// gets all positions from the database
+        /// </summary>
+        [HttpPost]
+        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID)
+        {
+            Shift shift = new Shift();
+            shift.shiftID = int.Parse(shiftID);
+            shift.scheduleShiftID = int.Parse(scheduleshiftID);
+            shift.personID = int.Parse(personID);
+            shift.positionID = int.Parse(positionID);
+            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            if (!string.IsNullOrEmpty(startlunchdt))
+            {
+                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakStart = null;
+            }
+            if (!string.IsNullOrEmpty(endlunchdt))
+            {
+                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakEnd = null;
+            }
+
+            return Json(shiftDAL.UpdateShift(shift));
 
         }
 
