@@ -1,6 +1,5 @@
 ﻿using Autofac.Extras.Moq;
 using Moq;
-using ScheduleBuilder.BusinessLogic;
 using ScheduleBuilder.Controllers;
 using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
@@ -55,28 +54,62 @@ namespace ScheduleBuilderTests
         {
             using (var mock = AutoMock.GetLoose())
             {
-                mock.Mock<IPersonDAL>()
-                    .Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople());
-
-                var personDAL = mock.Create<IPersonDAL>();
-
-                var expected = GetSamplePeople();
-                var actual = personDAL.GetDesiredPersons("");
-
-
-                Assert.True(actual != null);
-                Assert.Equal(expected.Count, actual.Count);
-
-                for (int count = 0; count < expected.Count; count++)
+                var person = new Person
                 {
-                    Assert.Equal(expected[count].FirstName, actual[count].FirstName);
-                    Assert.Equal(expected[count].LastName, actual[count].LastName);
-                    Assert.Equal(expected[count].RoleId, actual[count].RoleId);
-                    Assert.Equal(expected[count].StatusId, actual[count].StatusId);
-                    Assert.Equal(expected[count].Email, actual[count].Email);
-                }
+                    LastName = "OneNew",
+                    FirstName = "Boy",
+                    Ssn = "123456219",
+                    Gender = "Male",
+                    DateOfBirth = DateTime.Now,
+                    RoleId = 1,
+                    StatusId = 1,
+                    Email = "newGuy@email.com",
+                    StreetAddress = "1149 Grove",
+                    Zipcode = "30145",
+                    Phone = "4543631011",
+                    Password = "newHire",
+                    Username = "testNewGuy"
+                };
+
+                mock.Mock<IPersonDAL>()
+                    .Setup(x => x.AddPerson(person.LastName
+                    , person.FirstName
+                    , person.DateOfBirth
+                    , person.Ssn
+                    , person.Gender
+                    , person.Phone
+                    , person.StreetAddress
+                    , person.Zipcode
+                    , person.Username
+                    , person.Email));
+
+                var cls = mock.Create<IPersonDAL>();
+
+                cls.AddPerson(person.LastName
+                    , person.FirstName
+                    , person.DateOfBirth
+                    , person.Ssn
+                    , person.Gender
+                    , person.Phone
+                    , person.StreetAddress
+                    , person.Zipcode
+                    , person.Username
+                    , person.Email);
+
+                mock.Mock<IPersonDAL>().Verify(x => x.AddPerson(person.LastName
+                    , person.FirstName
+                    , person.DateOfBirth
+                    , person.Ssn
+                    , person.Gender
+                    , person.Phone
+                    , person.StreetAddress
+                    , person.Zipcode
+                    , person.Username
+                    , person.Email), Times.Exactly(1));
             }
         }
+
+        //Provides a dummy list of data
         private List<Person> GetSamplePeople()
         {
             List<Person> output = new List<Person> {

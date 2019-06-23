@@ -11,7 +11,7 @@ namespace ScheduleBuilder.DAL
     {
         List<Person> GetDesiredPersons(string whereClause);
 
-        int AddPerson(string lastName
+        void AddPerson(string lastName
             , string firstName
             , DateTime dateOfBirth
             , string ssn

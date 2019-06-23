@@ -196,7 +196,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="BusinessLogic\PersonProcessor.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="DAL\IPersonDAL.cs" />
     <Compile Include="DAL\LoginDAL.cs" />

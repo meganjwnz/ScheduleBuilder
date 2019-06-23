@@ -39,7 +39,7 @@ namespace ScheduleBuilder.DAL
         }
 
 
-        public int AddPerson(string lastName
+        public void AddPerson(string lastName
             , string firstName
             , DateTime dateOfBirth
             , string ssn
@@ -97,7 +97,7 @@ namespace ScheduleBuilder.DAL
                             , @Email); ";
 
 
-            return this.SaveData(sql, addedPerson);
+           this.SaveData(sql, addedPerson);
         }
 
 

@@ -2,7 +2,6 @@
 using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 using System.Collections.Generic;
-using ScheduleBuilder.BusinessLogic;
 using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
@@ -39,7 +38,7 @@ namespace ScheduleBuilder.Controllers
         {
             if (ModelState.IsValid)
             {
-                int numPersonCreated = this.personDAL.AddPerson(personViewModel.LastName
+              this.personDAL.AddPerson(personViewModel.LastName
                       , personViewModel.FirstName
                       , personViewModel.DateOfBirth
                       , personViewModel.Ssn
@@ -49,7 +48,7 @@ namespace ScheduleBuilder.Controllers
                       , personViewModel.Zipcode
                       , personViewModel.Username
                       , personViewModel.Email);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("GetAllPeoples");
             }
             return View();
         }
