@@ -170,6 +170,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         $http.post('/Home/Index').then(function () {
             //This is calling the view but it isn't refreshing it?
             console.log("Refresh View");
+            document.location.reload();
         }), function (error) {
             alert(error);
         };
