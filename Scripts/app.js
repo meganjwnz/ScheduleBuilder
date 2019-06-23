@@ -21,7 +21,8 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         }   
     }
 
-    $scope.openModal = function () {
+    $scope.openModal = function (type) {
+        $scope.type = type;
         $scope.modalInstance = $uibModal.open({
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',

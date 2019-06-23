@@ -14,28 +14,28 @@
 }
 else if (Session["roleTitle"].ToString() == "Manager")
 {
-<div class="jumbotron center">
-    <div>
-        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+    <div class="jumbotron center">
+        <div>
+            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+        </div>
+        <h2>Welcome to the Manager Dashboard</h2>
     </div>
-    <h2>Welcome to the Manager Dashboard</h2>
-</div>
     <p class="lead">Today's Schedule</p>
 }
 else if (Session["roleTitle"].ToString() == "Adminstrator")
 {
 
-<div class="jumbotron center">
-    <div>
-        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+    <div class="jumbotron center">
+        <div>
+            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+        </div>
+        <h2>Welcome to the Administrator Dashboard</h2>
     </div>
-    <h2>Welcome to the Administrator Dashboard</h2>
-</div>
 }
 
 
 <div>
-    <button type="button" class="btn btn-default" ng-click="openModal()">Add Shift</button>
+    <button type="button" class="btn btn-default" ng-click="openModal('Add')">Add Shift</button>
     <h4>All Shifts:</h4>
     <table style="width:100%;">
 
@@ -55,6 +55,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <th>actualEndTime</th>
                 <th>actualLunchBreakStart</th>
                 <th>actualLunchBreakEnd</th> -->
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -64,6 +65,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <td>{{sh.personID}}</td> -->
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
                 <!-- <td>{{sh.positionID}}</td> -->
+
                 <td>{{sh.positionName}}</td>
                 <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
@@ -73,6 +75,9 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openModal('Update')">Update Shift</button>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -81,7 +86,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
 <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
-        <h3 class="modal-title" id="modal-title">Shift Information</h3>
+        <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
     </div>
     <div class="modal-body" id="modal-body">
         <table>
@@ -178,13 +183,22 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     </th>
 
                 </tr>
+                <tr ng-if="type == 'Update'">
+                    <th>
+                        <label>
+                            Delete Shift:
+                            <input type="checkbox" ng-model="selected.delete" ng-true-value="'delete'" ng-false-value="''">
+                        </label><br />
+                    </th>
+                </tr>
                 <tr><th>*Optional fields</th></tr>
             </tbody>
         </table>
         {{selected}}
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="addShift(selected)">Add Shift</button>
+        <button ng-if="type == 'Add'" class="btn btn-primary" type="button" ng-click="addShift(selected)">Add Shift</button>
+        <button ng-if="type == 'Update'" class="btn btn-primary" type="button" ng-click="updateShift(selected)">Update Shift</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
