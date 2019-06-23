@@ -42,7 +42,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         <thead class="tablestyle">
             <tr>
                 <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
-                <th>scheduledShiftID</th>
+                <th>scheduleShiftID</th>
                 <th>personID</th> -->
                 <th>Name</th>
                 <!-- <th>positionID</th> -->
@@ -60,7 +60,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         <tbody>
             <tr ng-repeat="sh in shift">
                 <!-- <td>{{sh.shiftID}}</td>
-                <td>{{sh.scheduledShiftID}}</td>
+                <td>{{sh.scheduleShiftID}}</td>
                 <td>{{sh.personID}}</td> -->
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
                 <!-- <td>{{sh.positionID}}</td> -->

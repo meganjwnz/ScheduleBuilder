@@ -43,7 +43,7 @@ namespace ScheduleBuilder.DAL
                         {
                             Shift shift = new Shift();
                             shift.shiftID = int.Parse(reader["id"].ToString());
-                            shift.scheduledShiftID = int.Parse(reader["scheduleShiftId"].ToString());
+                            shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
                             shift.personID = int.Parse(reader["personId"].ToString());
                             shift.positionID = int.Parse(reader["positionId"].ToString());
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
@@ -98,7 +98,7 @@ namespace ScheduleBuilder.DAL
                         {
                             Shift shift = new Shift();
                             shift.shiftID = int.Parse(reader["id"].ToString());
-                            shift.scheduledShiftID = int.Parse(reader["scheduleShiftId"].ToString());
+                            shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
                             shift.personID = int.Parse(reader["personId"].ToString());
                             shift.positionID = int.Parse(reader["positionId"].ToString());
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
@@ -136,8 +136,8 @@ namespace ScheduleBuilder.DAL
             "VALUES(@scheduledStartTime,@scheduledEndTime,@scheduledLunchBreakStartTime,@scheduledLunchBreakEndTime); SELECT SCOPE_IDENTITY()";
 
             string insertShiftStatement =
-            "INSERT INTO shift([scheduledShiftId],[personId],[positionId])" +
-            "VALUES(@scheduledShiftId,@personId,@positionId)";
+            "INSERT INTO shift([scheduleShiftID],[personId],[positionId])" +
+            "VALUES(@scheduleShiftID,@personId,@positionId)";
 
             //create new shift and shift hours entries
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
@@ -154,14 +154,14 @@ namespace ScheduleBuilder.DAL
                         insertCommand.Parameters.AddWithValue("@scheduledEndTime", shift.scheduledEndTime);
                         insertCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", ((object)shift.scheduledLunchBreakStart) ?? DBNull.Value);
                         insertCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", ((object)shift.scheduledLunchBreakEnd) ?? DBNull.Value);
-                        //THE EXECUTION OF THIS QUERY IS CAUSING THE ISSUE
+                        
                         pk = Convert.ToInt32(insertCommand.ExecuteScalar());
                         shiftHoursResult = 1;
                     }
                     using (SqlCommand insertShiftCommand = new SqlCommand(insertShiftStatement, connection))
                     {
                         insertShiftCommand.Transaction = transaction;
-                        insertShiftCommand.Parameters.AddWithValue("@scheduledShiftId", pk);
+                        insertShiftCommand.Parameters.AddWithValue("@scheduleShiftId", pk);
                         insertShiftCommand.Parameters.AddWithValue("@personId", shift.personID);
                         insertShiftCommand.Parameters.AddWithValue("@positionId", shift.positionID);
 
@@ -211,7 +211,7 @@ namespace ScheduleBuilder.DAL
                         updateShiftHoursCommand.Parameters.AddWithValue("@scheduledEndTime", shift.scheduledEndTime);
                         updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", shift.scheduledLunchBreakStart);
                         updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", shift.scheduledLunchBreakEnd);
-                        updateShiftHoursCommand.Parameters.AddWithValue("@id", shift.scheduledShiftID);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@id", shift.scheduleShiftID);
 
                         shiftHoursResult = updateShiftHoursCommand.ExecuteNonQuery();
                     }

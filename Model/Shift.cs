@@ -8,7 +8,7 @@ namespace ScheduleBuilder.Model
     public class Shift
     {
         public int shiftID { get; set; }
-        public int scheduledShiftID { get; set; }
+        public int scheduleShiftID { get; set; }
         public int personID { get; set;}
         public string personFirstName { get; set; }
         public string personLastName { get; set; }
