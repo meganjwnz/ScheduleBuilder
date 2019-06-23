@@ -8,6 +8,7 @@ using ScheduleBuilder.DAL;
 
 namespace ScheduleBuilder.BusinessLogic
 {
+    //This method takes a PersonViewModel - already broken up into data and turns them into a person model
     public class PersonProcessor
     {
         PersonDAL personDAL = new PersonDAL();

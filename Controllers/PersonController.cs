@@ -64,7 +64,7 @@ namespace ScheduleBuilder.Controllers
             List<Person> searchedPeople = new List<Person>();
             if (param != null)
             {
-                List<Person> people = StaticPersonDAL.GetDesiredPersons();
+                List<Person> people = this.personDAL.GetDesiredPersons("");
                 searchedPeople = people.FindAll(x => x.FirstName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0);
                 searchedPeople.AddRange(people.FindAll(x => x.LastName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0));
             }
@@ -77,11 +77,9 @@ namespace ScheduleBuilder.Controllers
         /// returns a list of all persons - no where clause specified
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetAllPeoples(string searchParams)
+        public ActionResult GetAllPeoples()
         {
-            string whereClause = searchParams;
-            return View(this.personDAL.GetDesiredPersons(whereClause));
-
+            return View(this.personDAL.GetDesiredPersons(""));
         }
 
         //Returns all active employees

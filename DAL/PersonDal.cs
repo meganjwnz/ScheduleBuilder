@@ -11,7 +11,7 @@ namespace ScheduleBuilder.DAL
     /// This class provides access to the database 
     /// It is conserned with Person 
     /// </summary>
-    public class PersonDAL
+    public class PersonDAL : IPersonDAL
     {
             string selectedPersons = "Select id" +
                 ", last_name" +
@@ -88,6 +88,11 @@ namespace ScheduleBuilder.DAL
                     return persons;
                 }
             }
+        }
+
+        public List<Person> TestDesiredPersons()
+        {
+            return this.GetDesiredPersons("");
         }
 
         public void EditPerson(Person editPerson)
