@@ -9,6 +9,10 @@ namespace ScheduleBuilder
 {
     public class RouteConfig
     {
+        /// <summary>
+        /// all the routes
+        /// </summary>
+        /// <param name="routes"></param>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

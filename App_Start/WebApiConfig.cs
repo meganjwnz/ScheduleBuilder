@@ -7,6 +7,10 @@ namespace ScheduleBuilder
 {
     public static class WebApiConfig
     {
+        /// <summary>
+        /// WebApiConfig class
+        /// </summary>
+        /// <param name="config"></param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
