@@ -156,8 +156,8 @@ namespace ScheduleBuilder.DAL
                             command.Parameters.Add(new SqlParameter("@zipcode", addPerson.Zipcode));
                             command.Parameters.Add(new SqlParameter("@username", addPerson.Username));
                             command.Parameters.Add(new SqlParameter("@password", hash.PasswordHashing(addPerson.Password)));
-                            command.Parameters.Add(new SqlParameter("@roleId", addPerson.Password));
-                            command.Parameters.Add(new SqlParameter("@statusID", addPerson.Password));
+                            command.Parameters.Add(new SqlParameter("@roleId", addPerson.RoleId));
+                            command.Parameters.Add(new SqlParameter("@statusID", addPerson.StatusId));
 
                             string selectStatement = "SELECT IDENT_CURRENT('Person') FROM Person";
 
@@ -175,6 +175,48 @@ namespace ScheduleBuilder.DAL
             {
                 //Message Box won't work - thats wierd
                // MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        /// <summary>
+        /// Updates a person based on the input data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="lastName"></param>
+        /// <param name="firstName"></param>
+        /// <param name="dateOfBirth"></param>
+        /// <param name="ssn"></param>
+        /// <param name="gender"></param>
+        /// <param name="street_address"></param>
+        /// <param name="phone"></param>
+        /// <param name="zipcode"></param>
+        /// <param name="roleId"></param>
+        /// <param name="statusId"></param>
+        public void EditPerson(int id, string last_name, string first_name, DateTime date_of_birth, string ssn, string gender, 
+            string street_address, string phone, string zipcode, int roleId, int statusId)
+        {
+            string updateStatement = "UPDATE person " +
+                                     "SET last_name = @last_name, first_name = @first_name, date_of_birth = @date_of_birth, " +
+                                     "ssn = @ssn, gender = @gender, street_address = @street_address, " +
+                                     "phone = @phone, zipcode = @zipcode, roleId = roleId, statusId = @statusId " +
+                                     "WHERE id = @id";
+            
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                    SqlCommand updateCommand = new SqlCommand(updateStatement, connection);
+                    updateCommand.Parameters.AddWithValue("@id", id);
+                    updateCommand.Parameters.AddWithValue("@last_name", last_name);
+                    updateCommand.Parameters.AddWithValue("@first_name", first_name);
+                    updateCommand.Parameters.AddWithValue("@date_of_birth", date_of_birth);
+                    updateCommand.Parameters.AddWithValue("@ssn", ssn);
+                    updateCommand.Parameters.AddWithValue("@gender", gender);
+                    updateCommand.Parameters.AddWithValue("@street_address", street_address);
+                    updateCommand.Parameters.AddWithValue("@phone", phone);
+                    updateCommand.Parameters.AddWithValue("@zipcode", zipcode);
+                    updateCommand.Parameters.AddWithValue("@roleId", roleId);
+                    updateCommand.Parameters.AddWithValue("@statusId", statusId);
+                    updateCommand.ExecuteNonQuery();
             }
         }
     }
