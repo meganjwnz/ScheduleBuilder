@@ -9,11 +9,19 @@ namespace ScheduleBuilder.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Returns home page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Retuns the about page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -21,20 +29,39 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// Returns the contact page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Contact()
         {
             return View();
         }
 
+        /// <summary>
+        /// Returns the peopleDirectory page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult PeopleDirectory()
         {
             return View();
         }
+
+        /// <summary>
+        /// Allows users to login
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Login()
         {
             return View();
         }
 
+        /// <summary>
+        /// Recives the posted information and either logs user in or informs them of incorrect username/pass
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(Person person)
         {

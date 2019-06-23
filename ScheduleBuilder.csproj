@@ -196,8 +196,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="BusinessLogic\PersonProcessor.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="DAL\IPersonDAL.cs" />
     <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PersonDal.cs" />
     <Compile Include="DAL\PositionDAL.cs" />
@@ -208,7 +208,6 @@
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\ShiftController.cs" />
-    <Compile Include="DAL\StaticPersonDAL.cs" />
     <Compile Include="DAL\StatusDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

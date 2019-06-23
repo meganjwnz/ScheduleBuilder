@@ -169,7 +169,7 @@ namespace ScheduleBuilder.DAL
 
                     transaction.Commit();
                 }
-                catch (Exception e)
+                catch
                 {
                     
                     transaction.Rollback();
@@ -226,7 +226,7 @@ namespace ScheduleBuilder.DAL
 
                     transaction.Commit();
                 }
-                catch (Exception e)
+                catch
                 {
                     transaction.Rollback();
                 }
@@ -283,7 +283,7 @@ namespace ScheduleBuilder.DAL
                     }
                     transaction.Commit();
                 }
-                catch(Exception e)
+                catch
                 {
                     transaction.Rollback();
                 }

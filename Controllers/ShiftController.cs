@@ -30,6 +30,10 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns accepted SQL errors 
+        /// </summary>
+        /// <param name="xMessage"></param>
         public void Messagebox(string xMessage)
         {
             Response.Write("<script>alert('" + xMessage + "')</script>");
@@ -47,10 +51,9 @@ namespace ScheduleBuilder.Controllers
             }
             catch (Exception e)
             {
-
+                this.Messagebox(e.ToString());
+                return null;
             }
-            return null;
-
         }
 
         /// <summary>
