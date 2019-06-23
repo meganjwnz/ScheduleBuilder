@@ -28,9 +28,7 @@ namespace ScheduleBuilderTests
         };
 
         [Fact]
-        public
-            
-            void TestShouldReturnPersonFirstAndLastName()
+        public void TestShouldReturnPersonFirstAndLastName()
         {
 
             //Arange - set up the test - arrange values
@@ -38,6 +36,19 @@ namespace ScheduleBuilderTests
 
             //Act - do the action which is being tested
             string actual = this.person.GetFullName();
+
+
+            //Assert - test expected value
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestShouldReturnFirstName()
+        {
+            string expected = "Drew";
+
+            //Act - do the action which is being tested
+            string actual = this.person.FirstName;
 
 
             //Assert - test expected value
