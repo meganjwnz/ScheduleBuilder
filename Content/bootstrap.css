@@ -12,6 +12,11 @@ html {
 body {
   margin: 0;
 }
+
+.spacing {
+    margin-bottom: 30px;
+}
+
 article,
 aside,
 details,

@@ -1,9 +1,7 @@
 ﻿using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
 
 namespace ScheduleBuilder.DAL
 {
@@ -172,7 +170,7 @@ namespace ScheduleBuilder.DAL
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.ToString());
+                    
                     transaction.Rollback();
                 }
             }
