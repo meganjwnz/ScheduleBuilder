@@ -28,7 +28,9 @@ namespace ScheduleBuilderTests
         };
 
         [Fact]
-        public void TestShouldReturnPersonFirstAndLastName()
+        public
+            
+            void TestShouldReturnPersonFirstAndLastName()
         {
 
             //Arange - set up the test - arrange values
