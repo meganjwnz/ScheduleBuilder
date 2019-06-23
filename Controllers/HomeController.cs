@@ -20,6 +20,7 @@ namespace ScheduleBuilder.Controllers
             return View(searchedPeople);
         }
 
+        [HttpPost]
         public ActionResult Index()
         {
             return View();
