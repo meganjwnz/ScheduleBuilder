@@ -441,7 +441,3 @@ C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.xml
 C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
 C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.pdb
 C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.xml
-C:\Users\megan\Desktop\Schedule\bin\EntityFramework.dll
-C:\Users\megan\Desktop\Schedule\bin\EntityFramework.SqlServer.dll
-C:\Users\megan\Desktop\Schedule\bin\EntityFramework.xml
-C:\Users\megan\Desktop\Schedule\bin\EntityFramework.SqlServer.xml
