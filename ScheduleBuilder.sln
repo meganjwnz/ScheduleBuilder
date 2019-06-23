@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29009.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleBuilder", "ScheduleBuilder.csproj", "{72D1B5F0-B40B-4409-B8AA-5CEBF80684C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleBuilderTests", "..\ScheduleBuilderTests\ScheduleBuilderTests.csproj", "{0F649F19-886E-4E2D-92CA-5659A25CAF7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{72D1B5F0-B40B-4409-B8AA-5CEBF80684C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D1B5F0-B40B-4409-B8AA-5CEBF80684C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D1B5F0-B40B-4409-B8AA-5CEBF80684C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F649F19-886E-4E2D-92CA-5659A25CAF7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F649F19-886E-4E2D-92CA-5659A25CAF7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F649F19-886E-4E2D-92CA-5659A25CAF7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F649F19-886E-4E2D-92CA-5659A25CAF7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
