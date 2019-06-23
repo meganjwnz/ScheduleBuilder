@@ -42,6 +42,7 @@ namespace ScheduleBuilderTests
             Assert.Equal(expected, actual);
         }
 
+        //Comment added for commit
         [Fact]
         public void TestShouldReturnFirstName()
         {
