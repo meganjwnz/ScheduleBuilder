@@ -228,7 +228,6 @@ namespace ScheduleBuilder.DAL
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.ToString());
                     transaction.Rollback();
                 }
             }
@@ -286,7 +285,6 @@ namespace ScheduleBuilder.DAL
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show(e.ToString());
                     transaction.Rollback();
                 }
             }
