@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Windows;
 
 namespace ScheduleBuilder.DAL
 {
@@ -188,8 +189,8 @@ namespace ScheduleBuilder.DAL
             int shiftResult = 0;
 
             string updateShiftHoursStatement =
-            "UPDATE shiftHours SET [scheduledStartTime] = @scheduledStartTime, [scheduledEndTime] = @scheduledEndTime, [scheduledLunchBreakStart] = @scheduledLunchBreakStart, " +
-            "[scheduledLunchBreakEnd] = @scheduledLunchBreakEnd " +
+            "UPDATE shiftHours SET [scheduledStartTime] = @scheduledStartTime, [scheduledEndTime] = @scheduledEndTime, [scheduledLunchBreakStartTime] = @scheduledLunchBreakStartTime, " +
+            "[scheduledLunchBreakEndTime] = @scheduledLunchBreakEndTime " +
             "WHERE id = @id";
 
             string updateShiftStatement =
@@ -225,8 +226,67 @@ namespace ScheduleBuilder.DAL
 
                     transaction.Commit();
                 }
-                catch
+                catch (Exception e)
                 {
+                    MessageBox.Show(e.ToString());
+                    transaction.Rollback();
+                }
+            }
+
+            return (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
+        }
+
+        public bool DeleteShift(Shift shift)
+        {
+            int shiftHoursResult = 0;
+            int shiftResult = 0;
+            int taskResult = 0;
+
+            string deleteShiftHoursStatement =
+            "DELETE FROM shiftHours " +
+            "WHERE id = @id";
+
+            string deleteShiftStatement =
+            "DELETE FROM shift " +
+            "WHERE id = @id";
+
+            string deleteTaskStatement =
+            "DELETE FROM assignedTask " +
+            "WHERE shiftId = @shiftId";
+
+            //delete shift and shift hour entries
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand deleteTaskCommand = new SqlCommand(deleteTaskStatement, connection))
+                    {
+                        deleteTaskCommand.Transaction = transaction;
+                        deleteTaskCommand.Parameters.AddWithValue("@shiftId", shift.shiftID);
+
+                        taskResult = deleteTaskCommand.ExecuteNonQuery();
+                    }
+                    using (SqlCommand deleteShiftCommand = new SqlCommand(deleteShiftStatement, connection))
+                    {
+                        deleteShiftCommand.Transaction = transaction;
+                        deleteShiftCommand.Parameters.AddWithValue("@id", shift.shiftID);
+
+                        shiftResult = deleteShiftCommand.ExecuteNonQuery();
+                    }
+                    using (SqlCommand deleteShiftHoursCommand = new SqlCommand(deleteShiftHoursStatement, connection))
+                    {
+                        deleteShiftHoursCommand.Transaction = transaction;
+                        deleteShiftHoursCommand.Parameters.AddWithValue("@id", shift.scheduleShiftID);
+
+                        shiftHoursResult = deleteShiftHoursCommand.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.ToString());
                     transaction.Rollback();
                 }
             }

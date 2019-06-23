@@ -35,7 +35,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
 
 <div>
-    <button type="button" class="btn btn-default" ng-click="openModal('Add')">Add Shift</button>
+    <button type="button" class="btn btn-default" ng-click="openModal('Add', {})">Add Shift</button>
     <h4>All Shifts:</h4>
     <table style="width:100%;">
 
@@ -76,7 +76,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
                 <td>
-                    <button type="button" class="btn btn-default" ng-click="openModal('Update')">Update Shift</button>
+                    <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
                 </td>
             </tr>
         </tbody>
@@ -89,6 +89,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
     </div>
     <div class="modal-body" id="modal-body">
+        <p>{{hell}}</p>
         <table>
             <tbody>
                 <tr>
@@ -190,8 +191,15 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                             <input type="checkbox" ng-model="selected.delete" ng-true-value="'delete'" ng-false-value="''">
                         </label><br />
                     </th>
+
                 </tr>
                 <tr><th>*Optional fields</th></tr>
+                <tr ng-if="type == 'Update'">
+                    <th>
+                    <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
+                    <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
+                        </th>
+                </tr>
             </tbody>
         </table>
         {{selected}}
