@@ -441,3 +441,17 @@ C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.xml
 C:\Users\megan\Desktop\ScheduleBuilder\bin\EntityFramework.SqlServer.xml
 C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.pdb
 C:\Users\megan\Desktop\ScheduleBuilder\bin\SendGrid.xml
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.abstractions.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.runner.visualstudio.testadapter.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.runner.reporters.net452.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.runner.utility.net452.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\EntityFramework.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\EntityFramework.SqlServer.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.assert.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.core.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.execution.desktop.dll
+C:\Users\megan\Desktop\SCHEDULE\bin\EntityFramework.xml
+C:\Users\megan\Desktop\SCHEDULE\bin\EntityFramework.SqlServer.xml
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.assert.xml
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.core.xml
+C:\Users\megan\Desktop\SCHEDULE\bin\xunit.execution.desktop.xml
