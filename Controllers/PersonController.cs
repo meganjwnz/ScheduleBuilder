@@ -56,49 +56,42 @@ namespace ScheduleBuilder.Controllers
 
         #endregion
 
+        #region Search People
+        [HttpPost]
+        public ActionResult SearchPeople()
+        {
+            string param = Request.Form["SearchString"];
+            List<Person> searchedPeople = new List<Person>();
+            if (param != null)
+            {
+                List<Person> people = StaticPersonDAL.GetDesiredPersons();
+                searchedPeople = people.FindAll(x => x.FirstName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0);
+                searchedPeople.AddRange(people.FindAll(x => x.LastName.IndexOf(param, StringComparison.OrdinalIgnoreCase) >= 0));
+            }
+            return View(searchedPeople);
+        }
+        #endregion
 
         #region Return specified Persons
         /// <summary>
         /// returns a list of all persons - no where clause specified
         /// </summary>
         /// <returns></returns>
-        public ActionResult GetAllPeoples()
+        public ActionResult GetAllPeoples(string searchParams)
         {
-
-            string whereClause = "";
+            string whereClause = searchParams;
             return View(this.personDAL.GetDesiredPersons(whereClause));
 
         }
 
-        //public ActionResult GetAllPeoples()
-        //{
-        //    string whereClause = "";
-        //    return View(this.personDAL.GetDesiredPersons(whereClause));
-        //}
-        public ActionResult SearchPeople(string searchParam)
+        //Returns all active employees
+        public ActionResult GetAllActivePeoplePage()
         {
-            List<Person> people = StaticPersonDAL.GetDesiredPersons();
-            List<Person> searchedPeople = people.FindAll(x => x.FirstName == searchParam || x.LastName == searchParam);
-            return View(searchedPeople);
-        }
 
-
-        public ActionResult GetPersonById()
-        {
-            string whereClause = "WHERE Id = 1";// + id.ToString();
+            string whereClause = "WHERE statusId = 1 OR statusId = 5";
             return View(this.personDAL.GetDesiredPersons(whereClause));
-            //return View();
+
         }
-
-        [HttpPost]
-        public ActionResult GetPersonById(int id)
-        {
-            string whereClause = "WHERE Id = " + id.ToString();
-            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
-            return View(selectedEmployee);
-        }
-
-
 
         /// <summary>
         /// Returns list of persons based upon inputed statusid
@@ -110,6 +103,7 @@ namespace ScheduleBuilder.Controllers
             string whereClause = "WHERE statusId = " + statusId.ToString();
             return this.personDAL.GetDesiredPersons(whereClause);
         }
+    
 
         /// <summary>
         /// Return a json list of all active employees that can be scheduled to work.
@@ -125,75 +119,19 @@ namespace ScheduleBuilder.Controllers
             }
             catch (Exception e)
             {
+                this.Messagebox(e.ToString());
                 return null;
             }
-            
 
         }
 
-        /// <summary>
-        /// Returns list of persons based upon inputed RoleId
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByRoleId(int roleId)
-        {
-            string whereClause = "WHERE roleId = " + roleId.ToString();
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-
-        [HttpPost]
-        public ActionResult GetAllPeopleById(Person model)
-        {
-            string whereClause = "WHERE Id = " + model.Id.ToString();
-            List<Person> selectedEmployee = this.personDAL.GetDesiredPersons(whereClause);
-            return View(selectedEmployee[0]);
-
-
-        }
-
-        /// <summary>
-        /// Returns list of persons based upon inputed first name
-        /// </summary>
-        /// <param name="FirstName"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByFirstName(string FirstName)
-        {
-            string whereClause = "WHERE first_name = " + FirstName;
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-
-        /// <summary>
-        /// Returns list of persons based upon inputed last name
-        /// </summary>
-        /// <param name="lastName"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByLastName(string lastName)
-        {
-            string whereClause = "WHERE last_name = " + lastName;
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
-
-        /// <summary>
-        /// Returns list of persons based upon inputed first and last name
-        /// </summary>
-        /// <param name="FirstName"></param>
-        /// <param name="lastName"></param>
-        /// <returns></returns>
-        public List<Person> GetAllPeopleByFirstAndLastName(string FirstName, string lastName)
-        {
-            string whereClause = "WHERE last_name = " + lastName + " And first_name = " + FirstName;
-            return this.personDAL.GetDesiredPersons(whereClause);
-        }
         #endregion
 
         #region CRUD actions
         public ActionResult Edit(int id)
         {
-            ViewBag.roleDropDown = this.roleDAL.GetRoles();
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
-            ViewBag.roleID = person.RoleId;
             return View(person);
         }
 
@@ -201,11 +139,7 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult Edit(Person person)
         {
-            string roleTitle = Request.Form["currentRole"];
-            int roleID = Convert.ToInt32(roleTitle);
-
-            this.personDAL.EditPerson(person.Id, person.LastName, person.FirstName, person.DateOfBirth, person.Ssn, person.Gender, person.StreetAddress, person.Phone, person.Zipcode, roleID, person.StatusId);
-
+            this.personDAL.EditPerson(person);
             return RedirectToAction("GetAllPeoples");
         }
 
@@ -220,16 +154,25 @@ namespace ScheduleBuilder.Controllers
             return View(person);
         }
 
-
-        public ActionResult Delete()
+        public ActionResult Delete(int id)
         {
-            return View();
+           
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
         }
-        #endregion
 
-        #region person related model methods
+        [HttpPost]
+        public ActionResult Delete(Person person)
+        {
+            person = this.personDAL.SeperateEmployee(person);
+            return RedirectToAction("GetAllActivePeoplePage");
+        }
+            #endregion
 
-        private void SetRole(Person person)
+            #region person related model methods
+
+            private void SetRole(Person person)
         {
             string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;
@@ -243,11 +186,16 @@ namespace ScheduleBuilder.Controllers
 
         private void ConvertSSN(Person person)
         {
+            string formattedSSN = "";
+            if (person.Ssn.Length == 9)
+            {
+                formattedSSN = person.Ssn.Replace(person.Ssn.Substring(0, 3), "###").Substring(0, person.Ssn.Length - 6) + "-" +
+                   person.Ssn.Replace(person.Ssn.Substring(3, 2), "##").Substring(0, person.Ssn.Length - 4).Substring(3) + "-" +
+                    person.Ssn.Substring(5);
 
-            string formattedSSN = person.Ssn.Replace(person.Ssn.Substring(0, 3), "###").Substring(0, person.Ssn.Length - 6) + "-" +
-                person.Ssn.Replace(person.Ssn.Substring(3, 2), "##").Substring(0, person.Ssn.Length - 4).Substring(3) + "-" +
-                person.Ssn.Substring(5);
-            ViewBag.userSSn = formattedSSN;
+            }
+
+             ViewBag.userSSn = formattedSSN;
         }
 
         private void FormatPhone(Person person)
@@ -257,5 +205,13 @@ namespace ScheduleBuilder.Controllers
         }
 
         #endregion
+
+
+        public void Messagebox(string xMessage)
+        {
+            Response.Write("<script>alert('" + xMessage + "')</script>");
+        }
+
     }
+
 }

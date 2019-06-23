@@ -24,10 +24,15 @@ namespace ScheduleBuilder.Controllers
             }
             catch (Exception e)
             {
-                //what is e?
-            }
-            return null;
 
+                this.Messagebox(e.ToString());
+                return null;
+            }
+        }
+
+        public void Messagebox(string xMessage)
+        {
+            Response.Write("<script>alert('" + xMessage + "')</script>");
         }
 
         /// <summary>

@@ -105,7 +105,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -257,10 +256,12 @@
     <Content Include="Views\Person\Delete.cshtml" />
     <Content Include="Views\Person\AddPerson.cshtml" />
     <Content Include="Views\Person\GetAllPeoples.cshtml" />
-    <Content Include="Views\Person\GetPersonById.cshtml" />
+    <Content Include="Views\Shift\Create.cshtml" />
+    <Content Include="Views\Shift\Details.cshtml" />
+    <Content Include="Views\Shift\Edit.cshtml" />
     <Content Include="Views\Person\GetPerson.cshtml" />
     <Content Include="Views\Person\SearchPeople.cshtml" />
-    <Content Include="Views\Home\SearchPeople.cshtml" />
+    <Content Include="Views\Person\GetAllActivePeoplePage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
