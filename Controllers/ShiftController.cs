@@ -47,7 +47,7 @@ namespace ScheduleBuilder.Controllers
             }
             catch (Exception e)
             {
-                
+
             }
             return null;
 
@@ -67,7 +67,8 @@ namespace ScheduleBuilder.Controllers
             if (!string.IsNullOrEmpty(startlunchdt))
             {
                 shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
-            } else
+            }
+            else
             {
                 shift.scheduledLunchBreakStart = null;
             }
@@ -81,15 +82,16 @@ namespace ScheduleBuilder.Controllers
             }
 
             return Json(shiftDAL.AddShift(shift));
-           
+
         }
 
         /// <summary>
         /// gets all positions from the database
         /// </summary>
         [HttpPost]
-        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID)
+        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete)
         {
+            //Create shift object from values passed from view
             Shift shift = new Shift();
             shift.shiftID = int.Parse(shiftID);
             shift.scheduleShiftID = int.Parse(scheduleshiftID);
@@ -114,11 +116,19 @@ namespace ScheduleBuilder.Controllers
                 shift.scheduledLunchBreakEnd = null;
             }
 
-            return Json(shiftDAL.UpdateShift(shift));
+            //Delete or update shift accordingly
+            if (string.Equals(isDelete, "delete"))
+            {
+                return Json(shiftDAL.DeleteShift(shift));
+            }
+            else
+            {
+                return Json(shiftDAL.UpdateShift(shift));
+            }
 
         }
 
-        private DateTime ConvertDateToC (long jsDate)
+        private DateTime ConvertDateToC(long jsDate)
         {
             var date = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return date.AddMilliseconds(jsDate - 14400000);
