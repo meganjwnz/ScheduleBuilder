@@ -137,10 +137,18 @@ namespace ScheduleBuilder.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Person person)
         {
-            this.personDAL.EditPerson(person);
-            return RedirectToAction("GetAllPeoples");
+            try
+            {
+                this.personDAL.EditPerson(person);
+                return RedirectToAction("GetAllPeoples");
+            }
+            catch
+            {
+                return View(person);
+            }
         }
 
         public ActionResult Details(int id)

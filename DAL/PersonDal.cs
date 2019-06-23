@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
 using System.Data;
-using System.Web.Mvc;
 
 namespace ScheduleBuilder.DAL
 {

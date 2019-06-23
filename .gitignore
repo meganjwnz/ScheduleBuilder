@@ -6,4 +6,5 @@
 /obj/Release
 /bin
 *.vs/
-/obj/Debug
+/ScheduleBuilderTests/bin/Debug
+/ScheduleBuilderTests/obj/Debug
