@@ -134,7 +134,7 @@ namespace ScheduleBuilder.Controllers
         private DateTime ConvertDateToC(long jsDate)
         {
             var date = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return date.AddMilliseconds(jsDate - 14400000);
+            return date.AddMilliseconds(jsDate);
         }
     }
 }
