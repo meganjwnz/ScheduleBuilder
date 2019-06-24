@@ -30,6 +30,12 @@ namespace ScheduleBuilder.DAL
                 ", email" +
                 " From dbo.person ";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="model"></typeparam>
+        /// <param name="sql"></param>
+        /// <returns></returns>
         public List<model> LoadData<model>(string sql)
         {
             using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
