@@ -9,9 +9,8 @@ namespace ScheduleBuilder.DAL
     /// This class provides access to the database 
     /// It is conserned with Person 
     /// </summary>
-    public class ShiftDAL
+    public class ShiftDAL : IShiftDAL
     {
-   
         /// <summary>
         /// Get all shifts in the database
         /// </summary>
@@ -35,61 +34,6 @@ namespace ScheduleBuilder.DAL
 
                 using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
                 {
-                    using (SqlDataReader reader = selectCommand.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Shift shift = new Shift();
-                            shift.shiftID = int.Parse(reader["id"].ToString());
-                            shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
-                            shift.personID = int.Parse(reader["personId"].ToString());
-                            shift.positionID = int.Parse(reader["positionId"].ToString());
-                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
-                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
-                            shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
-                            shift.scheduledLunchBreakEnd = reader["scheduledLunchBreakEndTime"] as DateTime?;
-                            shift.actualStartTime = reader["actualStartTime"] as DateTime?;
-                            shift.actualEndTime = reader["actualEndTime"] as DateTime?;
-                            shift.actualLunchBreakStart = reader["actualLunchBreakStart"] as DateTime?;
-                            shift.actualLunchBreakEnd = reader["acutalLunchBreakEnd"] as DateTime?;
-                            shift.positionName = reader["position_title"].ToString();
-                            shift.personLastName = reader["last_name"].ToString();
-                            shift.personFirstName = reader["first_name"].ToString();
-                            shiftList.Add(shift);
-                        }
-                    }
-                }
-            }
-            return shiftList;
-
-        }
-
-        /// <summary>
-        /// Get all shifts for a specific person
-        /// </summary>
-        /// <param name="personID">the person's ID number as an integer</param>
-        /// <returns>A list of shift objects</returns>
-        public List<Shift> GetShiftByPerson(int personID)
-        {
-            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
-            List<Shift> shiftList = new List<Shift>();
-
-            string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
-                "sh.scheduledLunchBreakStartTime, sh.scheduledLunchBreakEndTime, sh.actualStartTime, sh.actualEndTime, sh.actualLunchBreakStart, " +
-                "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title " +
-                "FROM shift AS s " +
-                "JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
-                "JOIN person AS p ON s.personId = p.id " +
-                "JOIN position AS ps ON s.positionId = ps.id " +
-                "WHERE s.personId = @personID";
-
-            using (connection)
-            {
-                connection.Open();
-
-                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
-                {
-                    selectCommand.Parameters.Add(new SqlParameter("@personID", personID));
                     using (SqlDataReader reader = selectCommand.ExecuteReader())
                     {
                         while (reader.Read())

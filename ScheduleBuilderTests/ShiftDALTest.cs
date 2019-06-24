@@ -1,0 +1,145 @@
+﻿using Autofac.Extras.Moq;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+using ScheduleBuilder.DAL;
+using ScheduleBuilder.Model;
+
+namespace ScheduleBuilderTests
+{
+    public class ShiftDALTest
+    {
+
+        /// <summary>
+        /// Insures that GetAllShifts returns all the shifts within the database
+        /// </summary>
+        [Fact]
+        public void TestGetAllShifts()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IShiftDAL>()
+                    .Setup(x => x.GetAllShifts()).Returns(GetSampleShifts());
+
+                var shiftDAL = mock.Create<IShiftDAL>();
+
+                var expected = GetSampleShifts();
+                var actual = shiftDAL.GetAllShifts();
+
+
+                Assert.True(actual != null);
+                Assert.Equal(expected.Count, actual.Count);
+
+                for (int count = 0; count < expected.Count; count++)
+                {
+                    Assert.Equal(expected[count].shiftID, actual[count].shiftID);
+                    Assert.Equal(expected[count].scheduleShiftID, actual[count].scheduleShiftID);
+                    Assert.Equal(expected[count].personID, actual[count].personID);
+                    Assert.Equal(expected[count].personFirstName, actual[count].personFirstName);
+                    Assert.Equal(expected[count].personLastName, actual[count].personLastName);
+                    Assert.Equal(expected[count].positionID, actual[count].positionID);
+                    Assert.Equal(expected[count].positionName, actual[count].positionName);
+                    Assert.Equal(expected[count].scheduledStartTime, actual[count].scheduledStartTime);
+                    Assert.Equal(expected[count].scheduledEndTime, actual[count].scheduledEndTime);
+                    Assert.Equal(expected[count].scheduledLunchBreakStart, actual[count].scheduledLunchBreakStart);
+                    Assert.Equal(expected[count].scheduledLunchBreakEnd, actual[count].scheduledLunchBreakEnd);
+                    Assert.Equal(expected[count].actualStartTime, actual[count].actualStartTime);
+                    Assert.Equal(expected[count].actualEndTime, actual[count].actualEndTime);
+                    Assert.Equal(expected[count].actualLunchBreakStart, actual[count].actualLunchBreakStart);
+                    Assert.Equal(expected[count].actualLunchBreakEnd, actual[count].actualLunchBreakEnd);
+                }
+            }
+        }
+
+
+
+        //Provides a dummy list of data
+        private List<Shift> GetSampleShifts()
+        {
+            List<Shift> output = new List<Shift> {
+                //This shift should break testing once iteration 2 validation is added!!!
+                new Shift
+                {
+                    shiftID = 1,
+                    scheduleShiftID = 1,
+                    personID = 1,
+                    personFirstName = "Melissa",
+                    personLastName = "Osborne",
+                    positionID = 1,
+                    positionName = "International Spy",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                },
+                //no clocked hours
+                  new Shift
+                {
+                    shiftID = 2,
+                    scheduleShiftID = 2,
+                    personID = 2,
+                    personFirstName = "Maggie Rose",
+                    personLastName = "Osborne",
+                    positionID = 2,
+                    positionName = "Engineer",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = null,
+                    actualEndTime = null,
+                    actualLunchBreakStart = null,
+                    actualLunchBreakEnd = null
+                },
+                  //no lunch break
+                  new Shift
+                {
+                    shiftID = 3,
+                    scheduleShiftID = 3,
+                    personID = 3,
+                    personFirstName = "Molly",
+                    personLastName = "Osborne",
+                    positionID = 3,
+                    positionName = "Guardian",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = null,
+                    scheduledLunchBreakEnd = null,
+                    actualStartTime = null,
+                    actualEndTime = null,
+                    actualLunchBreakStart = null,
+                    actualLunchBreakEnd = null
+                },
+                 new Shift
+                {
+                    shiftID = 4,
+                    scheduleShiftID = 4,
+                    personID = 4,
+                    personFirstName = "Frogger",
+                    personLastName = "Osborne",
+                    positionID = 4,
+                    positionName = "Comic Relief",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                }
+            };
+            return output;
+
+
+        }
+    }
+}
