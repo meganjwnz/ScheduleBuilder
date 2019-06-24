@@ -98,12 +98,67 @@ namespace ScheduleBuilderTests
         [Fact]
         public void TestUpdateShift()
         {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var updatedshift = new Shift
+                {
+                    shiftID = 1,
+                    scheduleShiftID = 15,
+                    personID = 43,
+                    personFirstName = "Cooper",
+                    personLastName = "Speer",
+                    positionID = 45,
+                    positionName = "Boss",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                };
+                
+                mock.Mock<IShiftDAL>().Setup(x => x.GetAllShifts()).Returns(GetSampleShifts());
 
+                var shiftDAL = mock.Create<IShiftDAL>();
+                shiftDAL.UpdateShift(updatedshift);
+
+                mock.Mock<IShiftDAL>().Verify(x => x.UpdateShift(updatedshift), Times.Exactly(1));
+            }
         }
 
         [Fact]
         public void TestDeleteShift()
         {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var deleteshift = new Shift
+                {
+                    shiftID = 1,
+                    scheduleShiftID = 15,
+                    personID = 43,
+                    personFirstName = "Cooper",
+                    personLastName = "Speer",
+                    positionID = 45,
+                    positionName = "Boss",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                };
+
+                mock.Mock<IShiftDAL>().Setup(x => x.GetAllShifts()).Returns(GetSampleShifts());
+
+                var shiftDAL = mock.Create<IShiftDAL>();
+                shiftDAL.DeleteShift(deleteshift);
+
+                mock.Mock<IShiftDAL>().Verify(x => x.DeleteShift(deleteshift));
+            }
 
         }
 
@@ -114,7 +169,7 @@ namespace ScheduleBuilderTests
         private List<Shift> GetSampleShifts()
         {
             List<Shift> output = new List<Shift> {
-                //This shift should break testing once iteration 2 validation is added!!!
+                
                 new Shift
                 {
                     shiftID = 1,
