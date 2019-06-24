@@ -59,7 +59,7 @@ namespace ScheduleBuilderTests
             using (var mock = AutoMock.GetLoose())
             {
                 mock.Mock<IPersonDAL>()
-                    .Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople());
+                    .Setup(x => x.GetDesiredPersons("WHERE statusId = 1 OR statusId = 5")).Returns(GetSamplePeople());
 
                 var personDAL = mock.Create<IPersonDAL>();
 

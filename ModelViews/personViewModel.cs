@@ -28,8 +28,8 @@ namespace ScheduleBuilder.ModelViews
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime DateOfBirth { get; set; }
 
-
         [Display(Name = "SSN")]
+        [StringLength(9, MinimumLength = 9)]
         public string Ssn { get; set; }
 
         [Display(Name = "Gender")]
@@ -39,6 +39,7 @@ namespace ScheduleBuilder.ModelViews
         [Display(Name = "Phone number")]
         [Required(ErrorMessage = "Phone number required")]
         [DataType(DataType.PhoneNumber)]
+        [StringLength(10, MinimumLength = 10)]
         public string Phone { get; set; }
 
         [Display(Name = "Street address")]
@@ -47,6 +48,7 @@ namespace ScheduleBuilder.ModelViews
 
         [Display(Name = "Zipcode")]
         [Required(ErrorMessage = "Zipcode required")]
+        [StringLength(5, MinimumLength = 5)]
         public string Zipcode { get; set; }
 
         [Display(Name = "Username")]
