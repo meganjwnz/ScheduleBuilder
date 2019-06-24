@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Windows;
 
 namespace ScheduleBuilder.DAL
 {
@@ -208,8 +207,8 @@ namespace ScheduleBuilder.DAL
                         updateShiftHoursCommand.Transaction = transaction;
                         updateShiftHoursCommand.Parameters.AddWithValue("@scheduledStartTime", shift.scheduledStartTime);
                         updateShiftHoursCommand.Parameters.AddWithValue("@scheduledEndTime", shift.scheduledEndTime);
-                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", shift.scheduledLunchBreakStart);
-                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", shift.scheduledLunchBreakEnd);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", ((object)shift.scheduledLunchBreakStart) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", ((object)shift.scheduledLunchBreakEnd) ?? DBNull.Value);
                         updateShiftHoursCommand.Parameters.AddWithValue("@id", shift.scheduleShiftID);
 
                         shiftHoursResult = updateShiftHoursCommand.ExecuteNonQuery();
@@ -236,7 +235,7 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Deletes a shift  
+        /// Delete a shift
         /// </summary>
         /// <param name="shift"></param>
         /// <returns></returns>
