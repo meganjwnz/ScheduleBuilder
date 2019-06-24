@@ -59,12 +59,12 @@ namespace ScheduleBuilderTests
             using (var mock = AutoMock.GetLoose())
             {
                 mock.Mock<IPersonDAL>()
-                    .Setup(x => x.GetDesiredPersons("WHERE statusId = 1 OR statusId = 5")).Returns(GetSamplePeople());
+                    .Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetActivePeople());
 
                 var personDAL = mock.Create<IPersonDAL>();
 
-                var expected = GetSamplePeople();
-                var actual = personDAL.GetDesiredPersons("");
+                var expected = GetActivePeople();
+                var actual = personDAL.GetDesiredPersons("WHERE statusId = 1 OR statusId = 5");
 
 
                 Assert.True(actual != null);
@@ -81,6 +81,44 @@ namespace ScheduleBuilderTests
             }
         }
 
+        private List<Person> GetActivePeople()
+        {
+            List<Person> output = new List<Person> {
+                new Person
+                {
+                    LastName = "Coleman",
+                    FirstName = "Drew",
+                    Ssn = "123456789",
+                    Gender = "Male",
+                    DateOfBirth = DateTime.Now,
+                    RoleId = 1,
+                    StatusId = 1,
+                    Email = "Drew@email.com",
+                    StreetAddress = "1149 Grove",
+                    Zipcode = "30145",
+                    Phone = "4543631011",
+                    Password = "pass",
+                    Username = "test"
+                },
+                 new Person
+                 {
+                     LastName = "Coleman",
+                     FirstName = "Keeleigh",
+                     Ssn = "987654321",
+                     Gender = "Female",
+                     DateOfBirth = DateTime.Now,
+                     RoleId = 1,
+                     StatusId = 1,
+                     Email = "K@email.com",
+                     StreetAddress = "1149 Grove",
+                     Zipcode = "30145",
+                     Phone = "4543631011",
+                     Password = "pass",
+                     Username = "test"
+                 }
+            };
+                 return output;
+        }
 
         [Fact]
         public void Test_AddPerson()
@@ -186,7 +224,7 @@ namespace ScheduleBuilderTests
                      Gender = "Male",
                      DateOfBirth = DateTime.Now,
                      RoleId = 1,
-                     StatusId = 1,
+                     StatusId = 3,
                      Email = "Wayne@email.com",
                      StreetAddress = "1149 Grove",
                      Zipcode = "30145",
@@ -202,7 +240,7 @@ namespace ScheduleBuilderTests
                      Gender = "Male",
                      DateOfBirth = DateTime.Now,
                      RoleId = 1,
-                     StatusId = 1,
+                     StatusId = 3,
                      Email = "Witten@email.com",
                      StreetAddress = "1149 Grove",
                      Zipcode = "30145",
