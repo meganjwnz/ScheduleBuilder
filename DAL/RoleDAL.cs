@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace ScheduleBuilder.DAL
 {
-    public class RoleDAL
+    public class RoleDAL : IRoleDAL
     {
         /// <summary>
         /// Retrieves all roles that a user can be

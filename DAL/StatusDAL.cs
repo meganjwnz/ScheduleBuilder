@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace ScheduleBuilder.DAL
 {
-    public class StatusDAL
+    public class StatusDAL : IStatusDAL
     {
         /// <summary>
         /// Gets a status by its id

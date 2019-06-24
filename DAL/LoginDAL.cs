@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace ScheduleBuilder.DAL
 {
-    public class LoginDAL
+    public class LoginDAL : ILoginDAL
     {
         /// <summary>
         /// Verifies a person's login information and retrieves full name and role
@@ -13,7 +13,7 @@ namespace ScheduleBuilder.DAL
         /// <param name="username">As a string</param>
         /// <param name="password">As a string</param>
         /// <returns></returns>
-        public static DataTable GetLogin(string username, string password)
+        public DataTable GetLogin(string username, string password)
         {
             DataTable dt = new DataTable();
             HashingService hash = new HashingService();

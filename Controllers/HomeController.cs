@@ -70,7 +70,8 @@ namespace ScheduleBuilder.Controllers
             {
                 return View();
             }
-            DataTable dataTable = LoginDAL.GetLogin(person.Username, person.Password);
+            LoginDAL loginDAL = new LoginDAL();
+            DataTable dataTable = loginDAL.GetLogin(person.Username, person.Password);
 
             if (dataTable.Rows.Count > 0)
             {

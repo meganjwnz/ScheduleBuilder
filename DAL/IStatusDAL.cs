@@ -1,8 +1,10 @@
 ﻿
+using ScheduleBuilder.Model;
+
 namespace ScheduleBuilder.DAL
 {
     public interface IStatusDAL
     {
-        string GetStatusByID(int id);
+        Status GetStatusByID(int id);
     }
 }

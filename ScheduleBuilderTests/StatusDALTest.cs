@@ -15,14 +15,14 @@ namespace ScheduleBuilderTests
             using (var mock = AutoMock.GetLoose())
             {
                 mock.Mock<IStatusDAL>()
-                    .Setup(x => x.GetStatusByID(It.IsAny<int>())).Returns(GetStatusData().StatusDescription);
+                    .Setup(x => x.GetStatusByID(It.IsAny<int>())).Returns(GetStatusData());
 
                 var roleDAL = mock.Create<IStatusDAL>();
 
                 var expected = GetStatusData().StatusDescription;
                 var actual = roleDAL.GetStatusByID(3);
 
-                Assert.Equal(expected, actual);
+                Assert.Equal(expected, actual.StatusDescription);
             }
         }
 

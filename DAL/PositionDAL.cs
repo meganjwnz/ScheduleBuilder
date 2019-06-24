@@ -10,7 +10,7 @@ namespace ScheduleBuilder.DAL
     /// This class provides access to the database 
     /// It is conserned with Person 
     /// </summary>
-    public class PositionDAL
+    public class PositionDAL : IPositionDAL
     {
         /// <summary>
         /// Returns all ActivePositions

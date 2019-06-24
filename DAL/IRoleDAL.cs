@@ -10,6 +10,5 @@ namespace ScheduleBuilder.DAL
         string GetRoleByID(int id);
 
         int GetRoleIdByTitle(string roleTitle);
-        void GetRoleByID(string v);
     }
 }
