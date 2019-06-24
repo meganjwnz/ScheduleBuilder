@@ -248,22 +248,6 @@ namespace ScheduleBuilder.DAL
             string update = @"UPDATE dbo.person 
                             Set statusId = 4 
                             WHERE id = @id";
-                        //string update = @"UPDATE dbo.person
-                        //    SET last_name = @lastName
-                        //    , first_name = @firstName
-                        //    , ssn = @ssn
-                        //    , gender = @gender
-                        //    , street_address = @streetAddress
-                        //    , phone = @phone
-                        //    , zipcode = @zipcode
-                        //    , statusId = @statusId
-                        //    , username = @username
-                        //    , email = @email
-                        //    WHERE id = @id 
-                        //    AND password = @password
-                        //    AND roleId = @roleId
-                        //    AND date_of_birth = @dateOfBirth";
-                int count = 0;
                 try
                 {
                     using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
@@ -295,7 +279,7 @@ namespace ScheduleBuilder.DAL
                         updateCommand.Parameters.AddWithValue("@statusId", 4);
                         updateCommand.Parameters.AddWithValue("@password", seperatePerson.Password);
 
-                        count = updateCommand.ExecuteNonQuery();
+                        updateCommand.ExecuteNonQuery();
                         }
                         connection.Close();
                     }

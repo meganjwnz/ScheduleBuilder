@@ -50,6 +50,11 @@ namespace ScheduleBuilder.DAL
         /// <param name="editPerson"></param>
         void EditPerson(Person person);
 
+        /// <summary>
+        /// Changes the person's status to seperated
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         Person SeperateEmployee(Person person);
 
 
