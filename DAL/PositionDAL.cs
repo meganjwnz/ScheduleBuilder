@@ -48,7 +48,6 @@ namespace ScheduleBuilder.DAL
             return positionList;
 
         }
-
-       
+ 
     }
 }
