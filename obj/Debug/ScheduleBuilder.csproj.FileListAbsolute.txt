@@ -555,3 +555,4 @@ C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.Cor
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.dll
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.pdb
+C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
