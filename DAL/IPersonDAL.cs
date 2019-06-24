@@ -42,6 +42,13 @@ namespace ScheduleBuilder.DAL
             , string zipcode
             , string username
             , string email);
-        
+
+        void EditPerson(Person person);
+
+        Person SeperateEmployee(Person person);
+
+
+
+
     }
 }

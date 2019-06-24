@@ -196,6 +196,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="DAL\ILoginDAL.cs" />
     <Compile Include="DAL\IRoleDAL.cs" />
     <Compile Include="DAL\IPersonDAL.cs" />
     <Compile Include="DAL\IShiftDAL.cs" />

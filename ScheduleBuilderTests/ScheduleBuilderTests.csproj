@@ -92,6 +92,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoginDALTest.cs" />
     <Compile Include="PersonControllerTests.cs" />
     <Compile Include="PersonDALTest.cs" />
     <Compile Include="PersonTests.cs" />
