@@ -10,7 +10,7 @@ namespace ScheduleBuilder.DAL
     /// <summary>
     /// This interface is for the PersonDAL class
     /// </summary>
-    public interface IPersonDAL
+    public interface InterfaceDAL
     {
         /// <summary>
         /// returns all persons equal too the accepted where clause which will be formated such as WHERE = etc
