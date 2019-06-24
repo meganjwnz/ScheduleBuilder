@@ -59,12 +59,12 @@ namespace ScheduleBuilderTests
             using (var mock = AutoMock.GetLoose())
             {
                 mock.Mock<IPersonDAL>()
-                    .Setup(x => x.GetDesiredPersons("WHERE statusId = 1 OR statusId = 5")).Returns(GetSamplePeople());
+                    .Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetActivePeople());
 
                 var personDAL = mock.Create<IPersonDAL>();
 
                 var expected = GetActivePeople();
-                var actual = personDAL.GetDesiredPersons("");
+                var actual = personDAL.GetDesiredPersons("WHERE statusId = 1 OR statusId = 5");
 
 
                 Assert.True(actual != null);
@@ -240,7 +240,7 @@ namespace ScheduleBuilderTests
                      Gender = "Male",
                      DateOfBirth = DateTime.Now,
                      RoleId = 1,
-                     StatusId = 4,
+                     StatusId = 3,
                      Email = "Witten@email.com",
                      StreetAddress = "1149 Grove",
                      Zipcode = "30145",

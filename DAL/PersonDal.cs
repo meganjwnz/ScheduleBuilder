@@ -11,7 +11,7 @@ namespace ScheduleBuilder.DAL
     /// This class provides access to the database 
     /// It is conserned with Person 
     /// </summary>
-    public class PersonDAL : InterfaceDAL
+    public class PersonDAL : IPersonDAL
     {
         HashingService hashingService = new HashingService();
         string selectedPersons = "Select id" +
