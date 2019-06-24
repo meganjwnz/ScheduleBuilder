@@ -52,6 +52,38 @@ namespace ScheduleBuilderTests
             }
         }
 
+        [Fact]
+        public void TestEditPerson()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var editPerson = new Person
+                {
+                    Id = 1,
+                    LastName = "EditedDrew",
+                    FirstName = "Drew",
+                    Ssn = "123456789",
+                    Gender = "Male",
+                    DateOfBirth = DateTime.Now,
+                    RoleId = 1,
+                    StatusId = 1,
+                    Email = "Drew@email.com",
+                    StreetAddress = "1149 Grove",
+                    Zipcode = "30145",
+                    Phone = "7777777777",
+                    Password = "pass",
+                    Username = "test"
+                };
+
+                mock.Mock<IPersonDAL>().Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople());
+
+                var personDAL = mock.Create<IPersonDAL>();
+                personDAL.EditPerson(editPerson);
+
+                mock.Mock<IPersonDAL>().Verify(x => x.EditPerson(editPerson), Times.Exactly(1));
+            }
+        }
+
 
         [Fact]
         public void TestGetAll_Active_People()

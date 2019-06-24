@@ -12,6 +12,7 @@ namespace ScheduleBuilder.DAL
     /// </summary>
     public interface IPersonDAL
     {
+
         /// <summary>
         /// returns all persons equal too the accepted where clause which will be formated such as WHERE = etc
         /// </summary>
@@ -43,6 +44,10 @@ namespace ScheduleBuilder.DAL
             , string username
             , string email);
 
+        /// <summary>
+        /// Allows the user to edit the accepted person value
+        /// </summary>
+        /// <param name="editPerson"></param>
         void EditPerson(Person person);
 
         Person SeperateEmployee(Person person);
