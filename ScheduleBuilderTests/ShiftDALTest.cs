@@ -55,9 +55,62 @@ namespace ScheduleBuilderTests
             }
         }
 
+        /// <summary>
+        /// Test that a shift can be added succecssfully
+        /// </summary>
+        [Fact]
+        public void TestAddShift()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var shift = new Shift
+                {
+                    shiftID = 7,
+                    scheduleShiftID = 15,
+                    personID = 43,
+                    personFirstName = "Cooper",
+                    personLastName = "Speer",
+                    positionID = 45,
+                    positionName = "Boss",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                };
 
+                mock.Mock<IShiftDAL>().Setup(x => x.AddShift(shift));
 
-        //Provides a dummy list of data
+                var cls = mock.Create<IShiftDAL>();
+
+                cls.AddShift(shift);
+
+                mock.Mock<IShiftDAL>().Verify(x => x.AddShift(shift), Times.Exactly(1));
+            }
+        }
+
+        /// <summary>
+        /// Test that a shift can be updated successfully
+        /// </summary>
+        [Fact]
+        public void TestUpdateShift()
+        {
+
+        }
+
+        [Fact]
+        public void TestDeleteShift()
+        {
+
+        }
+
+        /// <summary>
+        /// A dummy list of shifts (mock uses this as a return from the db)
+        /// </summary>
+        /// <returns>A list of shift objects</returns>
         private List<Shift> GetSampleShifts()
         {
             List<Shift> output = new List<Shift> {
