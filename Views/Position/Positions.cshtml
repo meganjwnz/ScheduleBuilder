@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ScheduleBuilder.Model.Position>
+
+@{
+    ViewBag.Title = "PositionList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>PositionList</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.positionTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.positionDescription)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.positionTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isActive)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.positionDescription)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.positionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.positionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.positionID })
+        </td>
+    </tr>
+}
+
+</table>

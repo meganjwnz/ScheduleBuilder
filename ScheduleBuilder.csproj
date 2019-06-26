@@ -196,6 +196,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="DAL\ILoginDAL.cs" />
     <Compile Include="DAL\IPositionDAL.cs" />
     <Compile Include="DAL\IRoleDAL.cs" />
@@ -279,6 +280,10 @@
     <Content Include="Views\Person\GetPerson.cshtml" />
     <Content Include="Views\Person\SearchPeople.cshtml" />
     <Content Include="Views\Person\GetAllActivePeoplePage.cshtml" />
+    <Content Include="Views\Position\AddPosition.cshtml" />
+    <Content Include="Views\Position\UpdatePosition.cshtml" />
+    <Content Include="Views\Position\DeactivatePosition.cshtml" />
+    <Content Include="Views\Position\Positions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
