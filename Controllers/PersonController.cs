@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
 using System;
+using ScheduleBuilder.DAL;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -124,6 +125,27 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Edit(int id)
         {
+            List<Role> roles = this.roleDAL.GetRoles();
+            List<SelectListItem> listOfRoles = new List<SelectListItem>();
+
+            foreach (Role role in roles)
+            {
+                SelectListItem addedListItem = new SelectListItem { Text = role.RoleTitle.ToString(), Value = role.Id.ToString()};
+                listOfRoles.Add(addedListItem);
+            }
+                
+
+            
+            ViewBag.Role = listOfRoles;
+
+           // return View();
+            //List<SelectListItem> ObjList = new List<SelectListItem>()
+            //ViewBag.RoleId = new SelectList(new List<SelectListItem>
+            //{
+            //    new SelectListItem{ Text = "this is a test ", Value = ""},
+            //    new SelectListItem{ Text = "this is a 2nd test ", Value = "2testValue"}
+            //    });
+            //ViewBag.RoleId = Obj
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View(person);
