@@ -27,6 +27,13 @@ namespace ScheduleBuilder.Controllers
         }
 
         // POST: Position/AddPosition
+        /// <summary>
+        /// Creates a new position
+        /// </summary>
+        /// <param name="positionTitle"></param>
+        /// <param name="positionDescription"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddPosition(string positionTitle, string positionDescription, bool isActive)
         {
