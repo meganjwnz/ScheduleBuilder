@@ -46,8 +46,37 @@ namespace ScheduleBuilder.DAL
                 }
             }
             return positionList;
-
         }
- 
+
+        public List<Position> GetAllPositions()
+        {
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
+            List<Position> positionList = new List<Position>();
+
+            string selectStatement = "SELECT p.id, p.position_title, p.isActive, p.position_description " +
+                "FROM position p";
+
+            using (connection)
+            {
+                connection.Open();
+
+                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
+                {
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Position position = new Position();
+                            position.positionID = int.Parse(reader["id"].ToString());
+                            position.positionTitle = reader["position_title"].ToString();
+                            position.isActive = (bool)reader["isActive"];
+                            position.positionDescription = reader["position_description"].ToString();
+                            positionList.Add(position);
+                        }
+                    }
+                }
+            }
+            return positionList;
+        }
     }
 }

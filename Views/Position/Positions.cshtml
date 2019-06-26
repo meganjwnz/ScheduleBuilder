@@ -16,31 +16,31 @@
             @Html.DisplayNameFor(model => model.positionTitle)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.isActive)
+            @Html.DisplayNameFor(model => model.positionDescription)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.positionDescription)
+            @Html.DisplayNameFor(model => model.isActive)
         </th>
         <th></th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.positionTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.positionDescription)
-        </td>
-        <td>
-            @Html.ActionLink("Update", "UpdatePosition", new { id=item.positionID }) |
-            @Html.ActionLink("Details", "PositionDetails", new { id=item.positionID }) |
-            @Html.ActionLink("Deactivate", "Deactivate", new { id=item.positionID })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.positionTitle)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.positionDescription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.isActive)
+    </td>
+    <td>
+        @Html.ActionLink("Update", "UpdatePosition", new { id = item.positionID }) |
+        @Html.ActionLink("Details", "PositionDetails", new { id = item.positionID }) |
+        @Html.ActionLink("Deactivate", "Deactivate", new { id = item.positionID })
+    </td>
+</tr>
 }
 
 </table>

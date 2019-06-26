@@ -11,7 +11,7 @@ namespace ScheduleBuilder.Controllers
         // GET: Position
         public ActionResult Positions()
         {
-            return View(this.positionDAL.GetAllActivePositions());
+            return View(this.positionDAL.GetAllPositions());
         }
 
         // GET: Position/Details/5
