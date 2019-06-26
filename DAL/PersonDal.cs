@@ -198,9 +198,9 @@ namespace ScheduleBuilder.DAL
                             , username = @username
                             , email = @email
                             , roleId = @roleId
+                            , statusId = @statusId
                             WHERE id = @id 
-                            AND  password = @password
-                            AND statusId = @statusId
+                            AND  password = @password                            
                             AND date_of_birth = @dateOfBirth";
             int count = 0;
             try

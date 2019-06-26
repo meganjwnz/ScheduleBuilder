@@ -126,15 +126,9 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Edit(int id)
         {
             List<Role> roles = this.roleDAL.GetRoles();
-            //SelectList listOfRoles = new SelectList();
-
-            //foreach (Role role in roles)
-            //{
-            //    SelectListItem addedListItem = new SelectListItem { Text = role.RoleTitle.ToString(), Value = role.Id.ToString()};
-            //    listOfRoles.Add(addedListItem);
-            //}            
-            ViewBag.Role = new SelectList(roles, "id", "roleTitle");//listOfRoles;
-
+            List<Status> statuses = this.statusDAL.GetStatuses();
+            ViewBag.Role = new SelectList(roles, "id", "roleTitle");
+            ViewBag.Status = new SelectList(statuses, "id", "StatusTitle");
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View(person);
