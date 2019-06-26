@@ -119,5 +119,45 @@ namespace ScheduleBuilder.DAL
             }
             return (positionResult >= 1 ? true : false);
         }
+
+        /// <summary>
+        /// Updates a selected position 
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public bool UpdatePosition(Position position)
+        {
+            string updateStatement = 
+                "UPDATE position " +
+                "SET [position_title] = @position_title, " +
+                "[isActive] = @isActive, " +
+                "[position_description] = @position_description " +
+                "WHERE id = @id";
+
+            int positionResult = 0;
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand updateCommand = new SqlCommand(updateStatement, connection))
+                    {
+                        updateCommand.Parameters.AddWithValue("@id", position.positionID);
+                        updateCommand.Parameters.AddWithValue("@position_title", position.positionTitle);
+                        updateCommand.Parameters.AddWithValue("@isActive", position.isActive);
+                        updateCommand.Parameters.AddWithValue("@position_description", position.positionDescription);
+
+                        positionResult = updateCommand.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
+            return (positionResult >= 1 ? true : false);
+        }
     }
 }

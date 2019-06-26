@@ -6,7 +6,7 @@ namespace ScheduleBuilder.Controllers
 {
     public class PositionController : Controller
     {
-        PositionDAL positionDAL = new PositionDAL();
+        readonly PositionDAL positionDAL = new PositionDAL();
 
         // GET: Position
         public ActionResult Positions()
