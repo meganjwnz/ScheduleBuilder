@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
 using System;
+using ScheduleBuilder.DAL;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -45,7 +46,6 @@ namespace ScheduleBuilder.Controllers
                       , personViewModel.Phone
                       , personViewModel.StreetAddress
                       , personViewModel.Zipcode
-                      , personViewModel.Username
                       , personViewModel.Email);
                 return RedirectToAction("GetAllPeoples");
             }
@@ -125,6 +125,10 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Edit(int id)
         {
+            List<Role> roles = this.roleDAL.GetRoles();
+            List<Status> statuses = this.statusDAL.GetStatuses();
+            ViewBag.Role = new SelectList(roles, "id", "roleTitle");
+            ViewBag.Status = new SelectList(statuses, "id", "StatusTitle");
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View(person);

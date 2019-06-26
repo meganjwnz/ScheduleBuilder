@@ -56,7 +56,7 @@ else
                             "Private"
              },
             "text"),
-         new { @class = "form-control" } 
+         new { @class = "form-control" }
              )
         </div>
     </div>
@@ -100,7 +100,21 @@ else
         </div>
     </div>
 
+    @* Provides the drop down list for all available roles *@
+    <div class="form-group">
+        @Html.LabelFor(model => model.RoleId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.RoleId, (SelectList)ViewBag.Role, new { @class = "form-control" })
+        </div>
+    </div>
 
+    <div class="form-group">
+        @Html.LabelFor(model => model.StatusId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.StatusId, (SelectList)ViewBag.Status, new { @class = "form-control" })
+          
+        </div>
+    </div>
 
     <div style="display: none;">
 
@@ -120,21 +134,7 @@ else
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RoleId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RoleId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.StatusId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.StatusId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
-            </div>
-        </div>
     </div>
 
 

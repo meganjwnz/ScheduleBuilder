@@ -30,6 +30,12 @@ namespace ScheduleBuilder.DAL
                 ", email" +
                 " From dbo.person ";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="model"></typeparam>
+        /// <param name="sql"></param>
+        /// <returns></returns>
         public List<model> LoadData<model>(string sql)
         {
             using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
@@ -63,7 +69,7 @@ namespace ScheduleBuilder.DAL
             , string phone
             , string streetAddress
             , string zipcode
-            , string username
+            //, string username
             , string email)
         {
             Person addedPerson = new Person
@@ -76,12 +82,13 @@ namespace ScheduleBuilder.DAL
                 Phone = phone,
                 StreetAddress = streetAddress,
                 Zipcode = zipcode,
-                Username = username,
+                Username = $"{firstName.Substring(0,1).ToLower()}{lastName.ToLower()}",
                 Email = email,
                 Password = this.hashingService.PasswordHashing("newHire"),
                 StatusId = 1,
                 RoleId = 3
             };
+            string username = $"{firstName.Substring(0,1)}+{lastName}";
             string sql = @"INSERT INTO dbo.person( 
                             [last_name] 
                             , [first_name] 
@@ -190,10 +197,10 @@ namespace ScheduleBuilder.DAL
                             , zipcode = @zipcode
                             , username = @username
                             , email = @email
+                            , roleId = @roleId
+                            , statusId = @statusId
                             WHERE id = @id 
-                            AND  password = @password
-                            AND roleId = @roleId
-                            AND statusId = @statusId
+                            AND  password = @password                            
                             AND date_of_birth = @dateOfBirth";
             int count = 0;
             try
@@ -248,22 +255,6 @@ namespace ScheduleBuilder.DAL
             string update = @"UPDATE dbo.person 
                             Set statusId = 4 
                             WHERE id = @id";
-                        //string update = @"UPDATE dbo.person
-                        //    SET last_name = @lastName
-                        //    , first_name = @firstName
-                        //    , ssn = @ssn
-                        //    , gender = @gender
-                        //    , street_address = @streetAddress
-                        //    , phone = @phone
-                        //    , zipcode = @zipcode
-                        //    , statusId = @statusId
-                        //    , username = @username
-                        //    , email = @email
-                        //    WHERE id = @id 
-                        //    AND password = @password
-                        //    AND roleId = @roleId
-                        //    AND date_of_birth = @dateOfBirth";
-                int count = 0;
                 try
                 {
                     using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
@@ -295,7 +286,7 @@ namespace ScheduleBuilder.DAL
                         updateCommand.Parameters.AddWithValue("@statusId", 4);
                         updateCommand.Parameters.AddWithValue("@password", seperatePerson.Password);
 
-                        count = updateCommand.ExecuteNonQuery();
+                        updateCommand.ExecuteNonQuery();
                         }
                         connection.Close();
                     }

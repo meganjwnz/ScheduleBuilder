@@ -54,6 +54,58 @@ namespace ScheduleBuilderTests
 
 
         [Fact]
+        public void TestSeperatePerson()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                Mock<Person> mockPerson = new Mock<Person>();
+                mock.Mock<IPersonDAL>().Setup(x => x.SeperateEmployee(It.IsAny<Person>())).Returns(SerperatedPerson());
+                var personDAL = mock.Create<IPersonDAL>();
+                var controlPerson = SerperatedPerson();
+                var actualPerson = personDAL.SeperateEmployee(GetSamplePeople()[0]);
+                Assert.True(controlPerson  != null);
+                Assert.Equal(actualPerson.StatusId, controlPerson.StatusId);
+                Assert.Equal(actualPerson.FirstName, controlPerson.FirstName);
+                Assert.Equal(actualPerson.Gender, controlPerson.Gender);
+                Assert.Equal(actualPerson.Email, controlPerson.Email);
+            }
+
+        } 
+
+        [Fact]
+        public void TestEditPerson()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var editPerson = new Person
+                {
+                    Id = 1,
+                    LastName = "EditedDrew",
+                    FirstName = "Drew",
+                    Ssn = "123456789",
+                    Gender = "Male",
+                    DateOfBirth = DateTime.Now,
+                    RoleId = 1,
+                    StatusId = 1,
+                    Email = "Drew@email.com",
+                    StreetAddress = "1149 Grove",
+                    Zipcode = "30145",
+                    Phone = "7777777777",
+                    Password = "pass",
+                    Username = "test"
+                };
+
+                mock.Mock<IPersonDAL>().Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople());
+
+                var personDAL = mock.Create<IPersonDAL>();
+                personDAL.EditPerson(editPerson);
+
+                mock.Mock<IPersonDAL>().Verify(x => x.EditPerson(editPerson), Times.Exactly(1));
+            }
+        }
+
+
+        [Fact]
         public void TestGetAll_Active_People()
         {
             using (var mock = AutoMock.GetLoose())
@@ -79,6 +131,27 @@ namespace ScheduleBuilderTests
                     Assert.Equal(expected[count].Email, actual[count].Email);
                 }
             }
+        }
+
+
+        private Person SerperatedPerson() {
+            Person seperated = new Person
+                {
+                    LastName = "Coleman",
+                    FirstName = "Drew",
+                    Ssn = "123456789",
+                    Gender = "Male",
+                    DateOfBirth = DateTime.Now,
+                    RoleId = 1,
+                    StatusId = 4,
+                    Email = "Drew@email.com",
+                    StreetAddress = "1149 Grove",
+                    Zipcode = "30145",
+                    Phone = "4543631011",
+                    Password = "pass",
+                    Username = "test"
+                };
+            return seperated;
         }
 
         private List<Person> GetActivePeople()
@@ -151,7 +224,6 @@ namespace ScheduleBuilderTests
                     , person.Phone
                     , person.StreetAddress
                     , person.Zipcode
-                    , person.Username
                     , person.Email));
 
                 var cls = mock.Create<IPersonDAL>();
@@ -164,7 +236,6 @@ namespace ScheduleBuilderTests
                     , person.Phone
                     , person.StreetAddress
                     , person.Zipcode
-                    , person.Username
                     , person.Email);
 
                 mock.Mock<IPersonDAL>().Verify(x => x.AddPerson(person.LastName
@@ -175,7 +246,6 @@ namespace ScheduleBuilderTests
                     , person.Phone
                     , person.StreetAddress
                     , person.Zipcode
-                    , person.Username
                     , person.Email), Times.Exactly(1));
             }
         }
@@ -192,7 +262,7 @@ namespace ScheduleBuilderTests
                     Gender = "Male",
                     DateOfBirth = DateTime.Now,
                     RoleId = 1,
-                    StatusId = 1,
+                    StatusId = 2,
                     Email = "Drew@email.com",
                     StreetAddress = "1149 Grove",
                     Zipcode = "30145",

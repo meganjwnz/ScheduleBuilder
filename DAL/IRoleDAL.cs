@@ -12,3 +12,4 @@ namespace ScheduleBuilder.DAL
         int GetRoleIdByTitle(string roleTitle);
     }
 }
+

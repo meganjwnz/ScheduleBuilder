@@ -1,4 +1,5 @@
 ﻿using ScheduleBuilder.Model;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ScheduleBuilder.DAL
@@ -38,5 +39,39 @@ namespace ScheduleBuilder.DAL
                 return status;
             }
         }
+
+        public List<Status> GetStatuses()
+        {
+            
+            List<Status> statuses = new List<Status>();
+            string selectStatement =
+                               "SELECT id, status_description, isAbleToWork, status_title " +
+                               "FROM status";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand(selectStatement, connection))
+                {
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Status status = new Status
+                            {
+                                Id = (int)reader["id"],
+                                StatusDescription = reader["status_description"].ToString(),
+                                IsAbleToWork = (bool)reader["isAbleToWork"],
+                                StatusTitle = reader["status_title"].ToString()
+                            };
+                            statuses.Add(status);
+                        }
+                       
+                    }
+                }
+                
+            }
+            return statuses;
+        }
+
     }
 }
