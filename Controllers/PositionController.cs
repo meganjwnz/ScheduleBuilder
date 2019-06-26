@@ -1,5 +1,6 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
@@ -57,17 +58,27 @@ namespace ScheduleBuilder.Controllers
         // GET: Position/Edit/5
         public ActionResult UpdatePosition(int id)
         {
-            return View();
+            //populates the position fields on updateposition page
+            Position position = this.positionDAL.GetAllPositions().Where(p => p.positionID == id).FirstOrDefault();
+
+            return View(position);
         }
 
         // POST: Position/Edit/5
         [HttpPost]
-        public ActionResult UpdatePosition(int id, FormCollection collection)
+        public ActionResult UpdatePosition(int id, string positionTitle, string positionDescription, bool isActive)
         {
             try
             {
-                // TODO: Add update logic here
+                Position position = new Position
+                {
+                    positionTitle = positionTitle,
+                    positionDescription = positionDescription,
+                    isActive = isActive,
+                    positionID = id
+                };
 
+                this.positionDAL.UpdatePosition(position);
                 return RedirectToAction("Positions");
             }
             catch

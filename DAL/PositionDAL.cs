@@ -143,6 +143,7 @@ namespace ScheduleBuilder.DAL
                 {
                     using (SqlCommand updateCommand = new SqlCommand(updateStatement, connection))
                     {
+                        updateCommand.Transaction = transaction;
                         updateCommand.Parameters.AddWithValue("@id", position.positionID);
                         updateCommand.Parameters.AddWithValue("@position_title", position.positionTitle);
                         updateCommand.Parameters.AddWithValue("@isActive", position.isActive);
