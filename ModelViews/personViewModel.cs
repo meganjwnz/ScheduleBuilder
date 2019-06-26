@@ -25,11 +25,10 @@ namespace ScheduleBuilder.ModelViews
         [Display(Name = "Date of Birth")]
         [Required(ErrorMessage = "Date of Birth required")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime DateOfBirth { get; set; }
 
         [Display(Name = "SSN")]
-        [StringLength(9, MinimumLength = 9)]
+        [RegularExpression(@"^\d{9}|\d{3}-\d{2}-\d{4}$", ErrorMessage = "Invalid Social Security Number")]
         public string Ssn { get; set; }
 
         [Display(Name = "Gender")]
@@ -38,8 +37,7 @@ namespace ScheduleBuilder.ModelViews
 
         [Display(Name = "Phone number")]
         [Required(ErrorMessage = "Phone number required")]
-        [DataType(DataType.PhoneNumber)]
-        [StringLength(10, MinimumLength = 10)]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Please enter valid phone no.")]
         public string Phone { get; set; }
 
         [Display(Name = "Street address")]
@@ -50,10 +48,6 @@ namespace ScheduleBuilder.ModelViews
         [Required(ErrorMessage = "Zipcode required")]
         [StringLength(5, MinimumLength = 5)]
         public string Zipcode { get; set; }
-
-        [Display(Name = "Username")]
-        [Required(ErrorMessage = "User name required")]
-        public string Username { get; set; }
 
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "Email required")]

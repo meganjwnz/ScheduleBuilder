@@ -224,7 +224,6 @@ namespace ScheduleBuilderTests
                     , person.Phone
                     , person.StreetAddress
                     , person.Zipcode
-                    , person.Username
                     , person.Email));
 
                 var cls = mock.Create<IPersonDAL>();
@@ -237,7 +236,6 @@ namespace ScheduleBuilderTests
                     , person.Phone
                     , person.StreetAddress
                     , person.Zipcode
-                    , person.Username
                     , person.Email);
 
                 mock.Mock<IPersonDAL>().Verify(x => x.AddPerson(person.LastName
@@ -248,7 +246,6 @@ namespace ScheduleBuilderTests
                     , person.Phone
                     , person.StreetAddress
                     , person.Zipcode
-                    , person.Username
                     , person.Email), Times.Exactly(1));
             }
         }

@@ -69,7 +69,7 @@ namespace ScheduleBuilder.DAL
             , string phone
             , string streetAddress
             , string zipcode
-            , string username
+            //, string username
             , string email)
         {
             Person addedPerson = new Person
@@ -82,12 +82,13 @@ namespace ScheduleBuilder.DAL
                 Phone = phone,
                 StreetAddress = streetAddress,
                 Zipcode = zipcode,
-                Username = username,
+                Username = $"{firstName.Substring(0,1).ToLower()}{lastName.ToLower()}",
                 Email = email,
                 Password = this.hashingService.PasswordHashing("newHire"),
                 StatusId = 1,
                 RoleId = 3
             };
+            string username = $"{firstName.Substring(0,1)}+{lastName}";
             string sql = @"INSERT INTO dbo.person( 
                             [last_name] 
                             , [first_name] 

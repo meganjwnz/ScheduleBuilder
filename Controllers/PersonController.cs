@@ -45,7 +45,6 @@ namespace ScheduleBuilder.Controllers
                       , personViewModel.Phone
                       , personViewModel.StreetAddress
                       , personViewModel.Zipcode
-                      , personViewModel.Username
                       , personViewModel.Email);
                 return RedirectToAction("GetAllPeoples");
             }
