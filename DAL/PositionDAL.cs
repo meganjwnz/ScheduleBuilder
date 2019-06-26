@@ -47,7 +47,11 @@ namespace ScheduleBuilder.DAL
             }
             return positionList;
         }
-
+        
+        /// <summary>
+        /// Retrieves all the positions
+        /// </summary>
+        /// <returns></returns>
         public List<Position> GetAllPositions()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -77,6 +81,43 @@ namespace ScheduleBuilder.DAL
                 }
             }
             return positionList;
+        }
+
+        /// <summary>
+        /// Adds a new position
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public bool AddPosition(Position position)
+        {
+            int positionResult = 0;
+
+            string insertStatement = 
+                "INSERT INTO position([position_title],[isActive], [position_description]) " +
+                "VALUES(@position_title, @isActive, @position_description)";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {            
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand insertCommand = new SqlCommand(insertStatement, connection))
+                    {
+                        insertCommand.Transaction = transaction;
+                        insertCommand.Parameters.AddWithValue("@position_title", position.positionTitle);
+                        insertCommand.Parameters.AddWithValue("@isActive", position.isActive);
+                        insertCommand.Parameters.AddWithValue("@position_description", position.positionDescription);
+                        positionResult = insertCommand.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
+            return (positionResult >= 1 ? true : false);
         }
     }
 }

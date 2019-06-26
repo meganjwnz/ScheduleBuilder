@@ -1,5 +1,5 @@
-﻿
-using ScheduleBuilder.DAL;
+﻿using ScheduleBuilder.DAL;
+using ScheduleBuilder.Model;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
@@ -26,14 +26,19 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
-        // POST: Position/Create
+        // POST: Position/AddPosition
         [HttpPost]
-        public ActionResult AddPosition(FormCollection collection)
+        public ActionResult AddPosition(string positionTitle, string positionDescription, bool isActive)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                Position position = new Position
+                {
+                    positionTitle = positionTitle,
+                    positionDescription = positionDescription,
+                    isActive = isActive
+                };
+                this.positionDAL.AddPosition(position);
                 return RedirectToAction("Positions");
             }
             catch
