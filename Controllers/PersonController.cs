@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
 using System;
-using ScheduleBuilder.DAL;
 
 namespace ScheduleBuilder.Controllers
 {

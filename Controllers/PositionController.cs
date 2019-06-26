@@ -1,14 +1,17 @@
 ﻿
+using ScheduleBuilder.DAL;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
 {
     public class PositionController : Controller
     {
+        PositionDAL positionDAL = new PositionDAL();
+
         // GET: Position
         public ActionResult Positions()
         {
-            return View();
+            return View(this.positionDAL.GetAllActivePositions());
         }
 
         // GET: Position/Details/5
@@ -18,14 +21,14 @@ namespace ScheduleBuilder.Controllers
         }
 
         // GET: Position/Create
-        public ActionResult Create()
+        public ActionResult AddPosition()
         {
             return View();
         }
 
         // POST: Position/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult AddPosition(FormCollection collection)
         {
             try
             {
@@ -40,20 +43,20 @@ namespace ScheduleBuilder.Controllers
         }
 
         // GET: Position/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult UpdatePosition(int id)
         {
             return View();
         }
 
         // POST: Position/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult UpdatePosition(int id, FormCollection collection)
         {
             try
             {
                 // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Positions");
             }
             catch
             {
@@ -62,20 +65,20 @@ namespace ScheduleBuilder.Controllers
         }
 
         // GET: Position/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeactivatePosition(int id)
         {
             return View();
         }
 
         // POST: Position/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult DeactivatePosition(int id, FormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Positions");
             }
             catch
             {

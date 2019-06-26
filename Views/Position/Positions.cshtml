@@ -8,7 +8,7 @@
 <h2>PositionList</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Add Position", "AddPosition")
 </p>
 <table class="table">
     <tr>
@@ -36,9 +36,9 @@
             @Html.DisplayFor(modelItem => item.positionDescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.positionID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.positionID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.positionID })
+            @Html.ActionLink("Update", "UpdatePosition", new { id=item.positionID }) |
+            @Html.ActionLink("Details", "PositionDetails", new { id=item.positionID }) |
+            @Html.ActionLink("Deactivate", "Deactivate", new { id=item.positionID })
         </td>
     </tr>
 }
