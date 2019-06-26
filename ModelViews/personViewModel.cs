@@ -9,6 +9,8 @@ namespace ScheduleBuilder.ModelViews
     /// 
     /// SSN is optional
     /// 
+    /// SSN and Phonenumber are checked to insure only numeral input
+    /// 
     /// </summary>
     public class PersonViewModel
     {
