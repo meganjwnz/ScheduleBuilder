@@ -197,9 +197,9 @@ namespace ScheduleBuilder.DAL
                             , zipcode = @zipcode
                             , username = @username
                             , email = @email
+                            , roleId = @roleId
                             WHERE id = @id 
                             AND  password = @password
-                            AND roleId = @roleId
                             AND statusId = @statusId
                             AND date_of_birth = @dateOfBirth";
             int count = 0;
