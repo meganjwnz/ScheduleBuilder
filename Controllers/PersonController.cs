@@ -164,34 +164,33 @@ namespace ScheduleBuilder.Controllers
 
         //This method was created using methods derived from https://www.youtube.com/watch?v=lnRBShlB9hA
         //By Raja Raman of Dot Net
-        private void ContactEditedPerson(Person person)
+        private void ContactEditedPerson(Person editPerson)
         {
-            EmailAlteredPerson emailAlteredPerson = new EmailAlteredPerson(person, person); //This needs to be changed to the logged in user!!!!!
+            string loggedInUserId = (Session["id"].ToString());
+            Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault(); 
+            Email email = new Email(loggedInUser, editPerson); 
 
-            emailAlteredPerson.SendMessage();
+            string subject = "Your personal information has been edited";
 
-            ////Email steps
-            //var message = new MimeMessage();
-            ////From
-            //message.From.Add(new MailboxAddress("Admin", "ScheduleBuilder2019@gmail.com"));
-            ////To
-            //message.To.Add(new MailboxAddress(person.GetFullName(), person.Email));
-            ////Subject
-            //message.Subject = " Look and Email it is exciting";
-            //// Body
-            //message.Body = new TextPart("plain")
-            //{
-            //    Text = "Testing this will suck"
-            //};
+            string body = $"Hello { editPerson.GetFullName()}, \n" +
+                $"\nYou are recieving this email to let you know that { loggedInUser.GetFullName() } Has altered your personal information\n" +
+                $"\n Your new personal details are as follows \n" +
+                $"\n Full name:        {editPerson.GetFullName()}" +
+                $"\n Gender:           {editPerson.Gender}" +
+                $"\n Address:          {editPerson.StreetAddress}" +
+                $"\n Zipcode:          {editPerson.Zipcode}" +                
+                $"\n Date of Birth:    {editPerson.DateOfBirth.Date}" +
+                $"\n Phone:            {editPerson.Phone}" +
+                $"\n SSn:              {editPerson.Ssn}" +
+                $"\n Role:             {this.roleDAL.GetRoleByID(editPerson.RoleId)}" +
+                $"\n Status:           {this.statusDAL.GetStatusByID(editPerson.StatusId).StatusDescription}" +
+                $"\n Username:         {editPerson.Username}" +
+                $"\n If this has been done in error please contact your Admin as soon as possible " +
+                $"\n Hope you have a wonderful day";
 
-            //// Configure and send mail
-            //using (var client = new SmtpClient())
-            //{
-            //    client.Connect("smtp.gmail.com", 587, false);
-            //    client.Authenticate("ScheduleBuilder2019@gmail.com", "!Yoder19");
-            //    client.Send(message);
-            //    client.Disconnect(true);
-            //}
+
+            email.SendMessage(subject, body);
+
         }
 
         /// <summary>

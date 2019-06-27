@@ -228,7 +228,6 @@
     </Compile>
     <Compile Include="ModelViews\HomeViewModel.cs" />
     <Compile Include="Model\Email.cs" />
-    <Compile Include="Model\EmailAlteredPerson.cs" />
     <Compile Include="Model\HashingService.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Position.cs" />
