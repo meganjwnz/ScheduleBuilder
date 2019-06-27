@@ -291,8 +291,8 @@
     <Content Include="Views\Person\GetAllActivePeoplePage.cshtml" />
     <Content Include="Views\Position\AddPosition.cshtml" />
     <Content Include="Views\Position\UpdatePosition.cshtml" />
-    <Content Include="Views\Position\DeactivatePosition.cshtml" />
     <Content Include="Views\Position\Positions.cshtml" />
+    <Content Include="Views\Position\DeactivatePosition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

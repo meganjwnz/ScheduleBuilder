@@ -160,5 +160,33 @@ namespace ScheduleBuilder.DAL
             }
             return (positionResult >= 1 ? true : false);
         }
+
+        public Position DeactivatePosition(Position position)
+        {
+            string update =
+                "UPDATE position " +
+                "SET [isActive] = @isActive " +
+                "WHERE id = @id";
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                {
+                    connection.Open();
+                    using (SqlCommand updateCommand = new SqlCommand(update, connection))
+                    {
+
+                        updateCommand.Parameters.AddWithValue("@isActive", 0);
+                        updateCommand.Parameters.AddWithValue("@id", position.positionID);
+                        updateCommand.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return position;
+        }
     }
 }
