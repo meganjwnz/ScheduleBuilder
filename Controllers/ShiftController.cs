@@ -1,6 +1,7 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
@@ -10,6 +11,9 @@ namespace ScheduleBuilder.Controllers
 
         ShiftDAL shiftDAL = new ShiftDAL();
         PositionDAL positionDAL = new PositionDAL();
+        PersonDAL personDAL = new PersonDAL();
+        RoleDAL roleDAL = new RoleDAL();
+        StatusDAL statusDAL = new StatusDAL(); 
 
         /// <summary>
         /// gets all shifts from the database
@@ -121,12 +125,35 @@ namespace ScheduleBuilder.Controllers
             //Delete or update shift accordingly
             if (string.Equals(isDelete, "delete"))
             {
+                this.ContactPersonShiftChange("delete", shift);
                 return Json(shiftDAL.DeleteShift(shift));
             }
             else
             {
+                this.ContactPersonShiftChange("update", shift);
                 return Json(shiftDAL.UpdateShift(shift));
+
             }
+
+        }
+        private void ContactPersonShiftChange(string type, Shift shift)
+        {
+            string loggedInUserId = (Session["id"].ToString());
+            Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault();
+            Person shiftChangePerson = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
+            Email email = new Email(shiftChangePerson);
+
+            string subject = $"Your Shift has been {type}d";
+
+            string body = $"Hello { shiftChangePerson.GetFullName()}, \n" +
+                $"\nYou are recieving this email to let you know that { loggedInUser.GetFullName() } Has {type}d your shift on {shift.scheduledStartTime} \n" +
+                $"\n Please log in to your account to see all schedule changes\n" +
+     
+                $"\n If this has been done in error please contact your Admin as soon as possible " +
+                $"\n Hope you have a wonderful day";
+
+
+            email.SendMessage(subject, body);
 
         }
 

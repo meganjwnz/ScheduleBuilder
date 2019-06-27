@@ -70,7 +70,6 @@ namespace ScheduleBuilder.DAL
             , string phone
             , string streetAddress
             , string zipcode
-            //, string username
             , string email)
         {
             Person addedPerson = new Person

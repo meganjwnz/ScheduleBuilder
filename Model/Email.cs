@@ -9,24 +9,18 @@ namespace ScheduleBuilder.Model
 {
     public class Email
     {
-        private Person Sender;
-        private Person Reciever;
-        private MimeMessage message;
+        MimeMessage message = new MimeMessage();
 
-        public Email(Person sender, Person reciever)
+        public Email(Person addressie)
         {
-            this.Sender = sender;
-            this.Reciever = reciever;
-            this.message = new MimeMessage();
-            this.SetUpMessageTo_From();
+            message.To.Add(new MailboxAddress(addressie.GetFullName(), addressie.Email));
         }
 
-        private void SetUpMessageTo_From()
+        public Email(Person sender, string email, string fullname)
         {
-            message.From.Add(new MailboxAddress("Admin", "ScheduleBuilder2019@gmail.com"));
-        
-            message.To.Add(new MailboxAddress(Reciever.GetFullName(), Reciever.Email));
+            message.To.Add(new MailboxAddress(fullname, email));
         }
+
 
         public void SendMessage(string subject, string body)
         {
@@ -35,6 +29,8 @@ namespace ScheduleBuilder.Model
             {
                 Text = body
             };
+
+            message.From.Add(new MailboxAddress("Admin", "ScheduleBuilder2019@gmail.com"));
 
             using (var client = new SmtpClient())
             {

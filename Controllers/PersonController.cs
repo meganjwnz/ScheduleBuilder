@@ -59,6 +59,7 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+
         #endregion
 
         #region Search People
@@ -162,13 +163,14 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        #region Contact 
         //This method was created using methods derived from https://www.youtube.com/watch?v=lnRBShlB9hA
         //By Raja Raman of Dot Net
         private void ContactEditedPerson(Person editPerson)
         {
             string loggedInUserId = (Session["id"].ToString());
             Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault(); 
-            Email email = new Email(loggedInUser, editPerson); 
+            Email email = new Email(editPerson); 
 
             string subject = "Your personal information has been edited";
 
@@ -193,6 +195,40 @@ namespace ScheduleBuilder.Controllers
 
         }
 
+        private void ContactAddedPerson(Person addPerson)
+        {
+            string loggedInUserId = (Session["id"].ToString());
+            Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault();
+            Email email = new Email(addPerson);
+
+            string subject = "Your personal information has been added";
+
+            string body = $"Hello { addPerson.GetFullName()}, \n" +
+                $"\n Welcome to ScheduleBuilder \n" +
+                $"\n In this webased application you will discover that you can see your shifts," +
+                $"\n request time off, change your availbility, and even swap shifts \n" +
+                $"\n Your personal details are as follows \n" +
+                $"\n Full name:        {addPerson.GetFullName()}" +
+                $"\n Gender:           {addPerson.Gender}" +
+                $"\n Address:          {addPerson.StreetAddress}" +
+                $"\n Zipcode:          {addPerson.Zipcode}" +
+                $"\n Date of Birth:    {addPerson.DateOfBirth.Date}" +
+                $"\n Phone:            {addPerson.Phone}" +
+                $"\n SSn:              {addPerson.Ssn}" +
+                $"\n Role:             {this.roleDAL.GetRoleByID(addPerson.RoleId)}" +
+                $"\n Status:           {this.statusDAL.GetStatusByID(addPerson.StatusId).StatusDescription}" +
+                $"\n Username:         {addPerson.Username}" +
+                $"\n If you notice any errors please contact your Admin as soon as possible \n" +
+                $"\n Your initial password is 'newHire' " +
+                $"\n Please log into -URL GOES HERE- to update your password" +
+                $"\n Hope you have a wonderful day" +
+                $"";
+
+
+            email.SendMessage(subject, body);
+
+        }
+        #endregion
         /// <summary>
         /// Gets the details of the accepted person id
         /// </summary>
