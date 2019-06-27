@@ -87,26 +87,17 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
-        // GET: Position/Delete/5
+        /// <summary>
+        /// Currently deactivates any employee
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult DeactivatePosition(int id)
         {
-            return View();
-        }
-
-        // POST: Position/Delete/5
-        [HttpPost]
-        public ActionResult DeactivatePosition(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Positions");
-            }
-            catch
-            {
-                return View();
-            }
+            //populates the position fields on deactivateposition page
+            Position position = this.positionDAL.GetAllPositions().Where(p => p.positionID == id).FirstOrDefault();
+            this.positionDAL.DeactivatePosition(position);
+            return RedirectToAction("Positions");
         }
     }
 }
