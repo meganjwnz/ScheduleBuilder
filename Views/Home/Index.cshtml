@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+    <input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
 
 @if (Session["roleTitle"].ToString() == "Employee")
 {
@@ -9,6 +10,53 @@
             <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
         </div>
         <h2>Welcome to the Employee Dashboard</h2>
+        {{sessionID}}
+        <table style="width:100%;">
+
+            <thead class="tablestyle">
+                <tr>
+                    <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
+                    <th>scheduleShiftID</th>
+                    <th>personID</th> -->
+                    <th>Name</th>
+                    <!-- <th>positionID</th> -->
+                    <th>Position</th>
+                    <th>scheduledStartTime</th>
+                    <th>scheduledEndTime</th>
+                    <th>scheduledLunchBreakStart</th>
+                    <th>scheduledLunchBreakEnd</th>
+                    <!-- <th>actualStartTime</th>
+                    <th>actualEndTime</th>
+                    <th>actualLunchBreakStart</th>
+                    <th>actualLunchBreakEnd</th> -->
+                    <th></th>
+                    <th>Hours per shift</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="sh in shift  | filter: { personID : getSessionID() }">
+                    <!-- <td>{{sh.shiftID}}</td>
+                    <td>{{sh.scheduleShiftID}}</td>
+                    <td>{{sh.personID}}</td> -->
+                    <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
+                    <!-- <td>{{sh.positionID}}</td> -->
+
+                    <td>{{sh.positionName}}</td>
+                    <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
+                    <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
+                    <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
+                    <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
+                    <!-- <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
+                    <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
+                    <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
+                    <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
+                    <td>
+                        <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
+                    </td>
+                    <td>{{getTotalHours(sh)}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <p class="lead">Today's Schedule</p>
 }
@@ -56,6 +104,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <th>actualLunchBreakStart</th>
                 <th>actualLunchBreakEnd</th> -->
                 <th></th>
+                <th>Hours per shift</th>
             </tr>
         </thead>
         <tbody>
@@ -63,7 +112,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <!-- <td>{{sh.shiftID}}</td>
                 <td>{{sh.scheduleShiftID}}</td>
                 <td>{{sh.personID}}</td> -->
-                <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
+                <td>{{sh.personLastName}}, {{sh.personFirstName}}  </td>
                 <!-- <td>{{sh.positionID}}</td> -->
 
                 <td>{{sh.positionName}}</td>
@@ -78,6 +127,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <td>
                     <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
                 </td>
+                <td>{{getTotalHours(sh)}}</td>
             </tr>
         </tbody>
     </table>
@@ -89,7 +139,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
     </div>
     <div class="modal-body" id="modal-body">
-        
+
         <table>
             <tbody>
                 <tr>
@@ -196,9 +246,9 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <tr><th>*Optional fields</th></tr>
                 <tr ng-if="type == 'Update'">
                     <th>
-                    <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
-                    <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
-                        </th>
+                        <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
+                        <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
+                    </th>
                 </tr>
             </tbody>
         </table>
