@@ -6,7 +6,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.getSessionID = function () {
         $scope.sessionID = document.getElementById("sessionIDForAngular").value;
-        console.log($scope.sessionID);
         return $scope.sessionID;
     };
 
@@ -117,8 +116,8 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         } else {
             var totalHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
         }
-      
-        return totalHours;
+
+        return totalHours.toFixed(2);
 
     }
 });
@@ -192,7 +191,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
 
     $scope.refreshView = function () {
         $http.post('/Home/Index').then(function () {
-            document.location.reload();
+            $scope.getShifts();
         }), function (error) {
             alert(error);
         };

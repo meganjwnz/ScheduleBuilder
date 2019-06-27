@@ -10,7 +10,7 @@
             <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
         </div>
         <h2>Welcome to the Employee Dashboard</h2>
-        {{sessionID}}
+
         <table style="width:100%;">
 
             <thead class="tablestyle">
@@ -135,6 +135,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
 
 <script type="text/ng-template" id="myModalContent.html">
+    <form name="shiftForm">
     <div class="modal-header">
         <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
     </div>
@@ -147,19 +148,22 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         <label>Person: </label>&nbsp;&nbsp;
                     </th>
                     <th>
-                        <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID">
+                        <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID" ng-required="true" name="personID">
                             <option value="">-- Please select a person --</option>
                         </select>
+                        <span ng-show="shiftForm.personID.$touched && shiftForm.personID.$invalid">You must select a person.</span>
                     </th>
+                    
                 </tr>
                 <tr>
                     <th>
                         <label>Position: </label>&nbsp;&nbsp;
                     </th>
                     <th>
-                        <select class="form-control" ng-options="item.positionID as item.positionTitle for item in activePositions" ng-model="selected.positionID">
+                        <select class="form-control" ng-options="item.positionID as item.positionTitle for item in activePositions" ng-model="selected.positionID" ng-required="true" name="position">
                             <option value="">-- Please select a position --</option>
                         </select>
+                        <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>
                     </th>
                 </tr>
                 <tr>
@@ -169,11 +173,12 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     <th>
                         <p class="input-group">
                             <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startdt"
-                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="startdt" />
                             <span class="input-group-btn">
                                 <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
+                        <span ng-show="shiftForm.startdt.$touched && shiftForm.startdt.$invalid">You must select a starting date and time.</span>
                     </th>
                     <th>
                         <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
@@ -187,11 +192,12 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     <th>
                         <p class="input-group">
                             <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.enddt"
-                                   is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                   is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="enddt" />
                             <span class="input-group-btn">
                                 <button type="button" class="form-control btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
+                        <span ng-show="shiftForm.enddt.$touched && shiftForm.enddt.$invalid">You must select a starting date and time.</span>
                     </th>
                     <th>
                         <div style="margin-top:-13px" uib-timepicker ng-model="selected.enddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
@@ -205,7 +211,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     <th>
                         <p class="input-group">
                             <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startlunchdt"
-                                   is-open="popup3.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                   is-open="popup3.opened" datepicker-options="dateOptions"close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="form-control btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -223,7 +229,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     <th>
                         <p class="input-group">
                             <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.lunchenddt"
-                                   is-open="popup4.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />
+                                   is-open="popup4.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
                             <span class="input-group-btn">
                                 <button type="button" class="form-control btn btn-default" ng-click="open4()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -254,10 +260,11 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         </table>
     </div>
     <div class="modal-footer">
-        <button ng-if="type == 'Add'" class="btn btn-primary" type="button" ng-click="addShift(selected)">Add Shift</button>
-        <button ng-if="type == 'Update'" class="btn btn-primary" type="button" ng-click="updateShift(selected)">Update Shift</button>
+        <button ng-if="type == 'Add'" class="btn btn-primary" type="button" ng-click="addShift(selected)" ng-disabled="shiftForm.$invalid">Add Shift</button>
+        <button ng-if="type == 'Update'" class="btn btn-primary" type="button" ng-click="updateShift(selected)" ng-disabled="shiftForm.$invalid">Update Shift</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
+    </form>
 </script>
 
 
