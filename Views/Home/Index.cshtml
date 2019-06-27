@@ -197,7 +197,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                                 <button type="button" class="form-control btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
                         </p>
-                        <span ng-show="shiftForm.enddt.$touched && shiftForm.enddt.$invalid">You must select a starting date and time.</span>
+                        <span ng-show="shiftForm.enddt.$touched && shiftForm.enddt.$invalid">You must select an ending date and time.</span>
                     </th>
                     <th>
                         <div style="margin-top:-13px" uib-timepicker ng-model="selected.enddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
