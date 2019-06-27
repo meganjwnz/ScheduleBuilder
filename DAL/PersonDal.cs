@@ -214,7 +214,7 @@ namespace ScheduleBuilder.DAL
                         updateCommand.Parameters.AddWithValue("@firstName", editPerson.FirstName);
                         updateCommand.Parameters.AddWithValue("@dateOfBirth", editPerson.DateOfBirth);
 
-                        if (editPerson.Ssn == "")
+                        if (String.IsNullOrEmpty(editPerson.Ssn))
                         {
                             updateCommand.Parameters.AddWithValue("@ssn", DBNull.Value);
                         }

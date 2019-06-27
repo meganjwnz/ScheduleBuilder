@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 using System.Web.Security;
+using MailKit;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -36,7 +39,33 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Contact()
         {
-            return View();
+            //Email steps
+            //Instantiate message
+            var message = new MimeMessage();
+            //From
+            message.From.Add(new MailboxAddress("Drew", "ScheduleBuilder2019@gmail.com"));
+            //To
+            message.To.Add(new MailboxAddress("Self", "dkcoleman12@gmail.com"));
+            //Subject
+            message.Subject = " Look and Email it is exciting";
+            // Body
+            message.Body = new TextPart("plain")
+            {
+                Text = "Testing this will suck"
+            };
+
+            // Configure and send mail
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+
+                client.Authenticate("ScheduleBuilder2019@gmail.com", "!Yoder19");
+
+                client.Send(message);
+                client.Disconnect(true);
+               // client.ServerCertificateValidationCallback = (s,char,)
+            }
+                return View();
         }
 
         /// <summary>

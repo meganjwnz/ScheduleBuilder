@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
 using System;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -19,7 +21,13 @@ namespace ScheduleBuilder.Controllers
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
 
-
+        private void InitializeViewBag()
+        {
+            List<Role> roles = this.roleDAL.GetRoles();
+            List<Status> statuses = this.statusDAL.GetStatuses();
+            ViewBag.Role = new SelectList(roles, "id", "roleTitle");
+            ViewBag.Status = new SelectList(statuses, "id", "StatusTitle");
+        }
         #region Add Person
         /// <summary>
         /// Adds a person to the database
@@ -124,10 +132,7 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Edit(int id)
         {
-            List<Role> roles = this.roleDAL.GetRoles();
-            List<Status> statuses = this.statusDAL.GetStatuses();
-            ViewBag.Role = new SelectList(roles, "id", "roleTitle");
-            ViewBag.Status = new SelectList(statuses, "id", "StatusTitle");
+            this.InitializeViewBag();
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View(person);
@@ -144,15 +149,49 @@ namespace ScheduleBuilder.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Person person)
         {
+            this.InitializeViewBag();
             try
             {
                 this.personDAL.EditPerson(person);
+                this.ContactEditedPerson(person);
                 return RedirectToAction("GetAllPeoples");
             }
             catch
             {
                 return View(person);
             }
+        }
+
+        //This method was created using methods derived from https://www.youtube.com/watch?v=lnRBShlB9hA
+        //By Raja Raman of Dot Net
+        private void ContactEditedPerson(Person person)
+        {
+            EmailAlteredPerson emailAlteredPerson = new EmailAlteredPerson(person, person); //This needs to be changed to the logged in user!!!!!
+
+            emailAlteredPerson.SendMessage();
+
+            ////Email steps
+            //var message = new MimeMessage();
+            ////From
+            //message.From.Add(new MailboxAddress("Admin", "ScheduleBuilder2019@gmail.com"));
+            ////To
+            //message.To.Add(new MailboxAddress(person.GetFullName(), person.Email));
+            ////Subject
+            //message.Subject = " Look and Email it is exciting";
+            //// Body
+            //message.Body = new TextPart("plain")
+            //{
+            //    Text = "Testing this will suck"
+            //};
+
+            //// Configure and send mail
+            //using (var client = new SmtpClient())
+            //{
+            //    client.Connect("smtp.gmail.com", 587, false);
+            //    client.Authenticate("ScheduleBuilder2019@gmail.com", "!Yoder19");
+            //    client.Send(message);
+            //    client.Disconnect(true);
+            //}
         }
 
         /// <summary>
