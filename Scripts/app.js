@@ -4,6 +4,11 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.test = "hello";
 
+    $scope.getSessionID = function () {
+        $scope.sessionID = document.getElementById("sessionIDForAngular").value;
+        return $scope.sessionID;
+    };
+
     $scope.getShifts = function () {
         $http.post('/Shift/ViewAllShifts').then(function (response) {
             $scope.shift = response.data;
@@ -96,12 +101,52 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         $scope.popup4.opened = true;
     };
     //Calendar PopUp End
+
+    $scope.getTotalHours = function (shift) {
+        var startTime = $scope.jsDate(shift.scheduledStartTime);  // schedule date start
+        var endTime = $scope.jsDate(shift.scheduledEndTime);
+
+        if (shift.scheduledLunchBreakStart && shift.scheduledLunchBreakEnd) {
+            var lunchTime = $scope.jsDate(shift.scheduledLunchBreakStart);
+            var lunchEnd = $scope.jsDate(shift.scheduledLunchBreakEnd);
+            var firstHours = lunchTime.getTime() - startTime.getTime();
+            var secondHours = endTime.getTime() - lunchEnd.getTime();
+            var totalHours = (secondHours + firstHours) / (1000 * 60 * 60);
+
+        } else {
+            var totalHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+        }
+
+        return totalHours.toFixed(2);
+
+    };
+
+    $scope.checkDateOrder = function (start, end, lunch, lunchEnd) {
+        if ((lunch && !lunchEnd) || (lunchEnd && !lunch)) {
+            alert("Lunch Break must have a start and end date and time");
+            return false;
+        } else if (lunch && lunchEnd) {
+            if (end > lunchEnd && lunchEnd > lunch && lunch > start) {
+                return true;
+            } else {
+                alert("Lunch date start must be before lunch break end. The entire lunch break must be inbetween shift start and end.");
+                return false;
+            }
+        } else {
+            if (end > start) {
+                return true;
+            } else {
+                alert("Start date and time must be before end date and time.");
+                return false;
+            }
+        }
+    }
+
 });
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
 
     $scope.hell = $scope.selectedShift;
-    console.log($scope.selectedShift);
     $scope.selected = {};
     $scope.selected.shiftID = $scope.selectedShift.shiftID;
     $scope.selected.scheduledShiftID = $scope.selectedShift.scheduleShiftID;
@@ -120,17 +165,21 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
 
-        $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt }).then(function (response) {
-            $scope.success = response.data;
-            if ($scope.success) {
-                alert("Shift added successfully");
-                $scope.cancel();
-                $scope.refreshView();
-            } else {
-                alert("There was an error adding your shift. Please try again.");
-            }
-        }), function (error) {
-            alert(error);
+        if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
+            return;
+        } else {
+            $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt }).then(function (response) {
+                $scope.success = response.data;
+                if ($scope.success) {
+                    alert("Shift added successfully");
+                    $scope.cancel();
+                    $scope.refreshView();
+                } else {
+                    alert("There was an error adding your shift. Please try again.");
+                }
+            }), function (error) {
+                alert(error);
+            };
         };
     };
 
@@ -145,21 +194,25 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
 
-        $http.post('/Shift/UpdateShift', {
-            personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
-            endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID
-        }).then(function (response) {
-            $scope.success = response.data;
-            if ($scope.success) {
-                alert("Shift updated successfully");
-                $scope.cancel();
-                $scope.refreshView();
-            } else {
-                alert("There was an error updating your shift. Please try again.");
-            }
-        }), function (error) {
-            alert(error);
-        };
+        if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
+            return;
+        } else {
+            $http.post('/Shift/UpdateShift', {
+                personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
+                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID
+            }).then(function (response) {
+                $scope.success = response.data;
+                if ($scope.success) {
+                    alert("Shift updated successfully");
+                    $scope.cancel();
+                    $scope.refreshView();
+                } else {
+                    alert("There was an error updating your shift. Please try again.");
+                }
+            }), function (error) {
+                alert(error);
+            };
+        }
     };
 
     $scope.cancel = function () {
@@ -168,9 +221,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
 
     $scope.refreshView = function () {
         $http.post('/Home/Index').then(function () {
-            //This is calling the view but it isn't refreshing it?
-            console.log("Refresh View");
-            document.location.reload();
+            $scope.getShifts();
         }), function (error) {
             alert(error);
         };

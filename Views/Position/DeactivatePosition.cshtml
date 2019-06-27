@@ -1,13 +1,13 @@
 ﻿@model ScheduleBuilder.Model.Position
 
 @{
-    ViewBag.Title = "Deactivate Position";
+    ViewBag.Title = "DeactivatePosition";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>DeactivatePosition</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to deactivate this?</h3>
 <div>
     <h4>Position</h4>
     <hr />
@@ -42,8 +42,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Deactivate" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Positions")
         </div>
     }
 </div>
