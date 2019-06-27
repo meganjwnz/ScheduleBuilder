@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleBuilder.Model
 {
     public class Position
     {
+        [Display(Name = "Position ID")]
         public int positionID { get; set; }
+        [Display(Name = "Position Title")]
         public string positionTitle { get; set; }
-        public int? isActive { get; set; }
+        [Display(Name = "Active")]
+        public bool isActive { get; set; }
+        [Display(Name = "Position Description")]
         public string positionDescription { get; set; }
     }
 }

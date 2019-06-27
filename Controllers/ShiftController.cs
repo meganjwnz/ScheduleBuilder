@@ -1,7 +1,6 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using System;
-using System.Diagnostics;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
