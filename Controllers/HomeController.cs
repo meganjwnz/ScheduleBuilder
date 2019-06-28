@@ -94,6 +94,7 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult Login(Person person)
         {
+            HashingService hashservice = new HashingService();
             ViewBag.Error = "Invalid Username or Password";
             if (person.Username == null || person.Username == " " || person.Password == null || person.Password == " ")
             {
@@ -108,6 +109,13 @@ namespace ScheduleBuilder.Controllers
                 Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
                 Session["id"] = dataTable.Rows[0]["id"];
                 FormsAuthentication.SetAuthCookie(person.Username, true);
+
+                if (person.Password == hashservice.PasswordHashing("newHire"))
+                {
+                    return View(  );
+                }
+
+
                 return View("Index");
             }
             return View();

@@ -16,7 +16,7 @@ namespace ScheduleBuilder.Model
             message.To.Add(new MailboxAddress(addressie.GetFullName(), addressie.Email));
         }
 
-        public Email(Person sender, string email, string fullname)
+        public Email(string fullname, string email)
         {
             message.To.Add(new MailboxAddress(fullname, email));
         }

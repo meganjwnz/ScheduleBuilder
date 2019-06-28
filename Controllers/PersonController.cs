@@ -54,6 +54,15 @@ namespace ScheduleBuilder.Controllers
                       , personViewModel.StreetAddress
                       , personViewModel.Zipcode
                       , personViewModel.Email);
+                this.ContactAddedPerson(personViewModel.LastName
+                    , personViewModel.FirstName
+                    , personViewModel.Email
+                    , personViewModel.Gender
+                    , personViewModel.StreetAddress
+                    , personViewModel.Phone
+                    , personViewModel.Zipcode
+                    , personViewModel.DateOfBirth
+                    , personViewModel.Ssn);
                 return RedirectToAction("GetAllPeoples");
             }
             return View();
@@ -195,29 +204,37 @@ namespace ScheduleBuilder.Controllers
 
         }
 
-        private void ContactAddedPerson(Person addPerson)
+        private void ContactAddedPerson(string lastname
+            , string firstname
+            , string emailAddress
+            , string gender
+            , string address
+            , string phone
+            , string zipcode
+            , DateTime dateOfBirth
+            , string ssn)
         {
+            string fullname = firstname + " " + lastname;
             string loggedInUserId = (Session["id"].ToString());
             Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault();
-            Email email = new Email(addPerson);
+            Email email = new Email(fullname, emailAddress);
 
             string subject = "Your personal information has been added";
 
-            string body = $"Hello { addPerson.GetFullName()}, \n" +
+            string body = $"Hello { firstname}, \n" +
                 $"\n Welcome to ScheduleBuilder \n" +
                 $"\n In this webased application you will discover that you can see your shifts," +
                 $"\n request time off, change your availbility, and even swap shifts \n" +
                 $"\n Your personal details are as follows \n" +
-                $"\n Full name:        {addPerson.GetFullName()}" +
-                $"\n Gender:           {addPerson.Gender}" +
-                $"\n Address:          {addPerson.StreetAddress}" +
-                $"\n Zipcode:          {addPerson.Zipcode}" +
-                $"\n Date of Birth:    {addPerson.DateOfBirth.Date}" +
-                $"\n Phone:            {addPerson.Phone}" +
-                $"\n SSn:              {addPerson.Ssn}" +
-                $"\n Role:             {this.roleDAL.GetRoleByID(addPerson.RoleId)}" +
-                $"\n Status:           {this.statusDAL.GetStatusByID(addPerson.StatusId).StatusDescription}" +
-                $"\n Username:         {addPerson.Username}" +
+                $"\n Full name:        {fullname}" +
+                $"\n Gender:           {gender}" +
+                $"\n Address:          {address}" +
+                $"\n Zipcode:          {zipcode}" +
+                $"\n Date of Birth:    {dateOfBirth}" +
+                $"\n Phone:            {phone}" +
+                $"\n SSn:              {ssn}" +
+                $"\n Username:         {firstname.Substring(0, 1).ToLower()}{lastname.ToLower()}"+
+
                 $"\n If you notice any errors please contact your Admin as soon as possible \n" +
                 $"\n Your initial password is 'newHire' " +
                 $"\n Please log into -URL GOES HERE- to update your password" +
