@@ -110,7 +110,11 @@ namespace ScheduleBuilder.Controllers
             {
                 if (person.Password == "newHire")
                 {
-                    return View("UpdatePassword");
+                    Session["user"] = dataTable.Rows[0]["name"];
+                    Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
+                    Session["id"] = dataTable.Rows[0]["id"];
+                    FormsAuthentication.SetAuthCookie(person.Username, true);
+                    return RedirectToAction("UpdatePassword", new { id = dataTable.Rows[0]["id"] });
                 }
                 else
                 {
@@ -133,7 +137,7 @@ namespace ScheduleBuilder.Controllers
             Session.Clear();
             Session.Abandon();
             FormsAuthentication.SignOut();
-            return View("Login");
+            return RedirectToAction("Login");
         }
 
         public ActionResult UpdatePassword(int id)
@@ -150,7 +154,7 @@ namespace ScheduleBuilder.Controllers
             personDAL.UpdatePassword(person);
             ViewBag.loginAgain = "You've successfully changed your password! Please login again.";
 
-            return View("UpdatePassword", person);
+            return View("Login");
         }
     }
     #endregion

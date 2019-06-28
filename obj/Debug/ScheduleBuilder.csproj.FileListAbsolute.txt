@@ -661,3 +661,4 @@ C:\Users\megan\Source\Repos\schedulebuilder\bin\MailKit.dll
 C:\Users\megan\Source\Repos\schedulebuilder\bin\MimeKit.dll
 C:\Users\megan\Source\Repos\schedulebuilder\bin\MailKit.xml
 C:\Users\megan\Source\Repos\schedulebuilder\bin\MimeKit.xml
+C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
