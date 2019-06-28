@@ -48,7 +48,7 @@ namespace ScheduleBuilderTests
                 {
                     positionID = 1,
                     positionTitle = "Owner",
-                    isActive = 1,
+                    isActive = true,
                     positionDescription = "Highest Authority",
                 },
 
@@ -56,7 +56,7 @@ namespace ScheduleBuilderTests
                 {
                     positionID = 2,
                     positionTitle = "Cook",
-                    isActive = 1,
+                    isActive = true,
                     positionDescription = "Cooks orders to recipe",
                 },
 
@@ -64,7 +64,7 @@ namespace ScheduleBuilderTests
                 {
                     positionID = 2,
                     positionTitle = "Waitress",
-                    isActive = 1,
+                    isActive = true,
                     positionDescription = "Serves customers",
                 }
             };
