@@ -7,11 +7,13 @@ using System.Web.Security;
 using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
+using System.Linq;
 
 namespace ScheduleBuilder.Controllers
 {
     public class HomeController : Controller
     {
+        private bool success;
         /// <summary>
         /// Returns home page
         /// </summary>
@@ -63,9 +65,9 @@ namespace ScheduleBuilder.Controllers
 
                 client.Send(message);
                 client.Disconnect(true);
-               // client.ServerCertificateValidationCallback = (s,char,)
+                // client.ServerCertificateValidationCallback = (s,char,)
             }
-                return View();
+            return View();
         }
 
         /// <summary>
@@ -77,12 +79,17 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+        #region Login/Logout & New User functionality
         /// <summary>
         /// Allows users to login
         /// </summary>
         /// <returns></returns>
         public ActionResult Login()
         {
+            if (this.success == true)
+            {
+                ViewBag.loginAgain = "You've successfully changed your password! Please login again.";
+            }
             return View();
         }
 
@@ -91,13 +98,15 @@ namespace ScheduleBuilder.Controllers
         /// </summary>
         /// <param name="person"></param>
         /// <returns></returns>
+        PersonDAL personDAL = new PersonDAL();
         [HttpPost]
         public ActionResult Login(Person person)
         {
-            HashingService hashservice = new HashingService();
             ViewBag.Error = "Invalid Username or Password";
+
             if (person.Username == null || person.Username == " " || person.Password == null || person.Password == " ")
             {
+                ViewBag.Error = "Username and/or password must not be blank";
                 return View();
             }
             LoginDAL loginDAL = new LoginDAL();
@@ -105,28 +114,54 @@ namespace ScheduleBuilder.Controllers
 
             if (dataTable.Rows.Count > 0)
             {
-                Session["user"] = dataTable.Rows[0]["name"];
-                Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
-                Session["id"] = dataTable.Rows[0]["id"];
-                FormsAuthentication.SetAuthCookie(person.Username, true);
-
-                if (person.Password == hashservice.PasswordHashing("newHire"))
+                if (person.Password == "newHire")
                 {
-                    return View(  );
+                    this.success = false;
+                    Session["user"] = dataTable.Rows[0]["name"];
+                    Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
+                    Session["id"] = dataTable.Rows[0]["id"];
+                    FormsAuthentication.SetAuthCookie(person.Username, true);
+                    return RedirectToAction("UpdatePassword", new { id = dataTable.Rows[0]["id"] });
                 }
-
-
-                return View("Index");
+                else
+                {
+                    Session["user"] = dataTable.Rows[0]["name"];
+                    Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
+                    Session["id"] = dataTable.Rows[0]["id"];
+                    FormsAuthentication.SetAuthCookie(person.Username, true);
+                    return View("Index");
+                }
             }
             return View();
         }
 
+        /// <summary>
+        /// Logs a user out and clears the session and cookie data
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOut()
         {
             Session.Clear();
             Session.Abandon();
             FormsAuthentication.SignOut();
-            return View("Login");
+            return RedirectToAction("Login");
+        }
+
+        public ActionResult UpdatePassword(int id)
+        {
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            this.success = true;
+            return View("UpdatePassword", person);
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePassword(Person person)
+        {
+            personDAL.UpdatePassword(person);
+            this.success = true;
+            return RedirectToAction("Login");
         }
     }
+    #endregion
 }

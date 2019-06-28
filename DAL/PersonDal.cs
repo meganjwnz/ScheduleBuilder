@@ -297,5 +297,36 @@ namespace ScheduleBuilder.DAL
                 }
             return seperatePerson;
             }
+
+        /// <summary>
+        /// Allows users to edit a previously created person
+        /// </summary>
+        /// <param name="editPerson"></param>
+        public void UpdatePassword(Person passwordUpdated)
+        {
+            HashingService hashed = new HashingService();
+            string update = @"UPDATE dbo.person 
+                            SET password = @password 
+                            WHERE id = @id";
+            int count = 0;
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                {
+                    connection.Open();
+                    using (SqlCommand updateCommand = new SqlCommand(update, connection))
+                    {
+                        updateCommand.Parameters.AddWithValue("@password", hashed.PasswordHashing(passwordUpdated.Password));
+                        updateCommand.Parameters.AddWithValue("@id", passwordUpdated.Id);
+                        count = updateCommand.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        } 
     }
 }
