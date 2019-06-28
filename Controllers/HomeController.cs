@@ -13,6 +13,7 @@ namespace ScheduleBuilder.Controllers
 {
     public class HomeController : Controller
     {
+        private bool success;
         /// <summary>
         /// Returns home page
         /// </summary>
@@ -85,6 +86,10 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Login()
         {
+            if (this.success == true)
+            {
+                ViewBag.loginAgain = "You've successfully changed your password! Please login again.";
+            }
             return View();
         }
 
@@ -98,6 +103,7 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Login(Person person)
         {
             ViewBag.Error = "Invalid Username or Password";
+
             if (person.Username == null || person.Username == " " || person.Password == null || person.Password == " ")
             {
                 ViewBag.Error = "Username and/or password must not be blank";
@@ -110,6 +116,7 @@ namespace ScheduleBuilder.Controllers
             {
                 if (person.Password == "newHire")
                 {
+                    this.success = false;
                     Session["user"] = dataTable.Rows[0]["name"];
                     Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
                     Session["id"] = dataTable.Rows[0]["id"];
@@ -144,7 +151,7 @@ namespace ScheduleBuilder.Controllers
         {
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
-
+            this.success = true;
             return View("UpdatePassword", person);
         }
 
@@ -152,9 +159,8 @@ namespace ScheduleBuilder.Controllers
         public ActionResult UpdatePassword(Person person)
         {
             personDAL.UpdatePassword(person);
-            ViewBag.loginAgain = "You've successfully changed your password! Please login again.";
-
-            return View("Login");
+            this.success = true;
+            return RedirectToAction("Login");
         }
     }
     #endregion
