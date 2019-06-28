@@ -108,7 +108,14 @@ namespace ScheduleBuilder.Controllers
                 Session["roleTitle"] = dataTable.Rows[0]["roleTitle"];
                 Session["id"] = dataTable.Rows[0]["id"];
                 FormsAuthentication.SetAuthCookie(person.Username, true);
-                return View("Index");
+                if(person.Password == "newHire")
+                {
+                    return View("UpdatePassword");
+                }
+                else
+                {
+                    return View("Index");
+                }
             }
             return View();
         }

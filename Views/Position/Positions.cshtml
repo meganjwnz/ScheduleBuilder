@@ -5,42 +5,50 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>PositionList</h2>
-
-<p>
-    @Html.ActionLink("Add Position", "AddPosition")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.positionTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.positionDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isActive)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.positionTitle)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.positionDescription)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.isActive)
-    </td>
-    <td>
-        @Html.ActionLink("Update", "UpdatePosition", new { id = item.positionID }) |
-        @Html.ActionLink("Details", "PositionDetails", new { id = item.positionID }) |
-        @Html.ActionLink("Deactivate", "DeactivatePosition", new { id = item.positionID })
-    </td>
-</tr>
+<h2>All Positions</h2>
+@if (Session["roleTitle"].ToString() == "Employee")
+{
+    <h1 style="color:red">You do not have access here.</h1>
+    @Html.ActionLink("Return Home", "Index", "Home")
 }
+else
+{
+    <p>
+        @Html.ActionLink("Add Position", "AddPosition")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.positionTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.positionDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isActive)
+            </th>
+            <th></th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.positionTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.positionDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.isActive)
+                </td>
+                <td>
+                    @Html.ActionLink("Update", "UpdatePosition", new { id = item.positionID }) |
+                    @Html.ActionLink("Details", "PositionDetails", new { id = item.positionID }) |
+                    @Html.ActionLink("Deactivate", "DeactivatePosition", new { id = item.positionID })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
