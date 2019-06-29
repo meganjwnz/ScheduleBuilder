@@ -13,7 +13,8 @@ namespace ScheduleBuilder.Controllers
         PositionDAL positionDAL = new PositionDAL();
         PersonDAL personDAL = new PersonDAL();
         RoleDAL roleDAL = new RoleDAL();
-        StatusDAL statusDAL = new StatusDAL(); 
+        StatusDAL statusDAL = new StatusDAL();
+        private int shiftHoursId;
 
         /// <summary>
         /// gets all shifts from the database
@@ -37,7 +38,27 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
+            //this.shiftHoursId = shiftDAL.GetAllShifts(whereClause)[0].scheduleShiftID;
+            //int herefortesting = this.shiftHoursId;
             return View(shiftDAL.GetAllShifts(whereClause)[0]);
+        }
+
+        public ActionResult ClockUserIn()
+        {
+            //This needs to be cleaned up THREE LINES TO GET one ID not cool
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            this.shiftDAL.ClockUserIn(shiftDAL.GetAllShifts(whereClause)[0].scheduleShiftID, DateTime.Now);
+            return Redirect(Request.UrlReferrer.ToString()); 
+        }
+
+        public ActionResult ClockUserOut()
+        {
+            //This needs to be cleaned up THREE LINES TO GET one ID not cool
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            this.shiftDAL.ClockUserOut(shiftDAL.GetAllShifts(whereClause)[0].scheduleShiftID, DateTime.Now); 
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         /// <summary>

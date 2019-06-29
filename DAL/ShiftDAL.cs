@@ -291,5 +291,62 @@ namespace ScheduleBuilder.DAL
 
             return (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
         }
+
+        #region TimeCard 
+        public void ClockUserIn(int shiftHoursId, DateTime clockIn)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                            $" SET actualStartTime = @clockInTime" +
+                            $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@shiftId", shiftHoursId);
+                        command.Parameters.AddWithValue("@clockInTime", clockIn);
+
+                        command.ExecuteNonQuery();   
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+
+        public void ClockUserOut(int scheduleShiftID, DateTime now)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                           $" SET actualEndTime = @clockOutTime" +
+                           $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+                        command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
+                     
+                        command.Parameters.AddWithValue("@clockOutTime", now);
+                        
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+        #endregion
     }
 }

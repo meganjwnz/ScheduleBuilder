@@ -45,18 +45,32 @@
         <dt>
             @Html.DisplayNameFor(model => model.actualStartTime)
         </dt>
+        @if (Model.actualStartTime == null)
+        {
+            <dd>
+                @Html.DisplayFor(model => model.actualStartTime)
+                <a href='@Url.Action("ClockUserIn", "Shift")'>
+                    <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock In" />
+                </a>
+            </dd>
+        }
+        else
+        {
+            <dd>
+                @Html.DisplayFor(model => model.actualStartTime)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.actualEndTime)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.actualEndTime)
 
-        <dd>
-            @Html.DisplayFor(model => model.actualStartTime)
-        </dd>
+                <a href='@Url.Action("ClockUserOut", "Shift")'>
+                    <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock Out" />
+                </a>
+            </dd>
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.actualEndTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.actualEndTime)
-        </dd>
 
         @if (Model.scheduledLunchBreakStart != null)
         {
