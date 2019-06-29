@@ -33,6 +33,13 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        public ActionResult AddTimePunchPage()
+        {
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            return View(shiftDAL.GetAllShifts(whereClause)[0]);
+        }
+
         /// <summary>
         /// Returns accepted SQL errors 
         /// </summary>
