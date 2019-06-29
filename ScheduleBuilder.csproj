@@ -207,6 +207,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="DAL\ILoginDAL.cs" />
     <Compile Include="DAL\IPositionDAL.cs" />
     <Compile Include="DAL\IRoleDAL.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Model\Shift.cs" />
     <Compile Include="ModelViews\PersonViewModel.cs" />
     <Compile Include="Model\Status.cs" />
+    <Compile Include="Model\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +299,7 @@
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Views\Task\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
