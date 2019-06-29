@@ -1,54 +1,122 @@
-﻿@model IEnumerable<ScheduleBuilder.Model.Position>
-
-@{
-    ViewBag.Title = "PositionList";
+﻿@{
+    ViewBag.Title = "Position and Task Manag";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All Positions</h2>
-@if (Session["roleTitle"].ToString() == "Employee")
-{
-    <h1 style="color:red">You do not have access here.</h1>
-    @Html.ActionLink("Return Home", "Index", "Home")
-}
-else
-{
-    <p>
-        @Html.ActionLink("Add Position", "AddPosition")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.positionTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.positionDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.isActive)
-            </th>
-            <th></th>
-        </tr>
+    <div class="row" style="margin-top:50px;">
+        <h4>Positions:</h4>
+        <button type="button" class="btn btn-default" ng-click="openPositionModal('Add', {})">Add Position</button>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.positionTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.positionDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.isActive)
-                </td>
-                <td>
-                    @Html.ActionLink("Update", "UpdatePosition", new { id = item.positionID }) |
-                    @Html.ActionLink("Details", "PositionDetails", new { id = item.positionID }) |
-                    @Html.ActionLink("Deactivate", "DeactivatePosition", new { id = item.positionID })
-                </td>
-            </tr>
-        }
+        <table style="width:100%; margin-top:25px;">
 
-    </table>
-}
+            <thead class="tablestyle">
+                <tr>
+
+                    <th>PositionID</th>
+                    <th>Position</th>
+                    <th>Description</th>
+                    <th>Active</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ps in allPositions">
+                    <td>{{ps.positionID}}</td>
+                    <td>{{ps.positionTitle}}</td>
+                    <td>{{ps.positionDescription}}</td>
+                    <td ng-if="ps.isActive == 1">X</td>
+                    <td ng-if="ps.isActive == 0">-</td>
+                    <td>
+                        <button type="button" class="btn btn-default" ng-click="openPositionModal('Update', ps)">Update/Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr style="border-color:#EEEEEE; border-style: solid none; border-width: 1px 0; margin: 18px 0;"/>
+    </div>
+
+
+
+    <div class="row" style="margin-top:50px;">
+        <h4>Tasks:</h4>
+        <button type="button" class="btn btn-default" ng-click="openTaskModal('Add', {})">Add Position</button>
+
+        <table style="width:100%; margin-top:25px;">
+
+            <thead class="tablestyle">
+                <tr>
+
+                    <th>TaskID</th>
+                    <th>Task</th>
+                    <th>Description</th>
+                    <th>Active</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ts in allTasks">
+                    <td>{{ts.taskID}}</td>
+                    <td>{{ts.taskTitle}}</td>
+                    <td>{{ts.taskDescription}}</td>
+                    <td ng-if="ts.isActive == 1">X</td>
+                    <td ng-if="ts.isActive == 0">-</td>
+                    <td>
+                        <button type="button" class="btn btn-default" ng-click="openTaskModal('Update', ts)">Update/Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+    </div>
+
+
+<!-- Angular Modal Templates -->
+    <script type="text/ng-template" id="positionModalContent.html">
+        <form name="positionForm">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Position Information - {{typePosition}} Position</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <label>Title: </label>&nbsp;&nbsp;
+                            </th>
+                            <th>
+                                <input type="text" ng-model="selected.pTitle" name="pTitle" ng-required="true" />
+                                <span ng-show="positionForm.pTitle.$touched && positionForm.pTitle.$invalid">You must enter a title.</span>
+                            </th>
+
+                        </tr>
+                        <tr>
+                            <th>
+                                <label>Description: </label>&nbsp;&nbsp;
+                            </th>
+                            <th>
+                                <input type="text" ng-model="selected.pDesc" name="pDesc" ng-required="true"/>
+                                <span ng-show="positionForm.pDesc.$touched && positionForm.pDesc.$invalid">You must enter a description.</span>
+                            </th>
+                        </tr>
+                        
+                        <tr>
+                            <th>
+                                <label>
+                                    Active:
+                                    <input type="checkbox" ng-model="selected.pActive" ng-true-value="true" ng-false-value="false">
+                                </label><br />
+                            </th>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button ng-if="typePosition == 'Add'" class="btn btn-primary" type="button" ng-click="addPosition(selected)" ng-disabled="positionForm.$invalid">Add Position</button>
+                <button ng-if="typePosition == 'Update'" class="btn btn-primary" type="button" ng-click="updatePosition(selected)" ng-disabled="positionForm.$invalid">Update Position</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+            {{selected}}
+        </form>
+    </script>

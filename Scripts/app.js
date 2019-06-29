@@ -30,6 +30,31 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         return checkDate < Date.now();
     }
 
+    $scope.getPeople = function () {
+        $http.post('/Person/GetAllActivePeople').then(function (response) {
+            $scope.activePeople = response.data;
+        }), function (error) {
+            console.log(error);
+        };
+    };
+
+    $scope.getAllPositions = function () {
+        $http.post('/Position/GetAllPositions').then(function (response) {
+            $scope.allPositions = response.data;
+            console.log($scope.allPositions);
+        }), function (error) {
+            console.log(error);
+        };
+    };
+    $scope.getAllPositions();
+
+    $scope.dateOptions = {
+        formatYear: 'yy',
+        maxDate: new Date(2020, 5, 22),
+        minDate: new Date(),
+        startingDay: 1
+    };
+
     $scope.openModal = function (type, shift) {
         $scope.selectedShift = shift;
         $scope.type = type;
@@ -42,30 +67,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             controller: 'ModalInstanceCtrl',
         }).result.then(function () { }, function () { });
         $scope.getPeople();
-        $scope.getPositions();
-    };
-
-    $scope.getPeople = function () {
-        $http.post('/Person/GetAllActivePeople').then(function (response) {
-            $scope.activePeople = response.data;
-        }), function (error) {
-            console.log(error);
-        };
-    };
-
-    $scope.getPositions = function () {
-        $http.post('/Shift/ViewAllActivePositions').then(function (response) {
-            $scope.activePositions = response.data;
-        }), function (error) {
-            console.log(error);
-        };
-    };
-
-    $scope.dateOptions = {
-        formatYear: 'yy',
-        maxDate: new Date(2020, 5, 22),
-        minDate: new Date(),
-        startingDay: 1
     };
 
     //Calendar PopUp Start
@@ -102,8 +103,9 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     };
     //Calendar PopUp End
 
+    //Calculation to get total hours scheduled with or without lunch break
     $scope.getTotalHours = function (shift) {
-        var startTime = $scope.jsDate(shift.scheduledStartTime);  // schedule date start
+        var startTime = $scope.jsDate(shift.scheduledStartTime);
         var endTime = $scope.jsDate(shift.scheduledEndTime);
 
         if (shift.scheduledLunchBreakStart && shift.scheduledLunchBreakEnd) {
@@ -121,6 +123,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     };
 
+    //Verify that all scheduled dates are in order thus valid
     $scope.checkDateOrder = function (start, end, lunch, lunchEnd) {
         if ((lunch && !lunchEnd) || (lunchEnd && !lunch)) {
             alert("Lunch Break must have a start and end date and time");
@@ -141,6 +144,19 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             }
         }
     }
+
+    $scope.openPositionModal = function (type, position) {
+        $scope.selectedPosition = position;
+        $scope.typePosition = type;
+        $scope.modalInstance = $uibModal.open({
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'positionModalContent.html',
+            scope: $scope,
+            size: 'lg',
+            controller: 'PositionModalInstanceCtrl',
+        }).result.then(function () { }, function () { });
+    };
 
 });
 
@@ -222,6 +238,68 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     $scope.refreshView = function () {
         $http.post('/Home/Index').then(function () {
             $scope.getShifts();
+        }), function (error) {
+            alert(error);
+        };
+    }
+
+});
+
+app.controller('PositionModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
+
+    $scope.selected = {};
+    $scope.selected.positionID = $scope.selectedPosition.positionID;
+    $scope.selected.pTitle = $scope.selectedPosition.positionTitle;
+    $scope.selected.pDesc = $scope.selectedPosition.positionDescription;
+    $scope.selected.pActive = $scope.selectedPosition.isActive ? $scope.selectedPosition.isActive : true;
+
+    $scope.addPosition = function (selected) {
+        var positionTitle = selected.pTitle;
+        var positionDescription = selected.pDesc;
+        var pIsActive = selected.pActive;
+
+        $http.post('/Position/AddPosition', { positionTitle: positionTitle, positionDescription: positionDescription, isActive: pIsActive }).then(function (response) {
+            $scope.success = response.data;
+            if ($scope.success) {
+                alert("Position added successfully");
+                $scope.cancel();
+                $scope.getAllPositions();
+            } else {
+                alert("There was an error adding your position. Please try again.");
+            }
+        }), function (error) {
+            alert(error);
+        };
+
+    };
+
+    $scope.updatePosition = function (selected) {
+        var positionID = selected.positionID;
+        var positionTitle = selected.pTitle;
+        var positionDescription = selected.pDesc;
+        var pIsActive = selected.pActive;
+
+        $http.post('/Position/UpdatePosition', { positionTitle: positionTitle, positionDescription: positionDescription, isActive: pIsActive, id: positionID }).then(function (response) {
+            $scope.success = response.data;
+            if ($scope.success) {
+                alert("Position updated successfully");
+                $scope.cancel();
+                $scope.getAllPositions();
+            } else {
+                alert("There was an error updating your position. Please try again.");
+            }
+        }), function (error) {
+            alert(error);
+        };
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $scope.refreshView = function () {
+        $http.post('/Position/Position').then(function () {
+            $scope.getAllPositions();
         }), function (error) {
             alert(error);
         };
