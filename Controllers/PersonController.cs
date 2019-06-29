@@ -111,6 +111,12 @@ namespace ScheduleBuilder.Controllers
 
         }
 
+        //Returns the Admin
+        public ActionResult GetAdminPeople()
+        {
+            string whereClause = "Where roleId = 1";
+            return Json(this.personDAL.GetDesiredPersons(whereClause));
+        }
 
         /// <summary>
         /// Return a json list of all active employees that can be scheduled to work.
