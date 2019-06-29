@@ -115,6 +115,66 @@ namespace ScheduleBuilder.DAL
 
         }
 
+        public Shift GetNearestShift(string whereClause)
+        {
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
+            Shift shift = new Shift();
+            string query = $"SELECT TOP 1 s.id" +
+                $", s.scheduleShiftId" +
+                $", s.personId" +
+                $", s.positionId" +
+                $", sh.scheduledStartTime" +
+                $", sh.scheduledEndTime" +
+                $", sh.scheduledLunchBreakStartTime" +
+                $", sh.scheduledLunchBreakEndTime" +
+                $", sh.actualStartTime" +
+                $", sh.actualEndTime" +
+                $", sh.actualLunchBreakStart" +
+                $", sh.acutalLunchBreakEnd" +
+                $", p.first_name" +
+                $", p.last_name" +
+                $", ps.position_title " +
+                $" FROM shift AS s " +
+                $" JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
+                $" JOIN person AS p ON s.personId = p.id " +
+                $" JOIN position AS ps ON s.positionId = ps.id "
+                +  whereClause +
+                $"  ORDER BY ABS(DATEDIFF(MINUTE, scheduledStartTime, GETDATE()))";
+
+            using (connection)
+            {
+                connection.Open();
+
+                using (SqlCommand selectCommand = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            shift.shiftID = int.Parse(reader["id"].ToString());
+                            shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
+                        
+                            shift.positionID = int.Parse(reader["positionId"].ToString());
+                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                            shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
+                            shift.scheduledLunchBreakEnd = reader["scheduledLunchBreakEndTime"] as DateTime?;
+                            shift.actualStartTime = reader["actualStartTime"] as DateTime?;
+                            shift.actualEndTime = reader["actualEndTime"] as DateTime?;
+                            shift.actualLunchBreakStart = reader["actualLunchBreakStart"] as DateTime?;
+                            shift.actualLunchBreakEnd = reader["acutalLunchBreakEnd"] as DateTime?;
+                            shift.positionName = reader["position_title"].ToString();
+                            shift.personLastName = reader["last_name"].ToString();
+                            shift.personFirstName = reader["first_name"].ToString();
+                            shift.personID = int.Parse(reader["personId"].ToString());
+                        }
+                    }
+                }
+            }
+            return shift;
+
+        }
+
         /// <summary>
         /// Add a shift
         /// </summary>

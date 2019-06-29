@@ -14,7 +14,6 @@ namespace ScheduleBuilder.Controllers
         PersonDAL personDAL = new PersonDAL();
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
-        private int shiftHoursId;
 
         /// <summary>
         /// gets all shifts from the database
@@ -34,33 +33,49 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        #region TimeCard
+
+        /// <summary>
+        /// Adds Timecard page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult AddTimePunchPage()
         {
             string loggedInUserId = (Session["id"].ToString());
-            string whereClause = "WHERE p.id = " + loggedInUserId;
-            //this.shiftHoursId = shiftDAL.GetAllShifts(whereClause)[0].scheduleShiftID;
-            //int herefortesting = this.shiftHoursId;
-            return View(shiftDAL.GetAllShifts(whereClause)[0]);
+            string whereClause = " WHERE s.personId = "  + loggedInUserId;
+            if (shiftDAL.GetNearestShift(whereClause) == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View(shiftDAL.GetNearestShift(whereClause));
         }
-
+  
+        /// <summary>
+        /// Clocks user in retruns them to the time card page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ClockUserIn()
         {
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserIn(shiftDAL.GetAllShifts(whereClause)[0].scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
             return Redirect(Request.UrlReferrer.ToString()); 
         }
 
+        /// <summary>
+        /// Clocks the user out returns them to the time card page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ClockUserOut()
         {
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserOut(shiftDAL.GetAllShifts(whereClause)[0].scheduleShiftID, DateTime.Now); 
+            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
             return Redirect(Request.UrlReferrer.ToString());
         }
-
+        #endregion
         /// <summary>
         /// Returns accepted SQL errors 
         /// </summary>
