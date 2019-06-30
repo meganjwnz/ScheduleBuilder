@@ -17,8 +17,8 @@ namespace ScheduleBuilder.DAL
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
             List<PositionTask> positionTaskList = new List<PositionTask>();
 
-            string selectStatement = "SELECT t.id, t.task_title, t.isActive, t.task_description " +
-                "FROM task t";
+            string selectStatement = "SELECT pt.taskId, pt.roleId " +
+                "FROM position_tasks pt";
 
             using (connection)
             {
