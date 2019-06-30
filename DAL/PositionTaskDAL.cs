@@ -76,5 +76,44 @@ namespace ScheduleBuilder.DAL
             }
             return (positionTaskResult >= 1 ? true : false);
         }
+
+
+        /// <summary>
+        /// Updates the relationship between a position and a task
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public bool UpdatePositionTask(PositionTask positionTask)
+        {
+            string updateStatement =
+                "UPDATE position_tasks " +
+                "SET [taskId] = @taskId, " +
+                "[roleId] = @roleId " +
+                "WHERE id = @id";
+
+            int positionTaskResult = 0;
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand updateCommand = new SqlCommand(updateStatement, connection))
+                    {
+                        updateCommand.Transaction = transaction;
+                        updateCommand.Parameters.AddWithValue("@taskId", positionTask.TaskId);
+                        updateCommand.Parameters.AddWithValue("@roleId", positionTask.PositionId);
+
+                        positionTaskResult = updateCommand.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
+            return (positionTaskResult >= 1 ? true : false);
+        }
     }
 }
