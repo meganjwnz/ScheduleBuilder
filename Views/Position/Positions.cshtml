@@ -1,122 +1,165 @@
-﻿@{
+﻿@model IEnumerable<ScheduleBuilder.Model.Task>
+
+@{
     ViewBag.Title = "Position and Task Manag";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <div class="row" style="margin-top:50px;">
-        <h4>Positions:</h4>
-        <button type="button" class="btn btn-default" ng-click="openPositionModal('Add', {})">Add Position</button>
+<div class="row" style="margin-top:50px;">
+    <h4>Positions:</h4>
+    <button type="button" class="btn btn-default" ng-click="openPositionModal('Add', {})">Add Position</button>
 
-        <table style="width:100%; margin-top:25px;">
+    <table style="width:100%; margin-top:25px;">
 
-            <thead class="tablestyle">
-                <tr>
+        <thead class="tablestyle">
+            <tr>
 
-                    <th>PositionID</th>
-                    <th>Position</th>
-                    <th>Description</th>
-                    <th>Active</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="ps in allPositions">
-                    <td>{{ps.positionID}}</td>
-                    <td>{{ps.positionTitle}}</td>
-                    <td>{{ps.positionDescription}}</td>
-                    <td ng-if="ps.isActive == 1">X</td>
-                    <td ng-if="ps.isActive == 0">-</td>
-                    <td>
-                        <button type="button" class="btn btn-default" ng-click="openPositionModal('Update', ps)">Update/Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <hr style="border-color:#EEEEEE; border-style: solid none; border-width: 1px 0; margin: 18px 0;"/>
-    </div>
+                <th>PositionID</th>
+                <th>Position</th>
+                <th>Description</th>
+                <th>Active</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="ps in allPositions">
+                <td>{{ps.positionID}}</td>
+                <td>{{ps.positionTitle}}</td>
+                <td>{{ps.positionDescription}}</td>
+                <td ng-if="ps.isActive == 1">X</td>
+                <td ng-if="ps.isActive == 0">-</td>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openPositionModal('Update', ps)">Update/Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr style="border-color:#EEEEEE; border-style: solid none; border-width: 1px 0; margin: 18px 0;" />
+</div>
 
 
 
-    <div class="row" style="margin-top:50px;">
-        <h4>Tasks:</h4>
-        <button type="button" class="btn btn-default" ng-click="openTaskModal('Add', {})">Add Position</button>
+<div class="row" style="margin-top:50px;">
+    <h4>Tasks:</h4>
+    <button type="button" class="btn btn-default" ng-click="openTaskModal('Add', {})">Add Position</button>
 
-        <table style="width:100%; margin-top:25px;">
+    <table style="width:100%; margin-top:25px;">
 
-            <thead class="tablestyle">
-                <tr>
+        <thead class="tablestyle">
+            <tr>
 
-                    <th>TaskID</th>
-                    <th>Task</th>
-                    <th>Description</th>
-                    <th>Active</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="ts in allTasks">
-                    <td>{{ts.taskID}}</td>
-                    <td>{{ts.taskTitle}}</td>
-                    <td>{{ts.taskDescription}}</td>
-                    <td ng-if="ts.isActive == 1">X</td>
-                    <td ng-if="ts.isActive == 0">-</td>
-                    <td>
-                        <button type="button" class="btn btn-default" ng-click="openTaskModal('Update', ts)">Update/Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <hr />
-    </div>
+                <th>TaskID</th>
+                <th>Task</th>
+                <th>Description</th>
+                <th>Active</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="ts in allTasks">
+                <td>{{ts.taskID}}</td>
+                <td>{{ts.taskTitle}}</td>
+                <td>{{ts.taskDescription}}</td>
+                <td ng-if="ts.isActive == 1">X</td>
+                <td ng-if="ts.isActive == 0">-</td>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openTaskModal('Update', ts)">Update/Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+</div>
 
 
 <!-- Angular Modal Templates -->
-    <script type="text/ng-template" id="positionModalContent.html">
-        <form name="positionForm">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modal-title">Position Information - {{typePosition}} Position</h3>
-            </div>
-            <div class="modal-body" id="modal-body">
+<script type="text/ng-template" id="positionModalContent.html">
+    <form name="positionForm">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Position Information - {{typePosition}} Position</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
 
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>
-                                <label>Title: </label>&nbsp;&nbsp;
-                            </th>
-                            <th>
-                                <input type="text" ng-model="selected.pTitle" name="pTitle" ng-required="true" />
-                                <span ng-show="positionForm.pTitle.$touched && positionForm.pTitle.$invalid">You must enter a title.</span>
-                            </th>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            <label>Title: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <input type="text" ng-model="selected.pTitle" name="pTitle" ng-required="true" />
+                            <span ng-show="positionForm.pTitle.$touched && positionForm.pTitle.$invalid">You must enter a title.</span>
+                        </th>
 
-                        </tr>
-                        <tr>
-                            <th>
-                                <label>Description: </label>&nbsp;&nbsp;
-                            </th>
-                            <th>
-                                <input type="text" ng-model="selected.pDesc" name="pDesc" ng-required="true"/>
-                                <span ng-show="positionForm.pDesc.$touched && positionForm.pDesc.$invalid">You must enter a description.</span>
-                            </th>
-                        </tr>
-                        
-                        <tr>
-                            <th>
-                                <label>
-                                    Active:
-                                    <input type="checkbox" ng-model="selected.pActive" ng-true-value="true" ng-false-value="false">
-                                </label><br />
-                            </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Description: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <input type="text" ng-model="selected.pDesc" name="pDesc" ng-required="true" />
+                            <span ng-show="positionForm.pDesc.$touched && positionForm.pDesc.$invalid">You must enter a description.</span>
+                        </th>
+                    </tr>
 
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button ng-if="typePosition == 'Add'" class="btn btn-primary" type="button" ng-click="addPosition(selected)" ng-disabled="positionForm.$invalid">Add Position</button>
-                <button ng-if="typePosition == 'Update'" class="btn btn-primary" type="button" ng-click="updatePosition(selected)" ng-disabled="positionForm.$invalid">Update Position</button>
-                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-            </div>
-            {{selected}}
-        </form>
-    </script>
+                    <tr>
+                        <th>
+                            <label>
+                                Active:
+                                <input type="checkbox" ng-model="selected.pActive" ng-true-value="true" ng-false-value="false">
+                            </label><br />
+                        </th>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button ng-if="typePosition == 'Add'" class="btn btn-primary" type="button" ng-click="addPosition(selected)" ng-disabled="positionForm.$invalid">Add Position</button>
+            <button ng-if="typePosition == 'Update'" class="btn btn-primary" type="button" ng-click="updatePosition(selected)" ng-disabled="positionForm.$invalid">Update Position</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+        {{selected}}
+    </form>
+</script>
+
+<h2>Tasks</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Task_title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task_description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Task_title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Task_description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.TaskId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.TaskId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.TaskId })
+            </td>
+        </tr>
+    }
+
+</table>

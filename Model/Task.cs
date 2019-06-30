@@ -5,9 +5,9 @@ namespace ScheduleBuilder.Model
     {
         public int TaskId { get; set; }
 
-        public int Task_title { get; set; }
+        public string Task_title { get; set; }
 
-        public int Task_description { get; set; }
+        public string Task_description { get; set; }
 
         public bool IsActive { get; set; }
     }

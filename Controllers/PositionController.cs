@@ -8,12 +8,13 @@ namespace ScheduleBuilder.Controllers
 {
     public class PositionController : Controller
     {
+        #region position methods
         readonly PositionDAL positionDAL = new PositionDAL();
 
         // GET: Position
         public ActionResult Positions()
         {
-            return View();
+            return View(this.taskDAL.GetAllTasks());
         }
 
         // GET: Position
@@ -89,5 +90,17 @@ namespace ScheduleBuilder.Controllers
         {
             Response.Write("<script>alert('" + xMessage + "')</script>");
         }
+
+        #endregion
+
+        #region task methods
+        private TaskDAL taskDAL = new TaskDAL();
+
+        public ActionResult Tasks()
+        {
+            return View(this.taskDAL.GetAllTasks());
+        }
+
+        #endregion
     }
 }
