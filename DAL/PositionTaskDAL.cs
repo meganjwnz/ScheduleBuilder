@@ -40,5 +40,41 @@ namespace ScheduleBuilder.DAL
             }
             return positionTaskList;
         }
+
+        /// <summary>
+        /// Creates a new connection between a position and a task
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        public bool CreatePostionTasks(PositionTask positionTask)
+        {
+            int positionTaskResult = 0;
+
+            string insertStatement =
+                "INSERT INTO position_tasks([taskId],[roleId]) " +
+                "VALUES(@taskId, @roleId)";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand insertCommand = new SqlCommand(insertStatement, connection))
+                    {
+                        insertCommand.Transaction = transaction;
+                        insertCommand.Parameters.AddWithValue("@taskId", positionTask.TaskId);
+                        insertCommand.Parameters.AddWithValue("@roleId", positionTask.PositionId);
+                        positionTaskResult = insertCommand.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
+            return (positionTaskResult >= 1 ? true : false);
+        }
     }
 }
