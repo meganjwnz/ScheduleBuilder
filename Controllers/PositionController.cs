@@ -176,6 +176,32 @@ namespace ScheduleBuilder.Controllers
                 return null;
             }
         }
+
+        /// <summary>
+        /// Creates a new connection between a position and a task
+        /// </summary>
+        /// <param name="positionTitle"></param>
+        /// <param name="positionDescription"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddPositionTask(int taskId, int positionId)
+        {
+            try
+            {
+                PositionTask positionTask = new PositionTask
+                {
+                    TaskId = taskId,
+                    PositionId = positionId,
+                };
+                this.positionTaskDAL.CreatePostionTasks(positionTask);
+                return RedirectToAction("Positions");
+            }
+            catch
+            {
+                return View();
+            }
+        }
         #endregion
     }
 }
