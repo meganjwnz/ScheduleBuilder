@@ -160,5 +160,22 @@ namespace ScheduleBuilder.Controllers
         }
 
         #endregion
+
+        #region position_tasks method
+        private readonly PositionTaskDAL positionTaskDAL = new PositionTaskDAL();
+
+        public ActionResult GetAllPositionTask()
+        {
+            try
+            {
+                return Json(this.positionTaskDAL.GetAllPositionTasks());
+            }
+            catch (Exception e)
+            {
+                this.Messagebox(e.ToString());
+                return null;
+            }
+        }
+        #endregion
     }
 }
