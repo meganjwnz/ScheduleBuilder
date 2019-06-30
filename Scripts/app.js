@@ -168,6 +168,19 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         }).result.then(function () { }, function () { });
     };
 
+    $scope.openTaskModal = function (type, task) {
+        $scope.selectedTask = task;
+        $scope.typeTask = type;
+        $scope.modalInstance = $uibModal.open({
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'taskModalContent.html',
+            scope: $scope,
+            size: 'lg',
+            controller: 'TaskModalInstanceCtrl',
+        }).result.then(function () { }, function () { });
+    };
+
 });
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
@@ -199,7 +212,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
                 if ($scope.success) {
                     alert("Shift added successfully");
                     $scope.cancel();
-                    $scope.refreshView();
+                    $scope.getShifts();
                 } else {
                     alert("There was an error adding your shift. Please try again.");
                 }
@@ -231,7 +244,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
                 if ($scope.success) {
                     alert("Shift updated successfully");
                     $scope.cancel();
-                    $scope.refreshView();
+                    $scope.getShifts();
                 } else {
                     alert("There was an error updating your shift. Please try again.");
                 }
@@ -244,14 +257,6 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
     };
-
-    $scope.refreshView = function () {
-        $http.post('/Home/Index').then(function () {
-            $scope.getShifts();
-        }), function (error) {
-            alert(error);
-        };
-    }
 
 });
 
@@ -307,12 +312,39 @@ app.controller('PositionModalInstanceCtrl', function ($uibModalInstance, $scope,
         $uibModalInstance.dismiss('cancel');
     };
 
-    $scope.refreshView = function () {
-        $http.post('/Position/Position').then(function () {
-            $scope.getAllPositions();
-        }), function (error) {
-            alert(error);
-        };
-    }
+ });
+
+app.controller('TaskModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
+
+    $scope.selected = {};
+    $scope.selected.taskID = $scope.selectedTask.TaskId;
+    $scope.selected.positionID = $scope.selectedTask.PositionID;
+    $scope.selected.tTitle = $scope.selectedTask.Task_title;
+    $scope.selected.tDesc = $scope.selectedTask.Task_description;
+    $scope.selected.tActive = $scope.selectedTask.IsActive ? $scope.selectedTask.IsActive : true;
+
+    $scope.addTask = function (selected) {
+        var tTitle = selected.tTitle;
+        var tDescription = selected.tDesc;
+        var tIsActive = selected.tActive;
+        var positionID = selected.positionID;
+
+        console.log("add");
+
+    };
+
+    $scope.updateTask = function (selected) {
+        var positionID = selected.positionID;
+        var tTitle = selected.tTitle;
+        var tDescription = selected.tDesc;
+        var tIsActive = selected.tActive;
+        var positionID = selected.positionID;
+
+        console.log("update");
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 
 });

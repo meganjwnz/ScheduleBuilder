@@ -29,7 +29,7 @@
                 <td ng-if="ps.isActive == 1">X</td>
                 <td ng-if="ps.isActive == 0">-</td>
                 <td>
-                    <button type="button" class="btn btn-default" ng-click="openPositionModal('Update', ps)">Update/Delete</button>
+                    <button type="button" class="btn btn-default" ng-click="openPositionModal('Update', ps)">Update</button>
                 </td>
             </tr>
         </tbody>
@@ -63,7 +63,7 @@
                 <td ng-if="ts.IsActive == 1">X</td>
                 <td ng-if="ts.IsActive == 0">-</td>
                 <td>
-                    <button type="button" class="btn btn-default" ng-click="openTaskModal('Update', ts)">Update/Delete</button>
+                    <button type="button" class="btn btn-default" ng-click="openTaskModal('Update', ts)">Update</button>
                 </td>
             </tr>
         </tbody>
@@ -117,6 +117,66 @@
         <div class="modal-footer">
             <button ng-if="typePosition == 'Add'" class="btn btn-primary" type="button" ng-click="addPosition(selected)" ng-disabled="positionForm.$invalid">Add Position</button>
             <button ng-if="typePosition == 'Update'" class="btn btn-primary" type="button" ng-click="updatePosition(selected)" ng-disabled="positionForm.$invalid">Update Position</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</script>
+
+<script type="text/ng-template" id="taskModalContent.html">
+    <form name="taskForm">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Task Information - {{typeTask}} Task</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            <label>Title: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <input type="text" ng-model="selected.tTitle" name="tTitle" ng-required="true" />
+                            <span ng-show="taskForm.tTitle.$touched && taskForm.tTitle.$invalid">You must enter a title.</span>
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Description: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <input type="text" ng-model="selected.tDesc" name="tDesc" ng-required="true" />
+                            <span ng-show="taskForm.tDesc.$touched && taskForm.tDesc.$invalid">You must enter a description.</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Position: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in allPositions" ng-model="selected.positionID" ng-required="true" name="position">
+                                <option value="">-- Please select a position --</option>
+                            </select>
+                            <span ng-show="taskForm.position.$touched && taskForm.position.$invalid">You must select a position.</span>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th>
+                            <label>
+                                Active:
+                                <input type="checkbox" ng-model="selected.tActive" ng-true-value="true" ng-false-value="false">
+                            </label><br />
+                        </th>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button ng-if="typeTask == 'Add'" class="btn btn-primary" type="button" ng-click="addTask(selected)" ng-disabled="taskForm.$invalid">Add Task</button>
+            <button ng-if="typeTask == 'Update'" class="btn btn-primary" type="button" ng-click="updateTask(selected)" ng-disabled="taskForm.$invalid">Update Task</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
         {{selected}}
