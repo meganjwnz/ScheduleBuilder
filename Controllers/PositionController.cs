@@ -1,5 +1,6 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -12,21 +13,23 @@ namespace ScheduleBuilder.Controllers
         // GET: Position
         public ActionResult Positions()
         {
-            return View(this.positionDAL.GetAllPositions());
-        }
-
-        // GET: Position/Details/5
-        public ActionResult Details(int id)
-        {
             return View();
         }
 
-        // GET: Position/Create
-        public ActionResult AddPosition()
+        // GET: Position
+        public ActionResult GetAllPositions()
         {
-            return View();
+            try
+            {
+                return Json(this.positionDAL.GetAllPositions());
+            }
+            catch (Exception e)
+            {
+                this.Messagebox(e.ToString());
+                return null;
+            }
         }
-
+      
         // POST: Position/AddPosition
         /// <summary>
         /// Creates a new position
@@ -54,16 +57,7 @@ namespace ScheduleBuilder.Controllers
                 return View();
             }
         }
-
-        // GET: Position/Edit/5
-        public ActionResult UpdatePosition(int id)
-        {
-            //populates the position fields on updateposition page
-            Position position = this.positionDAL.GetAllPositions().Where(p => p.positionID == id).FirstOrDefault();
-
-            return View(position);
-        }
-
+        
         // POST: Position/Edit/5
         [HttpPost]
         public ActionResult UpdatePosition(int id, string positionTitle, string positionDescription, bool isActive)
@@ -88,16 +82,12 @@ namespace ScheduleBuilder.Controllers
         }
 
         /// <summary>
-        /// Currently deactivates any employee
+        /// Returns accepted SQL errors 
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult DeactivatePosition(int id)
+        /// <param name="xMessage"></param>
+        public void Messagebox(string xMessage)
         {
-            //populates the position fields on deactivateposition page
-            Position position = this.positionDAL.GetAllPositions().Where(p => p.positionID == id).FirstOrDefault();
-            this.positionDAL.DeactivatePosition(position);
-            return RedirectToAction("Positions");
+            Response.Write("<script>alert('" + xMessage + "')</script>");
         }
     }
 }
