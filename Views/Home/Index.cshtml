@@ -1,7 +1,11 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-    <input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
+@if (TempData["notice"] != null)
+{
+    <p>@TempData["notice"]</p>
+}
+<input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
 
 @if (Session["roleTitle"].ToString() == "Employee")
 {
@@ -136,134 +140,134 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
 <script type="text/ng-template" id="myModalContent.html">
     <form name="shiftForm">
-    <div class="modal-header">
-        <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
-    </div>
-    <div class="modal-body" id="modal-body">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
 
-        <table>
-            <tbody>
-                <tr>
-                    <th>
-                        <label>Person: </label>&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID" ng-required="true" name="personID">
-                            <option value="">-- Please select a person --</option>
-                        </select>
-                        <span ng-show="shiftForm.personID.$touched && shiftForm.personID.$invalid">You must select a person.</span>
-                    </th>
-                    
-                </tr>
-                <tr>
-                    <th>
-                        <label>Position: </label>&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        <select class="form-control" ng-options="item.positionID as item.positionTitle for item in activePositions" ng-model="selected.positionID" ng-required="true" name="position">
-                            <option value="">-- Please select a position --</option>
-                        </select>
-                        <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>
-                    </th>
-                </tr>
-                <tr>
-                    <th>
-                        <label>Start Date/Time: </label>&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startdt"
-                                   is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="startdt" />
-                            <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                        <span ng-show="shiftForm.startdt.$touched && shiftForm.startdt.$invalid">You must select a starting date and time.</span>
-                    </th>
-                    <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
-                    </th>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            <label>Person: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID" ng-required="true" name="personID">
+                                <option value="">-- Please select a person --</option>
+                            </select>
+                            <span ng-show="shiftForm.personID.$touched && shiftForm.personID.$invalid">You must select a person.</span>
+                        </th>
 
-                </tr>
-                <tr>
-                    <th>
-                        <label>End Date/Time: </label>&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.enddt"
-                                   is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="enddt" />
-                            <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                        <span ng-show="shiftForm.enddt.$touched && shiftForm.enddt.$invalid">You must select an ending date and time.</span>
-                    </th>
-                    <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.enddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
-                    </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Position: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in activePositions" ng-model="selected.positionID" ng-required="true" name="position">
+                                <option value="">-- Please select a position --</option>
+                            </select>
+                            <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Start Date/Time: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <p class="input-group">
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startdt"
+                                       is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="startdt" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                            <span ng-show="shiftForm.startdt.$touched && shiftForm.startdt.$invalid">You must select a starting date and time.</span>
+                        </th>
+                        <th>
+                            <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
+                        </th>
 
-                </tr>
-                <tr>
-                    <th>
-                        <label>Start Lunch Date/Time*: </label>&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startlunchdt"
-                                   is-open="popup3.opened" datepicker-options="dateOptions"close-text="Close" alt-input-formats="altInputFormats" />
-                            <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                    </th>
-                    <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.startlunchdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
-                    </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>End Date/Time: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <p class="input-group">
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.enddt"
+                                       is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="enddt" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="form-control btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                            <span ng-show="shiftForm.enddt.$touched && shiftForm.enddt.$invalid">You must select an ending date and time.</span>
+                        </th>
+                        <th>
+                            <div style="margin-top:-13px" uib-timepicker ng-model="selected.enddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
+                        </th>
 
-                </tr>
-                <tr>
-                    <th>
-                        <label>End Lunch Date/Time*: </label>&nbsp;&nbsp;
-                    </th>
-                    <th>
-                        <p class="input-group">
-                            <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.lunchenddt"
-                                   is-open="popup4.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
-                            <span class="input-group-btn">
-                                <button type="button" class="form-control btn btn-default" ng-click="open4()"><i class="glyphicon glyphicon-calendar"></i></button>
-                            </span>
-                        </p>
-                    </th>
-                    <th>
-                        <div style="margin-top:-13px" uib-timepicker ng-model="selected.lunchenddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
-                    </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>Start Lunch Date/Time*: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <p class="input-group">
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startlunchdt"
+                                       is-open="popup3.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="form-control btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </th>
+                        <th>
+                            <div style="margin-top:-13px" uib-timepicker ng-model="selected.startlunchdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
+                        </th>
 
-                </tr>
-                <tr ng-if="type == 'Update'">
-                    <th>
-                        <label>
-                            Delete Shift:
-                            <input type="checkbox" ng-model="selected.delete" ng-true-value="'delete'" ng-false-value="''">
-                        </label><br />
-                    </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>End Lunch Date/Time*: </label>&nbsp;&nbsp;
+                        </th>
+                        <th>
+                            <p class="input-group">
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.lunchenddt"
+                                       is-open="popup4.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="form-control btn btn-default" ng-click="open4()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                            </p>
+                        </th>
+                        <th>
+                            <div style="margin-top:-13px" uib-timepicker ng-model="selected.lunchenddt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
+                        </th>
 
-                </tr>
-                <tr><th>*Optional fields</th></tr>
-                <tr ng-if="type == 'Update'">
-                    <th>
-                        <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
-                        <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="modal-footer">
-        <button ng-if="type == 'Add'" class="btn btn-primary" type="button" ng-click="addShift(selected)" ng-disabled="shiftForm.$invalid">Add Shift</button>
-        <button ng-if="type == 'Update'" class="btn btn-primary" type="button" ng-click="updateShift(selected)" ng-disabled="shiftForm.$invalid">Update Shift</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-    </div>
+                    </tr>
+                    <tr ng-if="type == 'Update'">
+                        <th>
+                            <label>
+                                Delete Shift:
+                                <input type="checkbox" ng-model="selected.delete" ng-true-value="'delete'" ng-false-value="''">
+                            </label><br />
+                        </th>
+
+                    </tr>
+                    <tr><th>*Optional fields</th></tr>
+                    <tr ng-if="type == 'Update'">
+                        <th>
+                            <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
+                            <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button ng-if="type == 'Add'" class="btn btn-primary" type="button" ng-click="addShift(selected)" ng-disabled="shiftForm.$invalid">Add Shift</button>
+            <button ng-if="type == 'Update'" class="btn btn-primary" type="button" ng-click="updateShift(selected)" ng-disabled="shiftForm.$invalid">Update Shift</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
     </form>
 </script>
 

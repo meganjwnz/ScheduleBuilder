@@ -115,6 +115,8 @@ namespace ScheduleBuilder.DAL
 
         }
 
+      
+
         public Shift GetNearestShift(string whereClause)
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -397,6 +399,60 @@ namespace ScheduleBuilder.DAL
                      
                         command.Parameters.AddWithValue("@clockOutTime", now);
                         
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+  
+        public void ClockLunchStart(int scheduleShiftID, DateTime now)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                          $" SET actualLunchBreakStart = @lunchStartTime" +
+                          $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+                        command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
+
+                        command.Parameters.AddWithValue("@lunchStartTime", now);
+
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void ClockLunchEnd(int scheduleShiftID, DateTime now)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                          $" SET acutalLunchBreakEnd = @lunchEndTime" +
+                          $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+                        command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
+
+                        command.Parameters.AddWithValue("@lunchEndTime", now);
+
                         command.ExecuteNonQuery();
                     }
                     connection.Close();

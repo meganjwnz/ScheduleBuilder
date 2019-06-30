@@ -4,6 +4,7 @@
     ViewBag.Title = "AddTimePunchPage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
 
 <h2>AddTimePunchPage</h2>
 
@@ -45,43 +46,41 @@
         <dt>
             @Html.DisplayNameFor(model => model.actualStartTime)
         </dt>
-        @if (Model.actualStartTime == null)
-        {
-            <dd>
-                @Html.DisplayFor(model => model.actualStartTime)
+        
+        <dd>
+            @Html.DisplayFor(model => model.actualStartTime)
+            @if (Model.actualStartTime == null)
+            {
                 <a href='@Url.Action("ClockUserIn", "Shift")'>
                     <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock In" />
                 </a>
-            </dd>
-        }
-        else
-        {
-            <dd>
-                @Html.DisplayFor(model => model.actualStartTime)
-            </dd>
+            }
+        </dd>
+        
+       
+    
             <dt>
                 @Html.DisplayNameFor(model => model.actualEndTime)
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.actualEndTime)
-
-                <a href='@Url.Action("ClockUserOut", "Shift")'>
-                    <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock Out" />
-                </a>
+                @if (Model.actualEndTime == null && Model.actualStartTime != null) { 
+                    <a href='@Url.Action("ClockUserOut", "Shift")'>
+                        <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock Out" />
+                    </a>
+                    }
             </dd>
-        }
-
+        
 
         @if (Model.scheduledLunchBreakStart != null)
         {
-            <div>
-
                 <dt>
                     @Html.DisplayNameFor(model => model.scheduledLunchBreakStart)
                 </dt>
 
                 <dd>
                     @Html.DisplayFor(model => model.scheduledLunchBreakStart)
+
                 </dd>
 
                 <dt>
@@ -97,16 +96,29 @@
 
                 <dd>
                     @Html.DisplayFor(model => model.actualLunchBreakStart)
+                    @if (Model.actualLunchBreakStart == null && Model.actualStartTime != null)
+                    {
+                        <a href='@Url.Action("ClockLunchStart", "Shift")'>
+                            <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Start Break" />
+                        </a>
+                    }
                 </dd>
+               
+                    <dt>
+                        @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
+                    </dt>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
-                </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.actualLunchBreakEnd)
+                       @if (Model.actualLunchBreakStart != null && Model.actualLunchBreakEnd == null && Model.actualEndTime != null)
+                        {
+                        <a href='@Url.Action("ClockLunchEnd", "Shift")'>
+                            <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="End Break" />
+                        </a>
+                        }
+                    </dd>
 
-                <dd>
-                    @Html.DisplayFor(model => model.actualLunchBreakEnd)
-                </dd>
-            </div>
+
         }
         <div style="display: none;">
             <dt>
@@ -141,6 +153,4 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.shiftID }) |
-    @Html.ActionLink("Back to List", "Index")
 </p>
