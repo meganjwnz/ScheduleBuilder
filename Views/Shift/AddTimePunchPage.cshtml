@@ -96,7 +96,7 @@
 
                 <dd>
                     @Html.DisplayFor(model => model.actualLunchBreakStart)
-                    @if (Model.actualLunchBreakStart == null && Model.actualStartTime != null)
+                    @if (Model.actualLunchBreakStart == null && Model.actualStartTime != null  && Model.actualEndTime == null)
                     {
                         <a href='@Url.Action("ClockLunchStart", "Shift")'>
                             <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Start Break" />
@@ -110,7 +110,7 @@
 
                     <dd>
                         @Html.DisplayFor(model => model.actualLunchBreakEnd)
-                       @if (Model.actualLunchBreakStart != null && Model.actualLunchBreakEnd == null && Model.actualEndTime != null)
+                       @if (Model.actualLunchBreakStart != null && Model.actualLunchBreakEnd == null && Model.actualEndTime == null)
                         {
                         <a href='@Url.Action("ClockLunchEnd", "Shift")'>
                             <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="End Break" />
