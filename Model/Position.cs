@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleBuilder.Model
@@ -13,5 +14,7 @@ namespace ScheduleBuilder.Model
         public bool isActive { get; set; }
         [Display(Name = "Position Description")]
         public string positionDescription { get; set; }
+
+        public List<Task> PositionTasks { get; set; }
     }
 }

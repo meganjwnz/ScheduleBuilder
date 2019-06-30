@@ -48,6 +48,16 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     };
     $scope.getAllPositions();
 
+    $scope.getAllTasks = function () {
+        $http.post('/Position/GetAllTasks').then(function (response) {
+            $scope.allTasks = response.data;
+            console.log($scope.allPositions);
+        }), function (error) {
+            console.log(error);
+        };
+    };
+    $scope.getAllTasks();
+
     $scope.dateOptions = {
         formatYear: 'yy',
         maxDate: new Date(2020, 5, 22),
