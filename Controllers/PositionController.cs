@@ -94,7 +94,7 @@ namespace ScheduleBuilder.Controllers
         #endregion
 
         #region task methods
-        private TaskDAL taskDAL = new TaskDAL();
+        private readonly TaskDAL taskDAL = new TaskDAL();
 
         public ActionResult Tasks()
         {
