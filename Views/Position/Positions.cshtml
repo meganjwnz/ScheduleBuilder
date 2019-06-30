@@ -125,9 +125,7 @@
 
 <h2>Tasks</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -153,11 +151,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.TaskId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.TaskId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.TaskId })
             </td>
         </tr>
     }
