@@ -89,7 +89,7 @@ namespace ScheduleBuilder.DAL
                 "UPDATE position_tasks " +
                 "SET [taskId] = @taskId, " +
                 "[roleId] = @roleId " +
-                "WHERE id = @id";
+                "WHERE taskId = @taskId AND roleId = @roleId" ;
 
             int positionTaskResult = 0;
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
