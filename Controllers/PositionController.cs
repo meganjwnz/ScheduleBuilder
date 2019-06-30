@@ -1,7 +1,6 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using System;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
@@ -99,6 +98,57 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Tasks()
         {
             return View(this.taskDAL.GetAllTasks());
+        }
+
+        // POST: Position/AddPosition
+        /// <summary>
+        /// Creates a new position
+        /// </summary>
+        /// <param name="positionTitle"></param>
+        /// <param name="positionDescription"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddTask(string taskTitle, string taskDescription, bool isActive)
+        {
+            try
+            {
+                Task task = new Task
+                {
+                    Task_title = taskTitle,
+                    Task_description = taskDescription,
+                    IsActive = isActive
+                };
+                this.taskDAL.AddTask(task);
+                return RedirectToAction("Positions");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // POST: Position/Edit/5
+        [HttpPost]
+        public ActionResult UpdateTask(int id, string taskTitle, string taskDescription, bool isActive)
+        {
+            try
+            {
+                Task task = new Task
+                {
+                    Task_title = taskTitle,
+                    Task_description = taskDescription,
+                    IsActive = isActive,
+                    TaskId = id
+                };
+
+                this.taskDAL.UpdateTask(task);
+                return RedirectToAction("Positions");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         #endregion
