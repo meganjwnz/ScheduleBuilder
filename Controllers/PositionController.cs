@@ -95,9 +95,17 @@ namespace ScheduleBuilder.Controllers
         #region task methods
         private readonly TaskDAL taskDAL = new TaskDAL();
 
-        public ActionResult Tasks()
+        public ActionResult GetAllTasks()
         {
-            return View(this.taskDAL.GetAllTasks());
+            try
+            {
+                return Json(this.taskDAL.GetAllTasks());
+            }
+            catch (Exception e)
+            {
+                this.Messagebox(e.ToString());
+                return null;
+            }
         }
 
         // POST: Position/AddPosition

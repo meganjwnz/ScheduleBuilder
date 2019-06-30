@@ -10,5 +10,7 @@ namespace ScheduleBuilder.Model
         public string Task_description { get; set; }
 
         public bool IsActive { get; set; }
+
+        public int? PositionID { get; set; }
     }
 }

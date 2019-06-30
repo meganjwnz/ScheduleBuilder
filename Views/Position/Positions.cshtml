@@ -41,7 +41,7 @@
 
 <div class="row" style="margin-top:50px;">
     <h4>Tasks:</h4>
-    <button type="button" class="btn btn-default" ng-click="openTaskModal('Add', {})">Add Position</button>
+    <button type="button" class="btn btn-default" ng-click="openTaskModal('Add', {})">Add Task</button>
 
     <table style="width:100%; margin-top:25px;">
 
@@ -57,11 +57,11 @@
         </thead>
         <tbody>
             <tr ng-repeat="ts in allTasks">
-                <td>{{ts.taskID}}</td>
-                <td>{{ts.taskTitle}}</td>
-                <td>{{ts.taskDescription}}</td>
-                <td ng-if="ts.isActive == 1">X</td>
-                <td ng-if="ts.isActive == 0">-</td>
+                <td>{{ts.TaskId}}</td>
+                <td>{{ts.Task_title}}</td>
+                <td>{{ts.Task_description}}</td>
+                <td ng-if="ts.IsActive == 1">X</td>
+                <td ng-if="ts.IsActive == 0">-</td>
                 <td>
                     <button type="button" class="btn btn-default" ng-click="openTaskModal('Update', ts)">Update/Delete</button>
                 </td>
@@ -122,44 +122,3 @@
         {{selected}}
     </form>
 </script>
-
-<h2>Tasks</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Task_title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Task_description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Task_title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Task_description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.TaskId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.TaskId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.TaskId })
-            </td>
-        </tr>
-    }
-
-</table>
