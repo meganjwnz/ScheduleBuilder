@@ -164,7 +164,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                             <label>Position: </label>&nbsp;&nbsp;
                         </th>
                         <th>
-                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in activePositions" ng-model="selected.positionID" ng-required="true" name="position">
+                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in allPositions" ng-model="selected.positionID" ng-required="true" name="position">
                                 <option value="">-- Please select a position --</option>
                             </select>
                             <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>
