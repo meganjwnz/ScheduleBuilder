@@ -64,6 +64,120 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
+        /// Returns list equal to the accepted where statement
+        /// </summary>
+        /// <returns></returns>
+        public List<Shift> GetAllShifts(string whereClause)
+        {
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
+            List<Shift> shiftList = new List<Shift>();
+
+            string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
+                "sh.scheduledLunchBreakStartTime, sh.scheduledLunchBreakEndTime, sh.actualStartTime, sh.actualEndTime, sh.actualLunchBreakStart, " +
+                "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title " +
+                "FROM shift AS s " +
+                "JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
+                "JOIN person AS p ON s.personId = p.id " +
+                "JOIN position AS ps ON s.positionId = ps.id " + whereClause;
+
+            using (connection)
+            {
+                connection.Open();
+
+                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
+                {
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Shift shift = new Shift();
+                            shift.shiftID = int.Parse(reader["id"].ToString());
+                            shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
+                            shift.personID = int.Parse(reader["personId"].ToString());
+                            shift.positionID = int.Parse(reader["positionId"].ToString());
+                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                            shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
+                            shift.scheduledLunchBreakEnd = reader["scheduledLunchBreakEndTime"] as DateTime?;
+                            shift.actualStartTime = reader["actualStartTime"] as DateTime?;
+                            shift.actualEndTime = reader["actualEndTime"] as DateTime?;
+                            shift.actualLunchBreakStart = reader["actualLunchBreakStart"] as DateTime?;
+                            shift.actualLunchBreakEnd = reader["acutalLunchBreakEnd"] as DateTime?;
+                            shift.positionName = reader["position_title"].ToString();
+                            shift.personLastName = reader["last_name"].ToString();
+                            shift.personFirstName = reader["first_name"].ToString();
+                            shiftList.Add(shift);
+                        }
+                    }
+                }
+            }
+            return shiftList;
+
+        }
+
+      
+
+        public Shift GetNearestShift(string whereClause)
+        {
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
+            Shift shift = new Shift();
+            string query = $"SELECT TOP 1 s.id" +
+                $", s.scheduleShiftId" +
+                $", s.personId" +
+                $", s.positionId" +
+                $", sh.scheduledStartTime" +
+                $", sh.scheduledEndTime" +
+                $", sh.scheduledLunchBreakStartTime" +
+                $", sh.scheduledLunchBreakEndTime" +
+                $", sh.actualStartTime" +
+                $", sh.actualEndTime" +
+                $", sh.actualLunchBreakStart" +
+                $", sh.acutalLunchBreakEnd" +
+                $", p.first_name" +
+                $", p.last_name" +
+                $", ps.position_title " +
+                $" FROM shift AS s " +
+                $" JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
+                $" JOIN person AS p ON s.personId = p.id " +
+                $" JOIN position AS ps ON s.positionId = ps.id "
+                +  whereClause +
+                $"  ORDER BY ABS(DATEDIFF(MINUTE, scheduledStartTime, GETDATE()))";
+
+            using (connection)
+            {
+                connection.Open();
+
+                using (SqlCommand selectCommand = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            shift.shiftID = int.Parse(reader["id"].ToString());
+                            shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
+                        
+                            shift.positionID = int.Parse(reader["positionId"].ToString());
+                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                            shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
+                            shift.scheduledLunchBreakEnd = reader["scheduledLunchBreakEndTime"] as DateTime?;
+                            shift.actualStartTime = reader["actualStartTime"] as DateTime?;
+                            shift.actualEndTime = reader["actualEndTime"] as DateTime?;
+                            shift.actualLunchBreakStart = reader["actualLunchBreakStart"] as DateTime?;
+                            shift.actualLunchBreakEnd = reader["acutalLunchBreakEnd"] as DateTime?;
+                            shift.positionName = reader["position_title"].ToString();
+                            shift.personLastName = reader["last_name"].ToString();
+                            shift.personFirstName = reader["first_name"].ToString();
+                            shift.personID = int.Parse(reader["personId"].ToString());
+                        }
+                    }
+                }
+            }
+            return shift;
+
+        }
+
+        /// <summary>
         /// Add a shift
         /// </summary>
         /// <param name="shift">A shift object to be sent to db</param>
@@ -239,5 +353,116 @@ namespace ScheduleBuilder.DAL
 
             return (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
         }
+
+        #region TimeCard 
+        public void ClockUserIn(int shiftHoursId, DateTime clockIn)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                            $" SET actualStartTime = @clockInTime" +
+                            $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+
+                        command.Parameters.AddWithValue("@shiftId", shiftHoursId);
+                        command.Parameters.AddWithValue("@clockInTime", clockIn);
+
+                        command.ExecuteNonQuery();   
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+
+        public void ClockUserOut(int scheduleShiftID, DateTime now)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                           $" SET actualEndTime = @clockOutTime" +
+                           $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+                        command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
+                     
+                        command.Parameters.AddWithValue("@clockOutTime", now);
+                        
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+  
+        public void ClockLunchStart(int scheduleShiftID, DateTime now)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                          $" SET actualLunchBreakStart = @lunchStartTime" +
+                          $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+                        command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
+
+                        command.Parameters.AddWithValue("@lunchStartTime", now);
+
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public void ClockLunchEnd(int scheduleShiftID, DateTime now)
+        {
+            string insert = $" UPDATE ShiftHours" +
+                          $" SET acutalLunchBreakEnd = @lunchEndTime" +
+                          $" WHERE id = @shiftId";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                try
+                {
+                    using (SqlCommand command = new SqlCommand(insert, connection))
+                    {
+                        command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
+
+                        command.Parameters.AddWithValue("@lunchEndTime", now);
+
+                        command.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+        #endregion
     }
 }

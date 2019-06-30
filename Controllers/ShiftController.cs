@@ -13,7 +13,7 @@ namespace ScheduleBuilder.Controllers
         PositionDAL positionDAL = new PositionDAL();
         PersonDAL personDAL = new PersonDAL();
         RoleDAL roleDAL = new RoleDAL();
-        StatusDAL statusDAL = new StatusDAL(); 
+        StatusDAL statusDAL = new StatusDAL();
 
         /// <summary>
         /// gets all shifts from the database
@@ -33,6 +33,88 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        #region TimeCard
+
+        /// <summary>
+        /// Adds Timecard page
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddTimePunchPage()
+        {
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = " WHERE s.personId = "  + loggedInUserId;
+            if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime == DateTime.MinValue)
+            {
+                TempData["notice"] = "You have no scheduled shifts\n\n See Mangement";
+                return RedirectToAction("Index", "Home");
+            }
+            DateTime start = DateTime.Now.AddDays(-1);
+            DateTime end = DateTime.Now.AddDays(1);
+            DateTime test = shiftDAL.GetNearestShift(whereClause).scheduledStartTime;
+            if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime >= DateTime.Now.AddDays(-1) && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1)))
+            {
+                TempData["notice"] = "You have no shifts scheduled today\n\n See Mangement";
+                return RedirectToAction("Index", "Home");
+            }
+            //If Users clock in under 4 hours late
+            else if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(4) < DateTime.Now)
+            {
+                TempData["notice"] = "You are too late to clock in\n See Mangement";
+                return RedirectToAction("Index", "Home");
+
+            }
+            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddMinutes(-15) > DateTime.Now))
+            {
+                TempData["notice"] = "You are too early to clock in\n See Mangement";
+                return RedirectToAction("Index", "Home");
+            }
+            return View(shiftDAL.GetNearestShift(whereClause));
+        }
+  
+        /// <summary>
+        /// Clocks user in retruns them to the time card page
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ClockUserIn()
+        {
+            //This needs to be cleaned up THREE LINES TO GET one ID not cool
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            return Redirect(Request.UrlReferrer.ToString()); 
+        }
+
+        /// <summary>
+        /// Clocks the user out returns them to the time card page
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ClockUserOut()
+        {
+            //This needs to be cleaned up THREE LINES TO GET one ID not cool
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        
+        //Starts the users lunch break
+        public ActionResult ClockLunchStart()
+        {
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        //ends user's lunch break
+        public ActionResult ClockLunchEnd()
+        {
+            string loggedInUserId = (Session["id"].ToString());
+            string whereClause = "WHERE p.id = " + loggedInUserId;
+            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+        #endregion
         /// <summary>
         /// Returns accepted SQL errors 
         /// </summary>
