@@ -202,6 +202,33 @@ namespace ScheduleBuilder.Controllers
                 return View();
             }
         }
+
+
+        /// <summary>
+        /// Updates the relationship between a position and a task
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <param name="positionId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UpdatePositionTask(int taskId, int positionId)
+        {
+            try
+            {
+                PositionTask positionTask = new PositionTask
+                {
+                    TaskId = taskId,
+                    PositionId = positionId,
+                };
+
+                this.positionTaskDAL.UpdatePositionTask(positionTask);
+                return RedirectToAction("Positions");
+            }
+            catch
+            {
+                return View();
+            }
+        }
         #endregion
     }
 }
