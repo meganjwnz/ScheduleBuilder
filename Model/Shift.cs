@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace ScheduleBuilder.Model
 {
     /// <summary>
-    /// Values of shift class
+    /// Values of shift class in the database combinds a few different tables 
     /// </summary>
     public class Shift
     {
         
-        //Shift Id
+        //Shift Id 
         public int shiftID { get; set; }
         
         //Scheduled shift id
