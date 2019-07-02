@@ -108,37 +108,50 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
-        // POST: Position/AddPosition
+        // POST: Task/AddTask
         /// <summary>
-        /// Creates a new position
+        /// Creates a new task
         /// </summary>
-        /// <param name="positionTitle"></param>
-        /// <param name="positionDescription"></param>
+        /// <param name="taskTitle"></param>
+        /// <param name="taskDescription"></param>
         /// <param name="isActive"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddTask(string taskTitle, string taskDescription, bool isActive)
+        public ActionResult AddShiftTask(string taskTitle, string taskDescription, bool isActive)
         {
-            try
-            {
                 Task task = new Task
                 {
                     Task_title = taskTitle,
                     Task_description = taskDescription,
                     IsActive = isActive
                 };
-                this.taskDAL.AddTask(task);
-                return RedirectToAction("Positions");
-            }
-            catch
+                return Json(this.taskDAL.AddShiftTask(task)); 
+        }
+
+        // POST: Task/AddTask
+        /// <summary>
+        /// Creates a new task
+        /// </summary>
+        /// <param name="taskTitle"></param>
+        /// <param name="taskDescription"></param>
+        /// <param name="isActive"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddPositionTask(string taskTitle, string taskDescription, bool isActive, string positionID)
+        {
+            Task task = new Task
             {
-                return View();
-            }
+                Task_title = taskTitle,
+                Task_description = taskDescription,
+                IsActive = isActive,
+                PositionID = int.Parse(positionID)
+            };
+            return Json(this.taskDAL.AddPositionTask(task));
         }
 
         // POST: Position/Edit/5
         [HttpPost]
-        public ActionResult UpdateTask(int id, string taskTitle, string taskDescription, bool isActive)
+        public ActionResult UpdateShiftTask(int id, string taskTitle, string taskDescription, bool isActive)
         {
             try
             {
@@ -150,8 +163,7 @@ namespace ScheduleBuilder.Controllers
                     TaskId = id
                 };
 
-                this.taskDAL.UpdateTask(task);
-                return RedirectToAction("Positions");
+                return Json(this.taskDAL.UpdateShiftTask(task));
             }
             catch
             {

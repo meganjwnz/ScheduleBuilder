@@ -12,5 +12,7 @@ namespace ScheduleBuilder.Model
         public bool IsActive { get; set; }
 
         public int? PositionID { get; set; }
+
+        public string PositionName { get; set; }
     }
 }
