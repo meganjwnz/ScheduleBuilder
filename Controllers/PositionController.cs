@@ -171,6 +171,29 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        // POST: Position/Edit/5
+        [HttpPost]
+        public ActionResult UpdateTaskPosition(int id, string taskTitle, string taskDescription, bool isActive, int positionID)
+        {
+            try
+            {
+                Task task = new Task
+                {
+                    Task_title = taskTitle,
+                    Task_description = taskDescription,
+                    IsActive = isActive,
+                    TaskId = id,
+                    PositionID =  positionID
+                };
+
+                return Json(this.taskDAL.UpdatePositionTask(task));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         #endregion
 
         #region position_tasks method

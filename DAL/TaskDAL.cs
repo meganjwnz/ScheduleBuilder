@@ -93,7 +93,7 @@ namespace ScheduleBuilder.DAL
 
             string insertStatement =
                 "INSERT INTO task([task_title],[isActive], [task_description]) " +
-                "VALUES(@task_title, @isActive, @task_description)";
+                "VALUES(@task_title, @isActive, @task_description);SELECT SCOPE_IDENTITY();";
 
             string insertptStatement =
                 "INSERT INTO position_tasks([taskId],[roleId]) " +
@@ -190,9 +190,8 @@ namespace ScheduleBuilder.DAL
 
             string updateptStatement =
                 "UPDATE position_tasks " +
-                "SET [taskId] = @taskId, " +
-                "[roleId] = @roleId " +
-                "WHERE taskId = @taskId AND roleId = @roleId";
+                "SET [roleId] = @roleId " +
+                "WHERE taskId = @taskId ";
 
             int taskResult = 0;
             int positionTaskResult = 0;
