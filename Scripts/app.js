@@ -329,12 +329,22 @@ app.controller('TaskModalInstanceCtrl', function ($uibModalInstance, $scope, $ht
         var tIsActive = selected.tActive;
         var positionID = selected.positionID;
 
-        console.log("add");
+        $http.post('/Position/AddTaskPosition', { taskTitle: tTitle, taskDescription: tDescription, isActive: tIsActive, positionID: positionID }).then(function (response) {
+            $scope.success = response.data;
+            if ($scope.success) {
+                alert("Task added successfully");
+                $scope.cancel();
+                $scope.getAllTasks();
+            } else {
+                alert("There was an error adding your task. Please try again.");
+            }
+        }), function (error) {
+            alert(error);
+        };
 
     };
 
     $scope.updateTask = function (selected) {
-        var positionID = selected.positionID;
         var tTitle = selected.tTitle;
         var tDescription = selected.tDesc;
         var tIsActive = selected.tActive;

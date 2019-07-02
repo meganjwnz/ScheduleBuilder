@@ -3,7 +3,7 @@ using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-
+using System.Windows.Forms;
 
 namespace ScheduleBuilder.DAL
 {
@@ -68,7 +68,7 @@ namespace ScheduleBuilder.DAL
                         insertCommand.Transaction = transaction;
                         insertCommand.Parameters.AddWithValue("@task_title", task.Task_title);
                         insertCommand.Parameters.AddWithValue("@isActive", task.IsActive);
-                        insertCommand.Parameters.AddWithValue("@position_description", task.Task_description);
+                        insertCommand.Parameters.AddWithValue("@task_description", task.Task_description);
                         taskresult = insertCommand.ExecuteNonQuery();
                     }
                     transaction.Commit();
@@ -111,7 +111,7 @@ namespace ScheduleBuilder.DAL
                         insertCommand.Transaction = transaction;
                         insertCommand.Parameters.AddWithValue("@task_title", task.Task_title);
                         insertCommand.Parameters.AddWithValue("@isActive", task.IsActive);
-                        insertCommand.Parameters.AddWithValue("@position_description", task.Task_description);
+                        insertCommand.Parameters.AddWithValue("@task_description", task.Task_description);
                         pk = Convert.ToInt32(insertCommand.ExecuteScalar());
                         taskresult = 1;
                     }
@@ -124,8 +124,9 @@ namespace ScheduleBuilder.DAL
                     }
                     transaction.Commit();
                 }
-                catch
+                catch (Exception e)
                 {
+                    MessageBox.Show(e.ToString());
                     transaction.Rollback();
                 }
             }

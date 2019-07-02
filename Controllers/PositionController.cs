@@ -117,7 +117,7 @@ namespace ScheduleBuilder.Controllers
         /// <param name="isActive"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddShiftTask(string taskTitle, string taskDescription, bool isActive)
+        public ActionResult AddTaskShift(string taskTitle, string taskDescription, bool isActive)
         {
                 Task task = new Task
                 {
@@ -137,7 +137,7 @@ namespace ScheduleBuilder.Controllers
         /// <param name="isActive"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddPositionTask(string taskTitle, string taskDescription, bool isActive, string positionID)
+        public ActionResult AddTaskPosition(string taskTitle, string taskDescription, bool isActive, string positionID)
         {
             Task task = new Task
             {
@@ -151,7 +151,7 @@ namespace ScheduleBuilder.Controllers
 
         // POST: Position/Edit/5
         [HttpPost]
-        public ActionResult UpdateShiftTask(int id, string taskTitle, string taskDescription, bool isActive)
+        public ActionResult UpdateTaskShift(int id, string taskTitle, string taskDescription, bool isActive)
         {
             try
             {
