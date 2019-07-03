@@ -1,12 +1,8 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
-using System.Collections.Generic;
 using System.Data;
 using System.Web.Mvc;
 using System.Web.Security;
-using MailKit;
-using MailKit.Net.Smtp;
-using MimeKit;
 using System.Linq;
 
 namespace ScheduleBuilder.Controllers

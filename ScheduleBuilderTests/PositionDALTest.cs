@@ -1,11 +1,7 @@
 ﻿using Autofac.Extras.Moq;
 using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ScheduleBuilderTests

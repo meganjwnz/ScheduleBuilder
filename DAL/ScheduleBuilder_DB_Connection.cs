@@ -1,6 +1,4 @@
-﻿
-using System.Configuration;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
 
 namespace ScheduleBuilder.DAL

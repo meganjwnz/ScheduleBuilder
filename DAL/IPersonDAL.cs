@@ -1,9 +1,6 @@
 ﻿using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScheduleBuilder.DAL
 {
@@ -55,6 +52,12 @@ namespace ScheduleBuilder.DAL
         /// <param name="person"></param>
         /// <returns></returns>
         Person SeperateEmployee(Person person);
+
+        /// <summary>
+        /// Allows the user to update thier password
+        /// </summary>
+        /// <param name="person"></param>
+        void UpdatePassword(Person person);
 
 
 
