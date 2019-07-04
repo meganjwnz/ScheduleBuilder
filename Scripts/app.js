@@ -3,10 +3,17 @@
 app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.test = "hello";
+    $scope.employeeDateFilter = 'current';
+    $scope.filterForEmployeeShift = 'FilterFn';
 
     $scope.getSessionID = function () {
         $scope.sessionID = document.getElementById("sessionIDForAngular").value;
         return $scope.sessionID;
+    };
+
+    $scope.getSessionRoleTitle = function () {
+        $scope.sessionRoleTitle = document.getElementById("sessionRoleTitleForAngular").value;
+        return $scope.sessionRoleTitle;
     };
 
     $scope.getShifts = function () {
@@ -66,6 +73,15 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         };
     };
     $scope.getAllTasks();
+
+    $scope.getEmployeeDateFilter = function (employeeDateFilter) {
+        if (employeeDateFilter == 'past') {
+            $scope.filterForEmployeeShift = '!FilterFn';
+        } else {
+            $scope.filterForEmployeeShift = 'FilterFn';
+        }
+        
+    };
 
     $scope.dateOptions = {
         formatYear: 'yy',
@@ -188,6 +204,16 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             size: 'lg',
             controller: 'TaskModalInstanceCtrl',
         }).result.then(function () { }, function () { });
+    };
+
+    $scope.filterFn = function (shift) {
+        console.log(shift);
+        console.log($scope.jsDate(shift.scheduledStartTime) < Date.now());
+        if ($scope.jsDate(shift.scheduledStartTime) < Date.now()) {
+            return true;
+        } else {
+            return false;
+        }
     };
 
 });

@@ -6,65 +6,52 @@
     <p>@TempData["notice"]</p>
 }
 <input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
+<input type="hidden" id="sessionRoleTitleForAngular" value="@Session["roleTitle"].ToString()" />
 
-@if (Session["roleTitle"].ToString() == "Employee")
-{
-    <div class="jumbotron center">
-        <div>
-            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
-        </div>
-        <h2>Welcome to the Employee Dashboard</h2>
 
-        <table style="width:100%;">
-
-            <thead class="tablestyle">
-                <tr>
-                    <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
-                    <th>scheduleShiftID</th>
-                    <th>personID</th> -->
-                    <th>Name</th>
-                    <!-- <th>positionID</th> -->
-                    <th>Position</th>
-                    <th>scheduledStartTime</th>
-                    <th>scheduledEndTime</th>
-                    <th>scheduledLunchBreakStart</th>
-                    <th>scheduledLunchBreakEnd</th>
-                    <!-- <th>actualStartTime</th>
-                    <th>actualEndTime</th>
-                    <th>actualLunchBreakStart</th>
-                    <th>actualLunchBreakEnd</th> -->
-                    <th></th>
-                    <th>Hours per shift</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="sh in shift  | filter: { personID : getSessionID() }">
-                    <!-- <td>{{sh.shiftID}}</td>
-                    <td>{{sh.scheduleShiftID}}</td>
-                    <td>{{sh.personID}}</td> -->
-                    <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
-                    <!-- <td>{{sh.positionID}}</td> -->
-
-                    <td>{{sh.positionName}}</td>
-                    <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
-                    <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
-                    <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
-                    <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
-                    <!-- <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
-                    <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
-                    <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
-                    <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
-                    <td>
-                        <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
-                    </td>
-                    <td>{{getTotalHours(sh)}}</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="jumbotron center">
+    <div>
+        <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
     </div>
-    <p class="lead">Today's Schedule</p>
-}
-else if (Session["roleTitle"].ToString() == "Manager")
+    <h2>Welcome to the {{getSessionRoleTitle()}} Dashboard</h2>
+
+    <select class="form-control" ng-model="employeeDateFilter" ng-required="true" name="employeeDateFilter" ng-change="getEmployeeDateFilter(employeeDateFilter)">
+        <option value="current">Current Shifts</option>
+        <option value="past">Past Shifts</option>
+    </select>
+    <br />
+
+    <table style="width:100%;">
+
+        <thead class="tablestyle">
+            <tr>
+
+                <th>Name</th>
+                <th>Position</th>
+                <th>scheduledStartTime</th>
+                <th>scheduledEndTime</th>
+                <th>scheduledLunchBreakStart</th>
+                <th>scheduledLunchBreakEnd</th>
+                <th>Hours per shift</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="sh in shift  | filter: { personID : getSessionID() } |  filter: filterForEmployeeShift ">
+
+                <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
+                <td>{{sh.positionName}}</td>
+                <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
+                <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
+                <td>{{getTotalHours(sh)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- May not need these now, passed variable to angular to make code cleaner and not copy table repeatedly
+@if (Session["roleTitle"].ToString() == "Manager")
 {
     <div class="jumbotron center">
         <div>
@@ -83,10 +70,10 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
         </div>
         <h2>Welcome to the Administrator Dashboard</h2>
     </div>
-}
+} -->
 
 
-<div>
+<div ng-show="getSessionRoleTitle() == 'Adminstrator'">
     <button type="button" class="btn btn-default" ng-click="openModal('Add', {})">Add Shift</button>
     <h4>All Shifts:</h4>
     <table style="width:100%;">
