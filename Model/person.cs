@@ -1,5 +1,4 @@
-﻿using SendGrid.Helpers.Mail;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleBuilder.Model

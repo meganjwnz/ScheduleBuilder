@@ -1,13 +1,9 @@
 ﻿using Autofac.Extras.Moq;
 using Moq;
-using ScheduleBuilder.Controllers;
 using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ScheduleBuilderTests
@@ -101,6 +97,39 @@ namespace ScheduleBuilderTests
                 personDAL.EditPerson(editPerson);
 
                 mock.Mock<IPersonDAL>().Verify(x => x.EditPerson(editPerson), Times.Exactly(1));
+            }
+        }
+
+
+        [Fact]
+        public void TestUpdatePassword()
+        {
+            HashingService hashed = new HashingService();
+            using (var mock = AutoMock.GetLoose())
+            {
+                var person = new Person
+                {
+                    Id = 1,
+                    LastName = "EditedDrew",
+                    FirstName = "Drew",
+                    Ssn = "123456789",
+                    Gender = "Male",
+                    DateOfBirth = DateTime.Now,
+                    RoleId = 1,
+                    StatusId = 1,
+                    Email = "Drew@email.com",
+                    StreetAddress = "1149 Grove",
+                    Zipcode = "30145",
+                    Phone = "7777777777",
+                    Password = "pass",
+                    Username = "test"
+                };
+                mock.Mock<IPersonDAL>().Setup(x => x.GetDesiredPersons(It.IsAny<string>())).Returns(GetSamplePeople());
+
+                var personDAL = mock.Create<IPersonDAL>();
+                personDAL.UpdatePassword(person);
+
+                mock.Mock<IPersonDAL>().Verify(x => x.UpdatePassword(person), Times.Exactly(1));
             }
         }
 
@@ -267,7 +296,7 @@ namespace ScheduleBuilderTests
                     StreetAddress = "1149 Grove",
                     Zipcode = "30145",
                     Phone = "4543631011",
-                    Password = "pass",
+                    Password = "Lizard",
                     Username = "test"
                 },
                  new Person

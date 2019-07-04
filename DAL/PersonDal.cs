@@ -130,7 +130,7 @@ namespace ScheduleBuilder.DAL
         /// <param name="sql"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public int SaveData<model>(string sql, model data)
+        private int SaveData<model>(string sql, model data)
         {
             using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
             {

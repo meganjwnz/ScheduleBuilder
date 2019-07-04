@@ -6,8 +6,6 @@ using System.Data;
 using System.Linq;
 using ScheduleBuilder.ModelViews;
 using System;
-using MimeKit;
-using MailKit.Net.Smtp;
 
 namespace ScheduleBuilder.Controllers
 {
