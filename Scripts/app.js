@@ -41,12 +41,21 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     $scope.getAllPositions = function () {
         $http.post('/Position/GetAllPositions').then(function (response) {
             $scope.allPositions = response.data;
-            console.log($scope.allPositions);
         }), function (error) {
             console.log(error);
         };
     };
     $scope.getAllPositions();
+
+    $scope.getPersonPositions = function (personID) {
+        console.log("PERSON", personID);
+        $http.post('/Position/GetPersonPositions', { personID: personID }).then(function (response) {
+            $scope.personPositions = response.data;
+            console.log($scope.personPositions);
+        }), function (error) {
+            console.log(error);
+        };
+    };
 
     $scope.getAllTasks = function () {
         $http.post('/Position/GetAllTasks').then(function (response) {

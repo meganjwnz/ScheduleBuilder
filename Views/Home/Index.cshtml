@@ -152,19 +152,19 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                             <label>Person: </label>&nbsp;&nbsp;
                         </th>
                         <th>
-                            <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID" ng-required="true" name="personID">
+                            <select class="form-control" ng-options="item.Id as item.LastName + ', ' + item.FirstName for item in activePeople" ng-model="selected.personID" ng-required="true" name="personID" ng-change="getPersonPositions(selected.personID)">
                                 <option value="">-- Please select a person --</option>
                             </select>
                             <span ng-show="shiftForm.personID.$touched && shiftForm.personID.$invalid">You must select a person.</span>
                         </th>
 
                     </tr>
-                    <tr>
+                    <tr ng-show="selected.personID">
                         <th>
                             <label>Position: </label>&nbsp;&nbsp;
                         </th>
                         <th>
-                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in allPositions" ng-model="selected.positionID" ng-required="true" name="position">
+                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in personPositions" ng-model="selected.positionID" ng-required="true" name="position">
                                 <option value="">-- Please select a position --</option>
                             </select>
                             <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>

@@ -25,7 +25,7 @@ namespace ScheduleBuilder.DAL
             string selectStatement = "SELECT p.id, p.position_title, p.isActive, p.position_description " +
                 "FROM position as p " +
                 "WHERE p.isActive = 1";
-                
+
             using (connection)
             {
                 connection.Open();
@@ -47,7 +47,7 @@ namespace ScheduleBuilder.DAL
             }
             return positionList;
         }
-        
+
         /// <summary>
         /// Retrieves all the positions
         /// </summary>
@@ -84,6 +84,44 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
+        /// Get only the positions assigned to a specific person
+        /// </summary>
+        /// <param name="personID">The id of the person</param>
+        /// <returns>A list of positions</returns>
+        public List<Position> GetPersonPositions(int personID)
+        {
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
+            List<Position> personPepositionList = new List<Position>();
+
+            string selectStatement = "SELECT p.id, p.position_title, p.isActive, p.position_description " +
+                "FROM position p " +
+                "JOIN assignedPosition AS ap ON p.id = ap.positionId " +
+                "WHERE ap.personId = @personID";
+
+            using (connection)
+            {
+                connection.Open();
+
+                SqlCommand selectCommand = new SqlCommand(selectStatement, connection);
+                selectCommand.Parameters.AddWithValue("@personID", personID);
+                SqlDataReader reader = selectCommand.ExecuteReader();
+                
+                while (reader.Read())
+                {
+                    Position position = new Position();
+                    position.positionID = int.Parse(reader["id"].ToString());
+                    position.positionTitle = reader["position_title"].ToString();
+                    position.isActive = (bool)reader["isActive"];
+                    position.positionDescription = reader["position_description"].ToString();
+                    personPepositionList.Add(position);
+                }
+
+            }
+            return personPepositionList;
+        }
+
+
+        /// <summary>
         /// Adds a new position
         /// </summary>
         /// <param name="position"></param>
@@ -92,12 +130,12 @@ namespace ScheduleBuilder.DAL
         {
             int positionResult = 0;
 
-            string insertStatement = 
+            string insertStatement =
                 "INSERT INTO position([position_title],[isActive], [position_description]) " +
                 "VALUES(@position_title, @isActive, @position_description)";
 
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {            
+            {
                 connection.Open();
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
@@ -109,8 +147,8 @@ namespace ScheduleBuilder.DAL
                         insertCommand.Parameters.AddWithValue("@isActive", position.isActive);
                         insertCommand.Parameters.AddWithValue("@position_description", position.positionDescription);
                         positionResult = insertCommand.ExecuteNonQuery();
-                }
-                transaction.Commit();
+                    }
+                    transaction.Commit();
                 }
                 catch
                 {
@@ -127,7 +165,7 @@ namespace ScheduleBuilder.DAL
         /// <returns></returns>
         public bool UpdatePosition(Position position)
         {
-            string updateStatement = 
+            string updateStatement =
                 "UPDATE position " +
                 "SET [position_title] = @position_title, " +
                 "[isActive] = @isActive, " +
@@ -161,32 +199,5 @@ namespace ScheduleBuilder.DAL
             return (positionResult >= 1 ? true : false);
         }
 
-        public Position DeactivatePosition(Position position)
-        {
-            string update =
-                "UPDATE position " +
-                "SET [isActive] = @isActive " +
-                "WHERE id = @id";
-            try
-            {
-                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-                {
-                    connection.Open();
-                    using (SqlCommand updateCommand = new SqlCommand(update, connection))
-                    {
-
-                        updateCommand.Parameters.AddWithValue("@isActive", 0);
-                        updateCommand.Parameters.AddWithValue("@id", position.positionID);
-                        updateCommand.ExecuteNonQuery();
-                    }
-                    connection.Close();
-                }
-            }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
-            return position;
-        }
     }
 }

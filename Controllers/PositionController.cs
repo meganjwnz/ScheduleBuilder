@@ -29,7 +29,21 @@ namespace ScheduleBuilder.Controllers
                 return null;
             }
         }
-      
+
+        // GET: Position
+        public ActionResult GetPersonPositions(int personID)
+        {
+            try
+            {
+                return Json(this.positionDAL.GetPersonPositions(personID));
+            }
+            catch (Exception e)
+            {
+                this.Messagebox(e.ToString());
+                return null;
+            }
+        }
+
         // POST: Position/AddPosition
         /// <summary>
         /// Creates a new position
