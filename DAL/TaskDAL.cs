@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace ScheduleBuilder.DAL
 {
-    public class TaskDAL
+    public class TaskDAL : ITaskDAL
     {
         public List<Task> GetAllTasks()
         {

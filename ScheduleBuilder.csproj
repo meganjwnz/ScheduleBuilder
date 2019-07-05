@@ -214,6 +214,7 @@
     <Compile Include="DAL\IPersonDAL.cs" />
     <Compile Include="DAL\IShiftDAL.cs" />
     <Compile Include="DAL\IStatusDAL.cs" />
+    <Compile Include="DAL\ITaskDAL.cs" />
     <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PersonDal.cs" />
     <Compile Include="DAL\PositionDAL.cs" />
