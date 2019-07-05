@@ -44,6 +44,43 @@ namespace ScheduleBuilder.DAL
             return taskList;
         }
 
+        public List<Task> GetPositionTasks(int positionID)
+        {
+            SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
+            List<Task> taskList = new List<Task>();
+
+            string selectStatement = "SELECT t.id, t.task_title, t.isActive, t.task_description, pt.roleId, p.position_title " +
+                "FROM task t " +
+                "RIGHT JOIN position_tasks AS pt ON t.id = pt.taskId " +
+                "JOIN position AS p ON pt.roleId = p.id " +
+                "WHERE pt.roleId = @positionID AND t.isActive = 1";
+
+            using (connection)
+            {
+                connection.Open();
+
+                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
+                {
+                    selectCommand.Parameters.AddWithValue("@positionID", positionID);
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Task task = new Task();
+                            task.TaskId = int.Parse(reader["id"].ToString());
+                            task.Task_title = reader["task_title"].ToString();
+                            task.IsActive = (bool)reader["isActive"];
+                            task.Task_description = reader["task_description"].ToString();
+                            task.PositionID = int.Parse(reader["roleId"].ToString());
+                            task.PositionName = reader["position_title"].ToString();
+                            taskList.Add(task);
+                        }
+                    }
+                }
+            }
+            return taskList;
+        }
+
         /// <summary>
         /// Adds a new task
         /// </summary>

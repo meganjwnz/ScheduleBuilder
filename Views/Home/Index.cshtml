@@ -191,11 +191,23 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                             <label>Position: </label>&nbsp;&nbsp;
                         </th>
                         <th>
-                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in personPositions" ng-model="selected.positionID" ng-required="true" name="position">
+                            <select class="form-control" ng-options="item.positionID as item.positionTitle for item in personPositions" ng-model="selected.positionID" ng-required="true" name="position" ng-change="getPositionTasks(selected.positionID)">
                                 <option value="">-- Please select a position --</option>
                             </select>
                             <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>
                         </th>
+                    </tr>
+                    {{selected.tasks}}
+                    <tr ng-show="selected.positionID">
+                        <th>Position Tasks: </th>
+                        <th>
+                            <ul style="list-style:none;">
+                                <li ng-repeat="t in positionTasks">
+                                    <label><input type="checkbox" ng-model="selected.tasks[t.TaskId]" ng-true-value="'true'" ng-false-value="'false'">&nbsp;{{t.Task_title}}</label>
+
+                                </li>
+                            </ul>
+                            </th>
                     </tr>
                     <tr>
                         <th>

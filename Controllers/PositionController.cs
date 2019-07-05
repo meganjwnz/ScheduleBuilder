@@ -122,6 +122,19 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        public ActionResult GetPositionTasks(int positionID)
+        {
+            try
+            {
+                return Json(this.taskDAL.GetPositionTasks(positionID));
+            }
+            catch (Exception e)
+            {
+                this.Messagebox(e.ToString());
+                return null;
+            }
+        }
+
         // POST: Task/AddTask
         /// <summary>
         /// Creates a new task

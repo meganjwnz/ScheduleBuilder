@@ -61,6 +61,14 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         };
     };
 
+    $scope.getPositionTasks = function (positionID) {
+        $http.post('/Position/GetPositionTasks', { positionID: positionID }).then(function (response) {
+            $scope.positionTasks = response.data;
+        }), function (error) {
+            console.log(error);
+        };
+    };
+
     $scope.getAllTasks = function () {
         $http.post('/Position/GetAllTasks').then(function (response) {
             $scope.allTasks = response.data;
