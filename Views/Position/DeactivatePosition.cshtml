@@ -6,44 +6,52 @@
 }
 
 <h2>DeactivatePosition</h2>
+@if (Session["roleTitle"].ToString() == "Employee")
+{
+    <h1 style="color:red">You do not have access here.</h1>
+    @Html.ActionLink("Return Home", "Index", "Home")
+}
+else
+{
+    <h3>Are you sure you want to deactivate this?</h3>
+    <div>
+        <h4>Position</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.positionTitle)
+            </dt>
 
-<h3>Are you sure you want to deactivate this?</h3>
-<div>
-    <h4>Position</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.positionTitle)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.positionTitle)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.positionTitle)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.isActive)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.isActive)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.isActive)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.isActive)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.positionDescription)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.positionDescription)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.positionDescription)
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.positionDescription)
-        </dd>
+        </dl>
 
-    </dl>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Deactivate" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Positions")
-        </div>
-    }
-</div>
+            <div class="form-actions no-color">
+                <input type="submit" value="Deactivate" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Positions")
+            </div>
+        }
+    </div>
+}
