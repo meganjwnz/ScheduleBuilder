@@ -157,6 +157,42 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
+        /// Adds a position to a person
+        /// </summary>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public bool AddPositionToPerson(Person person, Position position)
+        {
+            int positionResult = 0;
+
+            string insertStatement =
+                "INSERT INTO assignedPosition([personId],[positionId]) " +
+                "VALUES(@personId, @positionId)";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand insertCommand = new SqlCommand(insertStatement, connection))
+                    {
+                        insertCommand.Transaction = transaction;
+                        insertCommand.Parameters.AddWithValue("@personId", person.Id);
+                        insertCommand.Parameters.AddWithValue("@positionId", position.positionID);
+                        positionResult = insertCommand.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
+            return (positionResult >= 1 ? true : false);
+        }
+
+        /// <summary>
         /// Updates a selected position 
         /// </summary>
         /// <param name="position"></param>
