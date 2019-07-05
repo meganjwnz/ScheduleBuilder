@@ -2,7 +2,6 @@
 
 app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
-    $scope.test = "hello";
     $scope.employeeDateFilter = 'current';
     $scope.filterForEmployeeShift = 'FilterFn';
 
@@ -55,10 +54,8 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     $scope.getAllPositions();
 
     $scope.getPersonPositions = function (personID) {
-        console.log("PERSON", personID);
         $http.post('/Position/GetPersonPositions', { personID: personID }).then(function (response) {
             $scope.personPositions = response.data;
-            console.log($scope.personPositions);
         }), function (error) {
             console.log(error);
         };
@@ -67,7 +64,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     $scope.getAllTasks = function () {
         $http.post('/Position/GetAllTasks').then(function (response) {
             $scope.allTasks = response.data;
-            console.log($scope.allPositions);
         }), function (error) {
             console.log(error);
         };
@@ -80,7 +76,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         } else {
             $scope.filterForEmployeeShift = 'FilterFn';
         }
-        
     };
 
     $scope.dateOptions = {
@@ -207,9 +202,31 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     };
 
     $scope.filterFn = function (shift) {
-        console.log(shift);
-        console.log($scope.jsDate(shift.scheduledStartTime) < Date.now());
         if ($scope.jsDate(shift.scheduledStartTime) < Date.now()) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.sum = function (todayShift) {
+        var total = 0;
+        if (todayShift) {
+            for (i = 0; i < todayShift.length; i++) {
+                total += parseFloat($scope.getTotalHours(todayShift[i]));
+            };
+        }
+        return total.toFixed(2);
+    }
+
+    $scope.filterFnToday = function (shift) {
+        //full js date of today from 00:00:00 to 11:59:59
+        var start = new Date();
+        start.setHours(0, 0, 0, 0);
+        var end = new Date();
+        end.setHours(23, 59, 59, 999);
+        
+        if (($scope.jsDate(shift.scheduledStartTime) > start) && ($scope.jsDate(shift.scheduledStartTime) < end) ) {
             return true;
         } else {
             return false;
