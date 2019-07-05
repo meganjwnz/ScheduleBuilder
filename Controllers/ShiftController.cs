@@ -3,6 +3,7 @@ using ScheduleBuilder.Model;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -145,8 +146,10 @@ namespace ScheduleBuilder.Controllers
         /// gets all positions from the database
         /// </summary>
         [HttpPost]
-        public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt)
+        public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList)
         {
+            JavaScriptSerializer thing = new JavaScriptSerializer();
+            dynamic otherThing = thing.Deserialize<object>(taskList);
             Shift shift = new Shift();
             shift.personID = int.Parse(personID);
             shift.positionID = int.Parse(positionID);
@@ -168,7 +171,7 @@ namespace ScheduleBuilder.Controllers
             {
                 shift.scheduledLunchBreakEnd = null;
             }
-
+            
             return Json(shiftDAL.AddShift(shift));
 
         }

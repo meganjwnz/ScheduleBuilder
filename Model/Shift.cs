@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleBuilder.Model
@@ -63,6 +64,8 @@ namespace ScheduleBuilder.Model
         //shift actual lunch end time
         [Display(Name = "Actual Break End")]
         public DateTime? actualLunchBreakEnd { get; set; }
+
+        public List<int> TaskIdList { get; set; }
 
     }
 }

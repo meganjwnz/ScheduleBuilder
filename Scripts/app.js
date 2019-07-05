@@ -245,7 +245,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
 
-    $scope.hell = $scope.selectedShift;
     $scope.selected = {};
     $scope.selected.shiftID = $scope.selectedShift.shiftID;
     $scope.selected.scheduledShiftID = $scope.selectedShift.scheduleShiftID;
@@ -263,11 +262,13 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var enddt = selected.enddt.getTime();
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
+        var taskArray = JSON.stringify(selected.tasks);
+        console.log(taskArray);
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {
-            $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt }).then(function (response) {
+            $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt, taskList: taskArray }).then(function (response) {
                 $scope.success = response.data;
                 if ($scope.success) {
                     alert("Shift added successfully");

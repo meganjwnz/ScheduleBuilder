@@ -207,7 +207,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
                                 </li>
                             </ul>
-                            </th>
+                        </th>
                     </tr>
                     <tr>
                         <th>
@@ -293,12 +293,12 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
 
                     </tr>
                     <tr><th>*Optional fields</th></tr>
-                    <tr ng-if="type == 'Update'">
-                        <th>
-                            <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
-                            <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
-                        </th>
-                    </tr>
+                    <!--<tr ng-if="type == 'Update'">
+        <th>
+            <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
+            <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
+        </th>
+    </tr>-->
                 </tbody>
             </table>
         </div>
