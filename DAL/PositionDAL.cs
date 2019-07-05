@@ -233,34 +233,5 @@ namespace ScheduleBuilder.DAL
             return (positionResult >= 1 ? true : false);
         }
 
-
-        public List<Role> GetRoles()
-        {
-            List<Role> roles = new List<Role>();
-            string selectStatement =
-                "SELECT id, roleTitle, roleDescription " +
-                "FROM role";
-            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {
-                connection.Open();
-                using (SqlCommand sqlCommand = new SqlCommand(selectStatement, connection))
-                {
-                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Role role = new Role
-                            {
-                                Id = (int)reader["id"],
-                                RoleTitle = (string)reader["roleTitle"],
-                                RoleDescription = (string)reader["roleDescription"]
-                            };
-                            roles.Add(role);
-                        }
-                    }
-                    return roles;
-                }
-            }
-        }
     }
 }

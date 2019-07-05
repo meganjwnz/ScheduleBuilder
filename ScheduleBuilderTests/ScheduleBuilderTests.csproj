@@ -101,6 +101,7 @@
     <Compile Include="RoleDALTest.cs" />
     <Compile Include="ShiftDALTest.cs" />
     <Compile Include="StatusDALTest.cs" />
+    <Compile Include="TaskDALTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
