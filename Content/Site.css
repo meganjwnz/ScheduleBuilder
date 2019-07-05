@@ -142,6 +142,27 @@ table.center {
     margin-right: auto;
 }
 
+/*Details page*/
+
+dt {
+    padding: 9px 11px;
+    background: #337ab7;
+    color: #fff;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    font-size: 16px;
+}
+
+dd {
+    padding: 9px 11px;
+    font-size: 16px;
+    background: #fff;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-style: solid; 
+    border-color: #337ab7;
+}
+
 /* Mobile */
 @media only screen and (max-width: 600px) {
 }
