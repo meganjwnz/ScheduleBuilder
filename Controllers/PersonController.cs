@@ -18,6 +18,7 @@ namespace ScheduleBuilder.Controllers
         PersonDAL personDAL = new PersonDAL();
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
+        PositionDAL positionDAL = new PositionDAL();
 
         private void InitializeViewBag()
         {
@@ -266,6 +267,30 @@ namespace ScheduleBuilder.Controllers
             return View(person);
         }
 
+        public ActionResult AddPosition(int id)
+        {
+            ViewBag.allPositions = this.positionDAL.GetAllActivePositions();
+            string whereClause = "";
+            Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
+            return View(person);
+        }
+
+        [HttpPost]
+        public ActionResult AddPosition(Person person)
+        {
+            this.InitializeViewBag();
+            try
+            {
+                this.positionDAL.AddPositionToPerson(person.Id, Convert.ToInt32(Request.Form["assignedPosition"]));
+                //this.ContactEditedPerson(person);
+                return RedirectToAction("GetAllPeoples");
+            }
+            catch
+            {
+                return View(person);
+            }
+        }
+
         /// <summary>
         /// DEACTIVATES - not deletes - the accepted person id
         /// </summary>
@@ -273,7 +298,6 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Delete(int id)
         {
-           
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View(person);

@@ -299,6 +299,7 @@
     <Content Include="Views\Position\DeactivatePosition.cshtml" />
     <Content Include="Views\Home\UpdatePassword.cshtml" />
     <Content Include="Views\Shift\AddTimePunchPage.cshtml" />
+    <Content Include="Views\Person\AddPosition.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

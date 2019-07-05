@@ -1,0 +1,22 @@
+﻿@model ScheduleBuilder.Model.Person
+@{
+    ViewBag.Title = "AddPosition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>AddPosition</h2>
+
+<p>Please select the position you would like to add to @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</p>
+
+<form method="post" action="@Url.Action("AddPosition", "Person")">
+    <select name="assignedPosition">
+        @foreach (var item in ViewBag.allPositions)
+        {
+            <option value="@item.positionID">@item.positionTitle</option>
+        }
+    </select>
+    <input type="submit" value="Submit" />
+</form>
+
+
+
