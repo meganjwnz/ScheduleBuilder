@@ -273,6 +273,7 @@ namespace ScheduleBuilder.Controllers
             string whereClause = "";
             Person person = this.personDAL.GetDesiredPersons(whereClause).Where(p => p.Id == id).FirstOrDefault();
             return View(person);
+
         }
 
         [HttpPost]
