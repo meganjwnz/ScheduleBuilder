@@ -9,10 +9,12 @@ namespace ScheduleBuilder.DAL
 
         List<Position> GetAllPositions();
 
-        List<Position> GetPersonPositions(int positionId);
+        List<Position> GetPersonPositions(int personId);
 
         bool AddPosition(Position position);
 
         bool UpdatePosition(Position position);
+
+        bool AddPositionToPerson(int personID, int positionID);
     }
 }
