@@ -38,7 +38,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="sh in shift  | filter: { personID : getSessionID() } |  filter: filterForEmployeeShift ">
+            <tr class="row_alternate" ng-repeat="sh in shift  | filter: { personID : getSessionID() } |  filter: filterForEmployeeShift ">
 
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
                 <td>{{sh.positionName}}</td>
@@ -91,7 +91,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="sh in shift |  filter: filterFnToday as todayShift">
+            <tr class="row_alternate" ng-repeat="sh in shift |  filter: filterFnToday as todayShift">
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}  </td>
                 <td>{{sh.positionName}}</td>
                 <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
@@ -139,7 +139,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="sh in shift">
+            <tr class="row_alternate" ng-repeat="sh in shift">
                 <!-- <td>{{sh.shiftID}}</td>
                 <td>{{sh.scheduleShiftID}}</td>
                 <td>{{sh.personID}}</td> -->

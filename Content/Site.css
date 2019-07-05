@@ -103,7 +103,7 @@ td {
     padding:8px;
 }
 
-tr:nth-child(even) {
+.row_alternate:nth-child(even) {
     background-color: #d9d9d9;
 }
 
