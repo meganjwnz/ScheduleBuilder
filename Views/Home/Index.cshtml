@@ -51,6 +51,7 @@
         </tbody>
     </table>
 
+
     <table style="width:100%;" ng-show="filterExprView == 'past'">
 
         <thead class="tablestyle">
@@ -78,6 +79,9 @@
             </tr>
         </tbody>
     </table>
+
+    <div ng-show="filterExprView == 'current' && !filterShift.length">There are no current shifts to display.</div>
+    <div ng-show="filterExprView == 'past' && !filterShiftPast.length">There are no past shifts to display.</div>
 </div>
 
 
