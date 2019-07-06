@@ -215,7 +215,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         </th>
                         <th>
                             <p class="input-group">
-                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startdt"
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MM-yyyy HH:mm:ss" ng-model="selected.startdt"
                                        is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="startdt" />
                                 <span class="input-group-btn">
                                     <button type="button" class="form-control btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -223,6 +223,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                             </p>
                             <span ng-show="shiftForm.startdt.$touched && shiftForm.startdt.$invalid">You must select a starting date and time.</span>
                         </th>
+                        consol.log("looky here");
                         <th>
                             <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                         </th>
@@ -234,7 +235,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         </th>
                         <th>
                             <p class="input-group">
-                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.enddt"
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MM-yyyy HH:mm:ss" ng-model="selected.enddt"
                                        is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" name="enddt" />
                                 <span class="input-group-btn">
                                     <button type="button" class="form-control btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -253,7 +254,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         </th>
                         <th>
                             <p class="input-group">
-                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.startlunchdt"
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MM-yyyy HH:mm:ss" ng-model="selected.startlunchdt"
                                        is-open="popup3.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
                                 <span class="input-group-btn">
                                     <button type="button" class="form-control btn btn-default" ng-click="open3()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -271,7 +272,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                         </th>
                         <th>
                             <p class="input-group">
-                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MMMM-yyyy HH:mm:ss" ng-model="selected.lunchenddt"
+                                <input class="form-control" type="text" style="width: 100%;" uib-datepicker-popup="dd-MM-yyyy HH:mm:ss" ng-model="selected.lunchenddt"
                                        is-open="popup4.opened" datepicker-options="dateOptions" close-text="Close" alt-input-formats="altInputFormats" />
                                 <span class="input-group-btn">
                                     <button type="button" class="form-control btn btn-default" ng-click="open4()"><i class="glyphicon glyphicon-calendar"></i></button>

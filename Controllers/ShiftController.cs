@@ -81,7 +81,7 @@ namespace ScheduleBuilder.Controllers
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
+            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
             return Redirect(Request.UrlReferrer.ToString()); 
         }
 
@@ -94,7 +94,7 @@ namespace ScheduleBuilder.Controllers
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
+            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
             return Redirect(Request.UrlReferrer.ToString());
         }
         
@@ -103,7 +103,7 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
+            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
             return Redirect(Request.UrlReferrer.ToString());
         }
 
@@ -112,7 +112,7 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
+            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
             return Redirect(Request.UrlReferrer.ToString());
         }
         #endregion
@@ -153,8 +153,10 @@ namespace ScheduleBuilder.Controllers
             Shift shift = new Shift();
             shift.personID = int.Parse(personID);
             shift.positionID = int.Parse(positionID);
-            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
-            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            long editstartTime = long.Parse(startdt) - 14400000;
+            long editEndTime = long.Parse(enddt) - -14400000;
+            shift.scheduledStartTime = ConvertDateToC(editstartTime);
+            shift.scheduledEndTime = ConvertDateToC(editEndTime);
             if (!string.IsNullOrEmpty(startlunchdt))
             {
                 shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
@@ -244,8 +246,11 @@ namespace ScheduleBuilder.Controllers
 
         private DateTime ConvertDateToC(long jsDate)
         {
-            var date = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return date.AddMilliseconds(jsDate);
+            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
+            DateTime dateTime = date.AddMilliseconds(jsDate).ToLocalTime();
+            DateTime test = dateTime;
+            
+            return dateTime;
         }
     }
 }
