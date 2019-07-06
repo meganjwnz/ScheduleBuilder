@@ -52,19 +52,19 @@ namespace ScheduleBuilder.Controllers
             DateTime start = DateTime.Now.AddDays(-1).ToUniversalTime();
             DateTime end = DateTime.Now.AddDays(1).ToUniversalTime();
             DateTime test = shiftDAL.GetNearestShift(whereClause).scheduledStartTime;
-            if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime >= DateTime.Now.AddDays(-1).ToUniversalTime() && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1).ToUniversalTime()))
+            if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime.ToUniversalTime() >= DateTime.Now.AddDays(-1).ToUniversalTime() && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1).ToUniversalTime()))
             {
                 TempData["notice"] = "You have no shifts scheduled today\n\n See Mangement";
                 return RedirectToAction("Index", "Home");
             }
             //If Users clock in under 4 hours late
-            else if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(4) < DateTime.Now.ToUniversalTime())
+            else if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(4).ToUniversalTime() < DateTime.Now.ToUniversalTime())
             {
                 TempData["notice"] = "You are too late to clock in\n See Mangement";
                 return RedirectToAction("Index", "Home");
 
             }
-            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddMinutes(-15) > DateTime.Now.ToUniversalTime()))
+            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddMinutes(-15).ToUniversalTime() > DateTime.Now.ToUniversalTime()))
             {
                 TempData["notice"] = "You are too early to clock in\n See Mangement";
                 return RedirectToAction("Index", "Home");
