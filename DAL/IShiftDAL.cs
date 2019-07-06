@@ -19,7 +19,7 @@ namespace ScheduleBuilder.DAL
         /// </summary>
         /// <param name="shift">The shift to be added</param>
         /// <returns>true if success</returns>
-        bool AddShift(Shift shift);
+        bool AddShift(Shift shift, string taskList);
 
         /// <summary>
         /// Update an existing shift via shift and shifthours table

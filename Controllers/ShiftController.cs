@@ -170,7 +170,7 @@ namespace ScheduleBuilder.Controllers
                 shift.scheduledLunchBreakEnd = null;
             }
 
-            return Json(shiftDAL.AddShift(shift));
+            return Json(shiftDAL.AddShift(shift, ""));
 
         }
 

@@ -182,7 +182,7 @@ namespace ScheduleBuilder.DAL
         /// </summary>
         /// <param name="shift">A shift object to be sent to db</param>
         /// <returns>A boolean value of success or not</returns>
-        public bool AddShift(Shift shift)
+        public bool AddShift(Shift shift, string taskList)
         {
             int shiftHoursResult = 0;
             int shiftResult = 0;

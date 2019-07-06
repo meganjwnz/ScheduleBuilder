@@ -2,9 +2,6 @@
 
 app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
-    $scope.employeeDateFilter = 'current';
-    $scope.filterForEmployeeShift = 'FilterFn';
-
     $scope.getSessionID = function () {
         $scope.sessionID = document.getElementById("sessionIDForAngular").value;
         return $scope.sessionID;
@@ -15,9 +12,13 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         return $scope.sessionRoleTitle;
     };
 
+    $scope.filterExprView = 'current';
+
     $scope.getShifts = function () {
         $http.post('/Shift/ViewAllShifts').then(function (response) {
             $scope.shift = response.data;
+            $scope.filterListCurrent();
+            $scope.filterListPast();
         }), function (error) {
             console.log(error);
         };
@@ -30,10 +31,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         } else {
             return "";
         }
-    }
-
-    $scope.checkDate = function (checkDate) {
-        return checkDate < Date.now();
     }
 
     $scope.getPeople = function () {
@@ -77,14 +74,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         };
     };
     $scope.getAllTasks();
-
-    $scope.getEmployeeDateFilter = function (employeeDateFilter) {
-        if (employeeDateFilter == 'past') {
-            $scope.filterForEmployeeShift = '!FilterFn';
-        } else {
-            $scope.filterForEmployeeShift = 'FilterFn';
-        }
-    };
 
     $scope.dateOptions = {
         formatYear: 'yy',
@@ -209,12 +198,22 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         }).result.then(function () { }, function () { });
     };
 
-    $scope.filterFn = function (shift) {
-        if ($scope.jsDate(shift.scheduledStartTime) < Date.now()) {
-            return true;
-        } else {
-            return false;
-        }
+    $scope.filterListCurrent = function () {
+        $scope.filterShift = [];
+        angular.forEach($scope.shift, function (shift) {
+            if ($scope.jsDate(shift.scheduledEndTime) > Date.now()) {
+                $scope.filterShift.push(shift);
+            }
+        })
+    };
+
+    $scope.filterListPast = function () {
+        $scope.filterShiftPast = [];
+        angular.forEach($scope.shift, function (shift) {
+            if ($scope.jsDate(shift.scheduledEndTime) < Date.now()) {
+                $scope.filterShiftPast.push(shift);
+            }
+        })
     };
 
     $scope.sum = function (todayShift) {
