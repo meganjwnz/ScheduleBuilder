@@ -45,89 +45,78 @@
         <dt>
             @Html.DisplayNameFor(model => model.actualStartTime)
         </dt>
-        
+
         <dd>
-        
+            @Html.DisplayFor(model => model.actualStartTime)
             @if (Model.actualStartTime == null)
             {
                 <a href='@Url.Action("ClockUserIn", "Shift")'>
                     <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock In" />
                 </a>
             }
-            else
-            {
-                DateTime displayStartTime = Model.actualStartTime ?? DateTime.Now;;
-                @Html.DisplayFor(model => displayStartTime.ToLocalTime())
+        </dd>
 
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.actualEndTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.actualEndTime)
+            @if (Model.actualEndTime == null && Model.actualStartTime != null)
+            {
+                <a href='@Url.Action("ClockUserOut", "Shift")'>
+                    <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock Out" />
+                </a>
             }
         </dd>
-        
-       
-    
-            <dt>
-                @Html.DisplayNameFor(model => model.actualEndTime)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.actualEndTime)
-                @if (Model.actualEndTime == null && Model.actualStartTime != null)
-                {
-                    <a href='@Url.Action("ClockUserOut", "Shift")'>
-                        <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock Out" />
-                    </a>
-                }
-                else
-                {
-                    DateTime displayEndTime = Model.actualStartTime ?? DateTime.Now; ;
-                    @Html.DisplayFor(model => displayEndTime.ToLocalTime())
-                }
-            </dd>
-        
+
 
         @if (Model.scheduledLunchBreakStart != null)
         {
-                <dt>
-                    @Html.DisplayNameFor(model => model.scheduledLunchBreakStart)
-                </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.scheduledLunchBreakStart)
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.scheduledLunchBreakStart)
+            <dd>
+                @Html.DisplayFor(model => model.scheduledLunchBreakStart)
 
-                </dd>
+            </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.scheduledLunchBreakEnd)
-                </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.scheduledLunchBreakEnd)
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.scheduledLunchBreakEnd)
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.actualLunchBreakStart)
-                </dt>
+            <dd>
+                @Html.DisplayFor(model => model.scheduledLunchBreakEnd)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.actualLunchBreakStart)
+            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.actualLunchBreakStart)
-                    @if (Model.actualLunchBreakStart == null && Model.actualStartTime != null  && Model.actualEndTime == null)
-                    {
-                        <a href='@Url.Action("ClockLunchStart", "Shift")'>
-                            <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Start Break" />
-                        </a>
-                    }
-                </dd>
-               
-                    <dt>
-                        @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
-                    </dt>
+            <dd>
+                @Html.DisplayFor(model => model.actualLunchBreakStart)
+                @if (Model.actualLunchBreakStart == null && Model.actualStartTime != null && Model.actualEndTime == null)
+                {
+                    <a href='@Url.Action("ClockLunchStart", "Shift")'>
+                        <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Start Break" />
+                    </a>
+                }
+            </dd>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.actualLunchBreakEnd)
-                       @if (Model.actualLunchBreakStart != null && Model.actualLunchBreakEnd == null && Model.actualEndTime == null)
-                        {
-                        <a href='@Url.Action("ClockLunchEnd", "Shift")'>
-                            <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="End Break" />
-                        </a>
-                        }
-                    </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.actualLunchBreakEnd)
+                @if (Model.actualLunchBreakStart != null && Model.actualLunchBreakEnd == null && Model.actualEndTime == null)
+                {
+                    <a href='@Url.Action("ClockLunchEnd", "Shift")'>
+                        <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="End Break" />
+                    </a>
+                }
+            </dd>
 
 
         }

@@ -43,15 +43,12 @@ namespace ScheduleBuilder.Controllers
         public ActionResult AddTimePunchPage()
         {
             string loggedInUserId = (Session["id"].ToString());
-            string whereClause = " WHERE s.personId = "  + loggedInUserId;
+            string whereClause = " WHERE s.personId = " + loggedInUserId;
             if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime == DateTime.MinValue)
             {
                 TempData["notice"] = "You have no scheduled shifts\n\n See Mangement";
                 return RedirectToAction("Index", "Home");
             }
-            DateTime start = DateTime.Now.AddDays(-1).ToUniversalTime();
-            DateTime end = DateTime.Now.AddDays(1).ToUniversalTime();
-            DateTime test = shiftDAL.GetNearestShift(whereClause).scheduledStartTime;
             if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime.ToUniversalTime() >= DateTime.Now.AddDays(-1).ToUniversalTime() && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1).ToUniversalTime()))
             {
                 TempData["notice"] = "You have no shifts scheduled today\n\n See Mangement";
@@ -64,14 +61,15 @@ namespace ScheduleBuilder.Controllers
                 return RedirectToAction("Index", "Home");
 
             }
-            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddMinutes(-15).ToUniversalTime() > DateTime.Now.ToUniversalTime()))
+            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(-4).ToUniversalTime() > DateTime.Now.ToUniversalTime()))
             {
                 TempData["notice"] = "You are too early to clock in\n See Mangement";
                 return RedirectToAction("Index", "Home");
             }
-            return View(shiftDAL.GetNearestShift(whereClause));
+            Shift whatever = shiftDAL.GetNearestShift(whereClause);
+            return View(this.timeHack(whatever));
         }
-  
+
         /// <summary>
         /// Clocks user in retruns them to the time card page
         /// </summary>
@@ -82,7 +80,7 @@ namespace ScheduleBuilder.Controllers
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
             this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
-            return Redirect(Request.UrlReferrer.ToString()); 
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         /// <summary>
@@ -97,7 +95,7 @@ namespace ScheduleBuilder.Controllers
             this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
             return Redirect(Request.UrlReferrer.ToString());
         }
-        
+
         //Starts the users lunch break
         public ActionResult ClockLunchStart()
         {
@@ -171,7 +169,7 @@ namespace ScheduleBuilder.Controllers
             {
                 shift.scheduledLunchBreakEnd = null;
             }
-            
+
             return Json(shiftDAL.AddShift(shift));
 
         }
@@ -233,7 +231,7 @@ namespace ScheduleBuilder.Controllers
             string body = $"Hello { shiftChangePerson.GetFullName()}, \n" +
                 $"\nYou are recieving this email to let you know that { loggedInUser.GetFullName() } Has {type}d your shift on {shift.scheduledStartTime} \n" +
                 $"\n Please log in to your account to see all schedule changes\n" +
-     
+
                 $"\n If this has been done in error please contact your Admin as soon as possible " +
                 $"\n Hope you have a wonderful day";
 
@@ -247,5 +245,39 @@ namespace ScheduleBuilder.Controllers
             var date = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             return date.AddMilliseconds(jsDate);
         }
+
+        private Shift timeHack(Shift shift)
+        {
+            shift.scheduledStartTime = shift.scheduledStartTime.AddHours(-4);
+            shift.scheduledEndTime = shift.scheduledEndTime.AddHours(-4);
+            if (shift.scheduledLunchBreakStart != null)
+            {
+                DateTime temp = shift.scheduledLunchBreakStart ?? DateTime.MinValue; shift.scheduledLunchBreakStart = temp.AddHours(-4);
+            }
+            if (shift.scheduledLunchBreakEnd != null)
+            {
+                DateTime temp = shift.scheduledLunchBreakEnd ?? DateTime.MinValue;
+                shift.scheduledLunchBreakEnd = temp.AddHours(-4);
+            }
+            if (shift.actualStartTime != null)
+            {
+                DateTime temp = shift.actualStartTime ?? DateTime.MinValue;
+                shift.actualStartTime = temp.AddHours(-4);
+            }
+            if (shift.actualEndTime != null)
+            {
+                DateTime temp = shift.actualEndTime ?? DateTime.MinValue;
+                shift.actualEndTime = temp.AddHours(-4);
+            }
+            if (shift.actualLunchBreakStart != null) {
+                DateTime temp = shift.actualLunchBreakStart ?? DateTime.MinValue;
+                shift.actualLunchBreakStart = temp.AddHours(-4); }
+            if (shift.actualLunchBreakEnd != null) {
+                DateTime temp = shift.actualLunchBreakEnd ?? DateTime.MinValue;
+                shift.actualLunchBreakEnd = temp.AddHours(-4);
+            }
+            return shift;
+        }
+
     }
 }
