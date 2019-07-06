@@ -244,8 +244,8 @@ namespace ScheduleBuilder.Controllers
 
         private DateTime ConvertDateToC(long jsDate)
         {
-            var date = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return date.AddMilliseconds(jsDate);
+            var date = new DateTime(1970, 01, 01, 0, 0, 0, 0);
+            return date.AddMilliseconds(jsDate).ToLocalTime();
         }
     }
 }
