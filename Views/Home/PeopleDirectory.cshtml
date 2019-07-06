@@ -7,44 +7,50 @@
 
 <h2>Employee Directory</h2>
 <br />
-<ul style="list-style:none; ">
-    <li class="spacing">
-        <div>
-            <a href='@Url.Action("GetAllActivePeoplePage", "Person")'>
-                <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Get Active Employees" />
-            </a>
-        </div>
-    </li>
-    <li class="spacing">
-        <div>
-            <a href='@Url.Action("GetAllPeoples", "Person")'>
-                <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Get Every Employee" />
-            </a>
-        </div>
+<div style="column-count: 2;">
+    <ul style="list-style:none; ">
+        <li class="spacing">
+            <div>
+                <a href='@Url.Action("GetAllActivePeoplePage", "Person")'>
+                    <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Get Active Employees" />
+                </a>
+            </div>
+        </li>
+        <li class="spacing">
+            <div>
+                <a href='@Url.Action("GetAllPeoples", "Person")'>
+                    <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Get Every Employee" />
+                </a>
+            </div>
 
-    </li>
-    <li class="spacing">
-        <div>
-            <form method="post" action="@Url.Action("SearchPeople", "Person")">
-                <span class="input-group col-md-3">
-                    <input style="font-size:16px; padding:15px" class="form-control" type="text" name="SearchString" placeholder="Search by Name" />
-                    <span class="input-group-btn">
-                        <input style="font-size:16px; padding:15px" class="form-control btn-primary" type="submit" value="Filter" />
+        </li>
+        <li class="spacing">
+            <div>
+                <form method="post" action="@Url.Action("SearchPeople", "Person")">
+                    <span class="input-group col-md-7">
+                        <input style="font-size:16px; padding:15px" class="form-control" type="text" name="SearchString" placeholder="Search by Name" />
+                        <span class="input-group-btn">
+                            <input style="font-size:16px; padding:15px" class="form-control btn-primary" type="submit" value="Filter" />
+                        </span>
                     </span>
-                </span>
-            </form>
-        </div>
-    </li>
-    <li>
-    @if (Session["roleTitle"].ToString() != "Employee")
-    {
-    <li class="spacing">
-        <div>
-            <a href='@Url.Action("AddPerson", "Person")'>
-                <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Add Employee" />
-            </a>
-        </div>
-    </li>
-    }
-</ul>
+                </form>
+            </div>
+        </li>
+        <li>
+    </ul>
 
+    <ul style="list-style:none; ">
+
+        @if (Session["roleTitle"].ToString() != "Employee")
+        {
+            <li class="spacing">
+                <div>
+                    <a href='@Url.Action("AddPerson", "Person")'>
+                        <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Add Employee" />
+                    </a>
+                </div>
+            </li>
+        }
+    </ul>
+
+</div>

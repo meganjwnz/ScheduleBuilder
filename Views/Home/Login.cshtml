@@ -6,20 +6,20 @@
 }
 @using (Html.BeginForm())
 {
-    <div class="logo"> 
-        <img src="@Url.Content("~/Content/Images/SM_Logo2.png")" class="logo_img"/>
+    <div style=" margin: auto; margin-top: 80px; text-align: center; width: 100%;"> 
+        <img src="@Url.Content("~/Content/Images/SM_Logo2.png")" style="width: 359px; height: 176px;" />
     </div>
     <div class="wrapper">
-        <div class="login">
+       <div style=" margin: auto; margin-top: 80px; text-align: center; width: 100%;"> 
             <h3 class="form-signin-heading">Please Login</h3>
             <h4 class="text-danger">@ViewBag.Error</h4>
             <h4 class="text-success">@ViewBag.loginAgain</h4>
 
-            <input required="" class="form-control" style="font-size:16px; padding:15px" name="Username" type="text" placeholder="Username" />
+            <input required="" style="font-size: 12px; height: auto; width: 100%; font-size:16px; padding:15px" name="Username" type="text" placeholder="Username" />
+           <br />
+            <input required="" style="font-size: 12px; height: auto; width: 100%; font-size:16px; padding:15px" name="Password" type="password" placeholder="Password" />
 
-            <input required="" class="form-control" style="font-size:16px; padding:15px" name="Password" type="password" placeholder="Password" />
-
-            <input class="form-control btn-primary" style="font-size:16px; padding:15px" type="submit" value="Login" new { id=item.Id } />
+            <input class="form-control btn-primary" style="margin-left:auto; margin-right:auto; font-size:16px; padding:15px" type="submit" value="Login" new { id=item.Id } />
 
 
         </div>

@@ -47,12 +47,18 @@
         </dt>
         
         <dd>
-            @Html.DisplayFor(model => model.actualStartTime)
+        
             @if (Model.actualStartTime == null)
             {
                 <a href='@Url.Action("ClockUserIn", "Shift")'>
                     <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock In" />
                 </a>
+            }
+            else
+            {
+                DateTime displayStartTime = Model.actualStartTime ?? DateTime.Now;;
+                @Html.DisplayFor(model => displayStartTime.ToLocalTime())
+
             }
         </dd>
         
@@ -63,11 +69,17 @@
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.actualEndTime)
-                @if (Model.actualEndTime == null && Model.actualStartTime != null) { 
+                @if (Model.actualEndTime == null && Model.actualStartTime != null)
+                {
                     <a href='@Url.Action("ClockUserOut", "Shift")'>
                         <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Clock Out" />
                     </a>
-                    }
+                }
+                else
+                {
+                    DateTime displayEndTime = Model.actualStartTime ?? DateTime.Now; ;
+                    @Html.DisplayFor(model => displayEndTime.ToLocalTime())
+                }
             </dd>
         
 

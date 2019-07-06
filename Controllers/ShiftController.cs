@@ -49,22 +49,22 @@ namespace ScheduleBuilder.Controllers
                 TempData["notice"] = "You have no scheduled shifts\n\n See Mangement";
                 return RedirectToAction("Index", "Home");
             }
-            DateTime start = DateTime.Now.AddDays(-1);
-            DateTime end = DateTime.Now.AddDays(1);
+            DateTime start = DateTime.Now.AddDays(-1).ToUniversalTime();
+            DateTime end = DateTime.Now.AddDays(1).ToUniversalTime();
             DateTime test = shiftDAL.GetNearestShift(whereClause).scheduledStartTime;
-            if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime >= DateTime.Now.AddDays(-1) && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1)))
+            if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime.ToUniversalTime() >= DateTime.Now.AddDays(-1).ToUniversalTime() && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1).ToUniversalTime()))
             {
                 TempData["notice"] = "You have no shifts scheduled today\n\n See Mangement";
                 return RedirectToAction("Index", "Home");
             }
             //If Users clock in under 4 hours late
-            else if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(4) < DateTime.Now)
+            else if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(4).ToUniversalTime() < DateTime.Now.ToUniversalTime())
             {
                 TempData["notice"] = "You are too late to clock in\n See Mangement";
                 return RedirectToAction("Index", "Home");
 
             }
-            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddMinutes(-15) > DateTime.Now))
+            else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddMinutes(-15).ToUniversalTime() > DateTime.Now.ToUniversalTime()))
             {
                 TempData["notice"] = "You are too early to clock in\n See Mangement";
                 return RedirectToAction("Index", "Home");
@@ -81,7 +81,7 @@ namespace ScheduleBuilder.Controllers
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
             return Redirect(Request.UrlReferrer.ToString()); 
         }
 
@@ -94,7 +94,7 @@ namespace ScheduleBuilder.Controllers
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
             return Redirect(Request.UrlReferrer.ToString());
         }
         
@@ -103,7 +103,7 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
             return Redirect(Request.UrlReferrer.ToString());
         }
 
@@ -112,7 +112,7 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
             return Redirect(Request.UrlReferrer.ToString());
         }
         #endregion
@@ -153,10 +153,8 @@ namespace ScheduleBuilder.Controllers
             Shift shift = new Shift();
             shift.personID = int.Parse(personID);
             shift.positionID = int.Parse(positionID);
-            long editstartTime = long.Parse(startdt) - 14400000;
-            long editEndTime = long.Parse(enddt) - -14400000;
-            shift.scheduledStartTime = ConvertDateToC(editstartTime);
-            shift.scheduledEndTime = ConvertDateToC(editEndTime);
+            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
             if (!string.IsNullOrEmpty(startlunchdt))
             {
                 shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
@@ -246,11 +244,8 @@ namespace ScheduleBuilder.Controllers
 
         private DateTime ConvertDateToC(long jsDate)
         {
-            DateTime date = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
-            DateTime dateTime = date.AddMilliseconds(jsDate).ToLocalTime();
-            DateTime test = dateTime;
-            
-            return dateTime;
+            var date = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            return date.AddMilliseconds(jsDate);
         }
     }
 }
