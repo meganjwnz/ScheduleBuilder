@@ -327,6 +327,38 @@ namespace ScheduleBuilder.DAL
             {
                 throw ex;
             }
-        } 
+        }
+        
+        /// <summary>
+        /// Gets a persons ID by their username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public int GetIDByEmail(string email)
+        {
+            Person person = new Person();
+            string selectStatement =
+                         "SELECT id, email " +
+                         "FROM person " +
+                         "WHERE email = @email";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand(selectStatement, connection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@email", email);
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            person.Id = (int)reader["id"];
+                            person.Email = reader["email"].ToString();
+                        }
+                    }
+                }
+                return person.Id;
+            }
+        }
     }
 }

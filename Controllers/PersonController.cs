@@ -35,6 +35,7 @@ namespace ScheduleBuilder.Controllers
         public ActionResult AddPerson()
         {
             ViewBag.Message = "Add Employee";
+            ViewBag.allPositions = this.positionDAL.GetAllActivePositions();
             return View();
         }
 
@@ -42,27 +43,37 @@ namespace ScheduleBuilder.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddPerson(PersonViewModel personViewModel)
         {
-            if (ModelState.IsValid)
+            ViewBag.allPositions = this.positionDAL.GetAllActivePositions();
+            if (Request.Form["assignedPosition"] == "")
             {
-              this.personDAL.AddPerson(personViewModel.LastName
-                      , personViewModel.FirstName
-                      , personViewModel.DateOfBirth
-                      , personViewModel.Ssn
-                      , personViewModel.Gender
-                      , personViewModel.Phone
-                      , personViewModel.StreetAddress
-                      , personViewModel.Zipcode
-                      , personViewModel.Email);
-                this.ContactAddedPerson(personViewModel.LastName
-                    , personViewModel.FirstName
-                    , personViewModel.Email
-                    , personViewModel.Gender
-                    , personViewModel.StreetAddress
-                    , personViewModel.Phone
-                    , personViewModel.Zipcode
-                    , personViewModel.DateOfBirth
-                    , personViewModel.Ssn);
-                return RedirectToAction("GetAllPeoples");
+                ViewBag.positionNull = "Position required";
+                return View();
+            }
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    this.personDAL.AddPerson(personViewModel.LastName
+                            , personViewModel.FirstName
+                            , personViewModel.DateOfBirth
+                            , personViewModel.Ssn
+                            , personViewModel.Gender
+                            , personViewModel.Phone
+                            , personViewModel.StreetAddress
+                            , personViewModel.Zipcode
+                            , personViewModel.Email);
+                    this.ContactAddedPerson(personViewModel.LastName
+                        , personViewModel.FirstName
+                        , personViewModel.Email
+                        , personViewModel.Gender
+                        , personViewModel.StreetAddress
+                        , personViewModel.Phone
+                        , personViewModel.Zipcode
+                        , personViewModel.DateOfBirth
+                        , personViewModel.Ssn);
+                    this.positionDAL.AddPositionToPerson(this.personDAL.GetIDByEmail(personViewModel.Email), Convert.ToInt32(Request.Form["assignedPosition"]));
+                    return RedirectToAction("GetAllPeoples");
+                }
             }
             return View();
         }
