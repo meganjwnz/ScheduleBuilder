@@ -163,6 +163,16 @@ dd {
     border-color: #337ab7;
 }
 
+/*separator line*/
+.separator {
+    border: none;
+    width: 100%;
+    margin: auto;
+    margin-top: 7%;
+    height: 15px;
+    background-color: #222222;
+}
+
 /* Mobile */
 @media only screen and (max-width: 600px) {
 }
