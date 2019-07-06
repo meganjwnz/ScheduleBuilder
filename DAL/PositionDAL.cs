@@ -233,5 +233,9 @@ namespace ScheduleBuilder.DAL
             return (positionResult >= 1 ? true : false);
         }
 
+
+        //// Add position check here
+
+
     }
 }

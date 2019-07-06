@@ -35,5 +35,16 @@
             </form>
         </div>
     </li>
+    <li>
+    @if (Session["roleTitle"].ToString() != "Employee")
+    {
+    <li class="spacing">
+        <div>
+            <a href='@Url.Action("AddPerson", "Person")'>
+                <input class="form-control btn-primary btn-block" style="font-size:16px; padding:15px" type="submit" value="Add Employee" />
+            </a>
+        </div>
+    </li>
+    }
 </ul>
 

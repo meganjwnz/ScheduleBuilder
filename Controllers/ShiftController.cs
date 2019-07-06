@@ -81,7 +81,7 @@ namespace ScheduleBuilder.Controllers
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
             return Redirect(Request.UrlReferrer.ToString()); 
         }
 
@@ -94,7 +94,7 @@ namespace ScheduleBuilder.Controllers
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockUserOut(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
             return Redirect(Request.UrlReferrer.ToString());
         }
         
@@ -103,7 +103,7 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockLunchStart(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
             return Redirect(Request.UrlReferrer.ToString());
         }
 
@@ -112,7 +112,7 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now);
+            this.shiftDAL.ClockLunchEnd(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.AddHours(-4));
             return Redirect(Request.UrlReferrer.ToString());
         }
         #endregion
