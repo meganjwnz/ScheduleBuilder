@@ -26,6 +26,7 @@ namespace ScheduleBuilder.Controllers
         {
             try
             {
+                var test = Json(shiftDAL.GetAllShifts());
                 return Json(shiftDAL.GetAllShifts());
             }
             catch (Exception e)

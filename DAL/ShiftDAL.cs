@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace ScheduleBuilder.DAL
 {
@@ -22,7 +23,10 @@ namespace ScheduleBuilder.DAL
 
             string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
                 "sh.scheduledLunchBreakStartTime, sh.scheduledLunchBreakEndTime, sh.actualStartTime, sh.actualEndTime, sh.actualLunchBreakStart, " +
-                "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title " +
+                "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title, STUFF((SELECT '; ' + CONVERT(varchar, a.taskId) " +
+                "FROM assignedTask as a " +
+                "WHERE a.shiftId = s.id " +
+                "FOR XML PATH('')), 1, 1, '') [taskList] " +
                 "FROM shift AS s " +
                 "JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
                 "JOIN person AS p ON s.personId = p.id " +
@@ -54,6 +58,8 @@ namespace ScheduleBuilder.DAL
                             shift.positionName = reader["position_title"].ToString();
                             shift.personLastName = reader["last_name"].ToString();
                             shift.personFirstName = reader["first_name"].ToString();
+                            string taskIdList = reader["taskList"].ToString();
+                            shift.TaskIdList = taskIdList == string.Empty ? new List<int>() : taskIdList.Split(';').Select(int.Parse).ToList();
                             shiftList.Add(shift);
                         }
                     }
@@ -114,8 +120,6 @@ namespace ScheduleBuilder.DAL
             return shiftList;
 
         }
-
-      
 
         public Shift GetNearestShift(string whereClause)
         {

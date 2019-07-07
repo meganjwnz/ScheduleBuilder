@@ -145,10 +145,11 @@
                 <th>actualLunchBreakEnd</th> -->
                 <th></th>
                 <th>Hours per shift</th>
+                <th>Task's</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="row_alternate" ng-repeat="sh in shift">
+            <tr class="row_alternate" ng-repeat="sh in shift track by $index">
                 <!-- <td>{{sh.shiftID}}</td>
                 <td>{{sh.scheduleShiftID}}</td>
                 <td>{{sh.personID}}</td> -->
@@ -168,6 +169,7 @@
                     <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
                 </td>
                 <td>{{getTotalHours(sh)}}</td>
+                <td>{{sh.TaskIdList}}</td>
             </tr>
         </tbody>
     </table>
