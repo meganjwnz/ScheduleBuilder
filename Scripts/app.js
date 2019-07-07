@@ -2,9 +2,6 @@
 
 app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
-    $scope.employeeDateFilter = 'current';
-    $scope.filterForEmployeeShift = 'FilterFn';
-
     $scope.getSessionID = function () {
         $scope.sessionID = document.getElementById("sessionIDForAngular").value;
         return $scope.sessionID;
@@ -15,9 +12,13 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         return $scope.sessionRoleTitle;
     };
 
+    $scope.filterExprView = 'current';
+
     $scope.getShifts = function () {
         $http.post('/Shift/ViewAllShifts').then(function (response) {
             $scope.shift = response.data;
+            $scope.filterListCurrent();
+            $scope.filterListPast();
         }), function (error) {
             console.log(error);
         };
@@ -30,10 +31,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         } else {
             return "";
         }
-    }
-
-    $scope.checkDate = function (checkDate) {
-        return checkDate < Date.now();
     }
 
     $scope.getPeople = function () {
@@ -77,14 +74,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         };
     };
     $scope.getAllTasks();
-
-    $scope.getEmployeeDateFilter = function (employeeDateFilter) {
-        if (employeeDateFilter == 'past') {
-            $scope.filterForEmployeeShift = '!FilterFn';
-        } else {
-            $scope.filterForEmployeeShift = 'FilterFn';
-        }
-    };
 
     $scope.dateOptions = {
         formatYear: 'yy',
@@ -161,6 +150,28 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     };
 
+    $scope.getClockedHours = function (shift) {
+        if (shift.actualStartTime && shift.actualEndTime) {
+            var startTime = $scope.jsDate(shift.actualStartTime);
+            var endTime = $scope.jsDate(shift.actualEndTime);
+        } else {
+            return 0.00;
+        }
+        if (shift.actualLunchBreakStart && shift.actualLunchBreakEnd) {
+            var lunchTime = $scope.jsDate(shift.actualLunchBreakStart);
+            var lunchEnd = $scope.jsDate(shift.actualLunchBreakEnd);
+            var firstHours = lunchTime.getTime() - startTime.getTime();
+            var secondHours = endTime.getTime() - lunchEnd.getTime();
+            var totalHours = (secondHours + firstHours) / (1000 * 60 * 60);
+
+        } else {
+            var totalHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+        }
+
+        return totalHours.toFixed(2);
+
+    };
+
     //Verify that all scheduled dates are in order thus valid
     $scope.checkDateOrder = function (start, end, lunch, lunchEnd) {
         if ((lunch && !lunchEnd) || (lunchEnd && !lunch)) {
@@ -209,12 +220,22 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         }).result.then(function () { }, function () { });
     };
 
-    $scope.filterFn = function (shift) {
-        if ($scope.jsDate(shift.scheduledStartTime) < Date.now()) {
-            return true;
-        } else {
-            return false;
-        }
+    $scope.filterListCurrent = function () {
+        $scope.filterShift = [];
+        angular.forEach($scope.shift, function (shift) {
+            if ($scope.jsDate(shift.scheduledEndTime) > Date.now()) {
+                $scope.filterShift.push(shift);
+            }
+        })
+    };
+
+    $scope.filterListPast = function () {
+        $scope.filterShiftPast = [];
+        angular.forEach($scope.shift, function (shift) {
+            if ($scope.jsDate(shift.scheduledEndTime) < Date.now()) {
+                $scope.filterShiftPast.push(shift);
+            }
+        })
     };
 
     $scope.sum = function (todayShift) {
@@ -249,11 +270,24 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     $scope.selected.shiftID = $scope.selectedShift.shiftID;
     $scope.selected.scheduledShiftID = $scope.selectedShift.scheduleShiftID;
     $scope.selected.personID = $scope.selectedShift.personID;
+    if ($scope.selectedShift.personID) {
+        $scope.getPersonPositions($scope.selected.personID);
+    }
     $scope.selected.positionID = $scope.selectedShift.positionID;
+    if ($scope.selectedShift.positionID) {
+        $scope.getPositionTasks($scope.selected.positionID);
+    }
     $scope.selected.startdt = $scope.jsDate($scope.selectedShift.scheduledStartTime);
     $scope.selected.enddt = $scope.jsDate($scope.selectedShift.scheduledEndTime);
     $scope.selected.startlunchdt = $scope.jsDate($scope.selectedShift.scheduledLunchBreakStart);
     $scope.selected.lunchenddt = $scope.jsDate($scope.selectedShift.scheduledLunchBreakEnd);
+    if ($scope.selectedShift.TaskIdList && $scope.selectedShift.TaskIdList.length) {
+        $scope.selected.tasks = {};
+        for (var i = 0; i < $scope.selectedShift.TaskIdList.length; i++) {
+            var valueTaskId = $scope.selectedShift.TaskIdList[i];
+            $scope.selected.tasks[valueTaskId] = 'true';
+        }
+    }
 
     $scope.addShift = function (selected) {
         var personID = selected.personID;
@@ -284,6 +318,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     };
 
     $scope.updateShift = function (selected) {
+        console.log("update shift", selected);
         var shiftID = selected.shiftID;
         var scheduleShiftID = selected.scheduledShiftID;
         var isDelete = selected.delete;
@@ -293,13 +328,15 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var enddt = selected.enddt.getTime();
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
+        var taskArray = JSON.stringify(selected.tasks);
+        console.log("taskArray", taskArray);
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {
             $http.post('/Shift/UpdateShift', {
                 personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
-                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID
+                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray
             }).then(function (response) {
                 $scope.success = response.data;
                 if ($scope.success) {

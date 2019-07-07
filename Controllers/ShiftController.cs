@@ -1,6 +1,8 @@
-﻿using ScheduleBuilder.DAL;
+﻿using Newtonsoft.Json;
+using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -28,7 +30,6 @@ namespace ScheduleBuilder.Controllers
             }
             catch (Exception e)
             {
-
                 this.Messagebox(e.ToString());
                 return null;
             }
@@ -147,7 +148,7 @@ namespace ScheduleBuilder.Controllers
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList)
         {
             JavaScriptSerializer thing = new JavaScriptSerializer();
-            dynamic otherThing = thing.Deserialize<object>(taskList);
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             Shift shift = new Shift();
             shift.personID = int.Parse(personID);
             shift.positionID = int.Parse(positionID);
@@ -170,7 +171,7 @@ namespace ScheduleBuilder.Controllers
                 shift.scheduledLunchBreakEnd = null;
             }
 
-            return Json(shiftDAL.AddShift(shift));
+            return Json(shiftDAL.AddShift(shift, otherThing));
 
         }
 
@@ -178,8 +179,10 @@ namespace ScheduleBuilder.Controllers
         /// gets all positions from the database
         /// </summary>
         [HttpPost]
-        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete)
+        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList)
         {
+            JavaScriptSerializer thing = new JavaScriptSerializer();
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             //Create shift object from values passed from view
             Shift shift = new Shift();
             shift.shiftID = int.Parse(shiftID);
@@ -214,7 +217,7 @@ namespace ScheduleBuilder.Controllers
             else
             {
                 this.ContactPersonShiftChange("update", shift);
-                return Json(shiftDAL.UpdateShift(shift));
+                return Json(shiftDAL.UpdateShift(shift, otherThing));
 
             }
 

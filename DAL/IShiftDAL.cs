@@ -14,19 +14,21 @@ namespace ScheduleBuilder.DAL
         /// <returns>A list of shift objects</returns>
         List<Shift> GetAllShifts();
 
+        Shift GetNearestShift(string whereClause);
+
         /// <summary>
         /// Add a shift to the shift and shift hours table
         /// </summary>
         /// <param name="shift">The shift to be added</param>
         /// <returns>true if success</returns>
-        bool AddShift(Shift shift);
+        bool AddShift(Shift shift, Dictionary<int, bool> taskList);
 
         /// <summary>
         /// Update an existing shift via shift and shifthours table
         /// </summary>
         /// <param name="shift">The shift to be updated</param>
         /// <returns>true if success, false if failure</returns>
-        bool UpdateShift(Shift shift);
+        bool UpdateShift(Shift shift, Dictionary<int, bool> taskList);
 
         /// <summary>
         /// Delete a shift from the db

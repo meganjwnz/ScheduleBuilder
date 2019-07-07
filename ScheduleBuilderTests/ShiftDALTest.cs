@@ -53,6 +53,44 @@ namespace ScheduleBuilderTests
         }
 
         /// <summary>
+        /// Return the nearest shift object based on where input statement
+        /// </summary>
+        [Fact]
+        public void TestGetNearestShift()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IShiftDAL>()
+                    .Setup(x => x.GetNearestShift(" WHERE s.personId = 1"));
+
+                var shiftDAL = mock.Create<IShiftDAL>();
+
+                var expected = new Shift
+                {
+                    shiftID = 1,
+                    scheduleShiftID = 1,
+                    personID = 1,
+                    personFirstName = "Melissa",
+                    personLastName = "Osborne",
+                    positionID = 1,
+                    positionName = "International Spy",
+                    scheduledStartTime = DateTime.Today.AddHours(4),
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                };
+
+                shiftDAL.GetNearestShift(" WHERE s.personId = 1");
+
+                mock.Mock<IShiftDAL>().Verify(x => x.GetNearestShift(" WHERE s.personId = 1"), Times.Exactly(1));
+            }
+            }
+        
+        /// <summary>
         /// Test that a shift can be added succecssfully
         /// </summary>
         [Fact]
@@ -78,14 +116,15 @@ namespace ScheduleBuilderTests
                     actualLunchBreakStart = DateTime.Today,
                     actualLunchBreakEnd = DateTime.Today
                 };
+                var taskList = new Dictionary<int, bool>();
 
-                mock.Mock<IShiftDAL>().Setup(x => x.AddShift(shift));
+                mock.Mock<IShiftDAL>().Setup(x => x.AddShift(shift, taskList));
 
                 var cls = mock.Create<IShiftDAL>();
 
-                cls.AddShift(shift);
+                cls.AddShift(shift, taskList);
 
-                mock.Mock<IShiftDAL>().Verify(x => x.AddShift(shift), Times.Exactly(1));
+                mock.Mock<IShiftDAL>().Verify(x => x.AddShift(shift, taskList), Times.Exactly(1));
             }
         }
 
@@ -115,16 +154,20 @@ namespace ScheduleBuilderTests
                     actualLunchBreakStart = DateTime.Today,
                     actualLunchBreakEnd = DateTime.Today
                 };
-                
+                var taskList = new Dictionary<int, bool>();
+
                 mock.Mock<IShiftDAL>().Setup(x => x.GetAllShifts()).Returns(GetSampleShifts());
 
                 var shiftDAL = mock.Create<IShiftDAL>();
-                shiftDAL.UpdateShift(updatedshift);
+                shiftDAL.UpdateShift(updatedshift, taskList);
 
-                mock.Mock<IShiftDAL>().Verify(x => x.UpdateShift(updatedshift), Times.Exactly(1));
+                mock.Mock<IShiftDAL>().Verify(x => x.UpdateShift(updatedshift, taskList), Times.Exactly(1));
             }
         }
 
+        /// <summary>
+        /// Tests that a shift and associations can be removed
+        /// </summary>
         [Fact]
         public void TestDeleteShift()
         {
@@ -176,7 +219,7 @@ namespace ScheduleBuilderTests
                     personLastName = "Osborne",
                     positionID = 1,
                     positionName = "International Spy",
-                    scheduledStartTime = DateTime.Today,
+                    scheduledStartTime = DateTime.Today.AddHours(4),
                     scheduledEndTime = DateTime.Today,
                     scheduledLunchBreakStart = DateTime.Today,
                     scheduledLunchBreakEnd = DateTime.Today,

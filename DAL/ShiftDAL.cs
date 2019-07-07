@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace ScheduleBuilder.DAL
 {
@@ -22,7 +23,10 @@ namespace ScheduleBuilder.DAL
 
             string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
                 "sh.scheduledLunchBreakStartTime, sh.scheduledLunchBreakEndTime, sh.actualStartTime, sh.actualEndTime, sh.actualLunchBreakStart, " +
-                "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title " +
+                "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title, STUFF((SELECT '; ' + CONVERT(varchar, a.taskId) " +
+                "FROM assignedTask as a " +
+                "WHERE a.shiftId = s.id " +
+                "FOR XML PATH('')), 1, 1, '') [taskList] " +
                 "FROM shift AS s " +
                 "JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
                 "JOIN person AS p ON s.personId = p.id " +
@@ -54,6 +58,8 @@ namespace ScheduleBuilder.DAL
                             shift.positionName = reader["position_title"].ToString();
                             shift.personLastName = reader["last_name"].ToString();
                             shift.personFirstName = reader["first_name"].ToString();
+                            string taskIdList = reader["taskList"].ToString();
+                            shift.TaskIdList = taskIdList == string.Empty ? new List<int>() : taskIdList.Split(';').Select(int.Parse).ToList();
                             shiftList.Add(shift);
                         }
                     }
@@ -114,8 +120,6 @@ namespace ScheduleBuilder.DAL
             return shiftList;
 
         }
-
-      
 
         public Shift GetNearestShift(string whereClause)
         {
@@ -182,7 +186,7 @@ namespace ScheduleBuilder.DAL
         /// </summary>
         /// <param name="shift">A shift object to be sent to db</param>
         /// <returns>A boolean value of success or not</returns>
-        public bool AddShift(Shift shift)
+        public bool AddShift(Shift shift, Dictionary<int, bool> taskList)
         {
             int shiftHoursResult = 0;
             int shiftResult = 0;
@@ -193,12 +197,18 @@ namespace ScheduleBuilder.DAL
 
             string insertShiftStatement =
             "INSERT INTO shift([scheduleShiftID],[personId],[positionId])" +
-            "VALUES(@scheduleShiftID,@personId,@positionId)";
+            "VALUES(@scheduleShiftID,@personId,@positionId); SELECT SCOPE_IDENTITY()";
+
+            string insertShiftTaskStatement =
+                "INSERT INTO assignedTask([shiftId],[taskId]) " +
+                "VALUES(@shiftID, @taskID)";
 
             //create new shift and shift hours entries
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 int pk = -1;
+                int shiftpk = -1;
+
                 connection.Open();
                 SqlTransaction transaction = connection.BeginTransaction();
                 try
@@ -221,9 +231,23 @@ namespace ScheduleBuilder.DAL
                         insertShiftCommand.Parameters.AddWithValue("@personId", shift.personID);
                         insertShiftCommand.Parameters.AddWithValue("@positionId", shift.positionID);
 
-                        shiftResult = insertShiftCommand.ExecuteNonQuery();
+                        shiftpk = Convert.ToInt32(insertShiftCommand.ExecuteScalar());
+                        shiftResult = 1;
                     }
-
+                    foreach(KeyValuePair<int,bool> taskActive in taskList)
+                    {
+                        if (taskActive.Value)
+                        {
+                            using (SqlCommand insertShiftTaskCommand = new SqlCommand(insertShiftTaskStatement, connection))
+                            {
+                                insertShiftTaskCommand.Transaction = transaction;
+                                insertShiftTaskCommand.Parameters.AddWithValue("@shiftID", shiftpk);
+                                insertShiftTaskCommand.Parameters.AddWithValue("@taskID", taskActive.Key);
+                                insertShiftTaskCommand.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                    
                     transaction.Commit();
                 }
                 catch
@@ -240,7 +264,7 @@ namespace ScheduleBuilder.DAL
         /// </summary>
         /// <param name="shift">The shift object to be updated</param>
         /// <returns>A boolean value based on the success or failure of the update</returns>
-        public bool UpdateShift(Shift shift)
+        public bool UpdateShift(Shift shift, Dictionary<int, bool> taskList)
         {
             int shiftHoursResult = 0;
             int shiftResult = 0;
@@ -253,7 +277,15 @@ namespace ScheduleBuilder.DAL
             string updateShiftStatement =
             "UPDATE shift SET [personId] = @personId, [positionId] = @positionId " +
             "WHERE id = @id";
-            //update shift and shift hour entries
+
+            string deleteAssignTask =
+            "DELETE FROM assignedTask " +
+            "WHERE shiftId = @shiftId";
+
+            string insertShiftTaskStatement =
+                "INSERT INTO assignedTask([shiftId],[taskId]) " +
+                "VALUES(@shiftID, @taskID)";
+
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
@@ -279,6 +311,27 @@ namespace ScheduleBuilder.DAL
                         updateShiftCommand.Parameters.AddWithValue("@positionId", shift.positionID);
 
                         shiftResult = updateShiftCommand.ExecuteNonQuery();
+                    }
+
+                    using (SqlCommand deleteAssignTaskCommand = new SqlCommand(deleteAssignTask, connection))
+                    {
+                        deleteAssignTaskCommand.Transaction = transaction;
+                        deleteAssignTaskCommand.Parameters.AddWithValue("@shiftID", shift.shiftID);
+                        deleteAssignTaskCommand.ExecuteNonQuery();
+                    }
+
+                    foreach (KeyValuePair<int, bool> taskActive in taskList)
+                    {
+                        if (taskActive.Value)
+                        {
+                            using (SqlCommand insertShiftTaskCommand = new SqlCommand(insertShiftTaskStatement, connection))
+                            {
+                                insertShiftTaskCommand.Transaction = transaction;
+                                insertShiftTaskCommand.Parameters.AddWithValue("@shiftID", shift.shiftID);
+                                insertShiftTaskCommand.Parameters.AddWithValue("@taskID", taskActive.Key);
+                                insertShiftTaskCommand.ExecuteNonQuery();
+                            }
+                        }
                     }
 
                     transaction.Commit();

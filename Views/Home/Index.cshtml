@@ -9,36 +9,35 @@
 <input type="hidden" id="sessionRoleTitleForAngular" value="@Session["roleTitle"].ToString()" />
 
 
-<div class="jumbotron center">
-    <div>
+<div>
+    <div class="jumbotron center">
         <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+        <h2>Welcome to the {{getSessionRoleTitle()}} Dashboard</h2>
     </div>
-    <h2>Welcome to the {{getSessionRoleTitle()}} Dashboard</h2>
-        
+    
     <br />
-    <select class="form-control" ng-model="employeeDateFilter" ng-required="true" name="employeeDateFilter" ng-change="getEmployeeDateFilter(employeeDateFilter)">
+
+    <select class="form-control" ng-model="filterExprView" ng-required="true" name="filterExprView" ng-change="changeFilter()">
         <option value="current">My Current Shifts</option>
         <option value="past">My Past Shifts</option>
     </select>
-        
+
     <br />
 
-    <table style="width:100%;">
-
+    <table style="width:100%;" ng-show="filterExprView == 'current'">
         <thead class="tablestyle">
             <tr>
-
                 <th>Name</th>
                 <th>Position</th>
-                <th>scheduledStartTime</th>
-                <th>scheduledEndTime</th>
-                <th>scheduledLunchBreakStart</th>
-                <th>scheduledLunchBreakEnd</th>
+                <th>Scheduled Start</th>
+                <th>Scheduled End</th>
+                <th>Scheduled Lunch Start</th>
+                <th>Scheduled Lunch End</th>
                 <th>Hours per shift</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="row_alternate" ng-repeat="sh in shift  | filter: { personID : getSessionID() } |  filter: filterForEmployeeShift ">
+            <tr class="row_alternate" ng-repeat="sh in filterShift  | filter: { personID : getSessionID() } ">
 
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
                 <td>{{sh.positionName}}</td>
@@ -50,29 +49,39 @@
             </tr>
         </tbody>
     </table>
+
+
+    <table style="width:100%;" ng-show="filterExprView == 'past'">
+        <thead class="tablestyle">
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Actual Start Time</th>
+                <th>Actual End Time</th>
+                <th>Actual Lunch Start</th>
+                <th>Actual Lunch End</th>
+                <th>Clocked Hours</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="row_alternate" ng-repeat="sh in filterShiftPast  | filter: { personID : getSessionID() } ">
+
+                <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
+                <td>{{sh.positionName}}</td>
+                <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td>
+                <td>{{getClockedHours(sh)}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div ng-show="filterExprView == 'current' && !filterShift.length">There are no current shifts to display.</div>
+    <div ng-show="filterExprView == 'past' && !filterShiftPast.length">There are no past shifts to display.</div>
 </div>
 
-<!-- May not need these now, passed variable to angular to make code cleaner and not copy table repeatedly
-@if (Session["roleTitle"].ToString() == "Manager")
-{
-    <div class="jumbotron center">
-        <div>
-            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
-        </div>
-        <h2>Welcome to the Manager Dashboard</h2>
-    </div>
-    <p class="lead">Today's Schedule</p>
-}
-else if (Session["roleTitle"].ToString() == "Adminstrator")
-{
-
-    <div class="jumbotron center">
-        <div>
-            <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
-        </div>
-        <h2>Welcome to the Administrator Dashboard</h2>
-    </div>
-} -->
+<br />
 
 
 <div ng-show="getSessionRoleTitle() == 'Adminstrator'">
@@ -136,10 +145,11 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                 <th>actualLunchBreakEnd</th> -->
                 <th></th>
                 <th>Hours per shift</th>
+                <th>Task's</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="row_alternate" ng-repeat="sh in shift">
+            <tr class="row_alternate" ng-repeat="sh in shift track by $index">
                 <!-- <td>{{sh.shiftID}}</td>
                 <td>{{sh.scheduleShiftID}}</td>
                 <td>{{sh.personID}}</td> -->
@@ -159,6 +169,7 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                     <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
                 </td>
                 <td>{{getTotalHours(sh)}}</td>
+                <td>{{sh.TaskIdList}}</td>
             </tr>
         </tbody>
     </table>
@@ -171,7 +182,6 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
             <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
         </div>
         <div class="modal-body" id="modal-body">
-
             <table>
                 <tbody>
                     <tr>
@@ -223,7 +233,6 @@ else if (Session["roleTitle"].ToString() == "Adminstrator")
                             </p>
                             <span ng-show="shiftForm.startdt.$touched && shiftForm.startdt.$invalid">You must select a starting date and time.</span>
                         </th>
-                        consol.log("looky here");
                         <th>
                             <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                         </th>

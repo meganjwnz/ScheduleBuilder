@@ -267,6 +267,42 @@ namespace ScheduleBuilder.DAL
             return (taskResult >= 1 && positionTaskResult >= 1 ? true : false);
         }
 
+        /// <summary>
+        /// Connects a task to a shift
+        /// </summary>
+        /// <param name="shiftID">The shiftID as an integer</param>
+        /// <param name="taskID">The taskID as an integer</param>
+        /// <returns></returns>
+        public bool InsertShiftTask(int shiftID, int taskID)
+        {
+            int shiftTaskResult = 0;
+
+            string insertStatement =
+                "INSERT INTO assignedTask([shiftId],[taskId]) " +
+                "VALUES(@shiftID, @taskID)";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    using (SqlCommand insertCommand = new SqlCommand(insertStatement, connection))
+                    {
+                        insertCommand.Transaction = transaction;
+                        insertCommand.Parameters.AddWithValue("@shiftID", shiftID);
+                        insertCommand.Parameters.AddWithValue("@taskID", taskID);
+                        shiftTaskResult = insertCommand.ExecuteNonQuery();
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                }
+            }
+            return (shiftTaskResult >= 1 ? true : false);
+        }
 
     }
 }
