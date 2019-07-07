@@ -177,6 +177,7 @@ namespace ScheduleBuilder.Controllers
 
         /// <summary>
         /// gets all positions from the database
+        /// allows updating shifts
         /// </summary>
         [HttpPost]
         public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList)
