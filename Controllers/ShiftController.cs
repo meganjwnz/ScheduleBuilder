@@ -248,33 +248,34 @@ namespace ScheduleBuilder.Controllers
 
         private Shift timeHack(Shift shift)
         {
-            shift.scheduledStartTime = shift.scheduledStartTime.AddHours(-4);
-            shift.scheduledEndTime = shift.scheduledEndTime.AddHours(-4);
+            int timezone = -4;
+            shift.scheduledStartTime = shift.scheduledStartTime.AddHours(timezone);
+            shift.scheduledEndTime = shift.scheduledEndTime.AddHours(timezone);
             if (shift.scheduledLunchBreakStart != null)
             {
-                DateTime temp = shift.scheduledLunchBreakStart ?? DateTime.MinValue; shift.scheduledLunchBreakStart = temp.AddHours(-4);
+                DateTime temp = shift.scheduledLunchBreakStart ?? DateTime.MinValue; shift.scheduledLunchBreakStart = temp.AddHours(timezone);
             }
             if (shift.scheduledLunchBreakEnd != null)
             {
                 DateTime temp = shift.scheduledLunchBreakEnd ?? DateTime.MinValue;
-                shift.scheduledLunchBreakEnd = temp.AddHours(-4);
+                shift.scheduledLunchBreakEnd = temp.AddHours(timezone);
             }
             if (shift.actualStartTime != null)
             {
                 DateTime temp = shift.actualStartTime ?? DateTime.MinValue;
-                shift.actualStartTime = temp.AddHours(-4);
+                shift.actualStartTime = temp.AddHours(timezone);
             }
             if (shift.actualEndTime != null)
             {
                 DateTime temp = shift.actualEndTime ?? DateTime.MinValue;
-                shift.actualEndTime = temp.AddHours(-4);
+                shift.actualEndTime = temp.AddHours(timezone);
             }
             if (shift.actualLunchBreakStart != null) {
                 DateTime temp = shift.actualLunchBreakStart ?? DateTime.MinValue;
-                shift.actualLunchBreakStart = temp.AddHours(-4); }
+                shift.actualLunchBreakStart = temp.AddHours(timezone); }
             if (shift.actualLunchBreakEnd != null) {
                 DateTime temp = shift.actualLunchBreakEnd ?? DateTime.MinValue;
-                shift.actualLunchBreakEnd = temp.AddHours(-4);
+                shift.actualLunchBreakEnd = temp.AddHours(timezone);
             }
             return shift;
         }
