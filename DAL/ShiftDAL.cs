@@ -244,7 +244,6 @@ namespace ScheduleBuilder.DAL
                         }
                     }
                     
-
                     transaction.Commit();
                 }
                 catch

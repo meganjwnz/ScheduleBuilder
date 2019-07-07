@@ -149,7 +149,7 @@ namespace ScheduleBuilder.Controllers
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList)
         {
             JavaScriptSerializer thing = new JavaScriptSerializer();
-            Dictionary<int,bool> otherThing = JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             Shift shift = new Shift();
             shift.personID = int.Parse(personID);
             shift.positionID = int.Parse(positionID);
