@@ -14,6 +14,8 @@ namespace ScheduleBuilder.DAL
         /// <returns>A list of shift objects</returns>
         List<Shift> GetAllShifts();
 
+        Shift GetNearestShift(string whereClause);
+
         /// <summary>
         /// Add a shift to the shift and shift hours table
         /// </summary>
