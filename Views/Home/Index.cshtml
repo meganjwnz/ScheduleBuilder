@@ -182,7 +182,7 @@
             <h3 class="modal-title" id="modal-title">Shift Information - {{type}} Shift</h3>
         </div>
         <div class="modal-body" id="modal-body">
-
+            {{selected}}
             <table>
                 <tbody>
                     <tr>
@@ -234,7 +234,6 @@
                             </p>
                             <span ng-show="shiftForm.startdt.$touched && shiftForm.startdt.$invalid">You must select a starting date and time.</span>
                         </th>
-                        consol.log("looky here");
                         <th>
                             <div style="margin-top:-13px" uib-timepicker ng-model="selected.startdt" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false"></div>
                         </th>

@@ -151,9 +151,12 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     };
 
     $scope.getClockedHours = function (shift) {
-        var startTime = $scope.jsDate(shift.actualStartTime);
-        var endTime = $scope.jsDate(shift.actualEndTime);
-
+        if (shift.actualStartTime && shift.actualEndTime) {
+            var startTime = $scope.jsDate(shift.actualStartTime);
+            var endTime = $scope.jsDate(shift.actualEndTime);
+        } else {
+            return 0.00;
+        }
         if (shift.actualLunchBreakStart && shift.actualLunchBreakEnd) {
             var lunchTime = $scope.jsDate(shift.actualLunchBreakStart);
             var lunchEnd = $scope.jsDate(shift.actualLunchBreakEnd);
@@ -267,11 +270,24 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     $scope.selected.shiftID = $scope.selectedShift.shiftID;
     $scope.selected.scheduledShiftID = $scope.selectedShift.scheduleShiftID;
     $scope.selected.personID = $scope.selectedShift.personID;
+    if ($scope.selectedShift.personID) {
+        $scope.getPersonPositions($scope.selected.personID);
+    }
     $scope.selected.positionID = $scope.selectedShift.positionID;
+    if ($scope.selectedShift.positionID) {
+        $scope.getPositionTasks($scope.selected.positionID);
+    }
     $scope.selected.startdt = $scope.jsDate($scope.selectedShift.scheduledStartTime);
     $scope.selected.enddt = $scope.jsDate($scope.selectedShift.scheduledEndTime);
     $scope.selected.startlunchdt = $scope.jsDate($scope.selectedShift.scheduledLunchBreakStart);
     $scope.selected.lunchenddt = $scope.jsDate($scope.selectedShift.scheduledLunchBreakEnd);
+    if ($scope.selectedShift.TaskIdList && $scope.selectedShift.TaskIdList.length) {
+        $scope.selected.tasks = {};
+        for (var i = 0; i < $scope.selectedShift.TaskIdList.length; i++) {
+            var valueTaskId = $scope.selectedShift.TaskIdList[i];
+            $scope.selected.tasks[valueTaskId] = 'true';
+        }
+    }
 
     $scope.addShift = function (selected) {
         var personID = selected.personID;
