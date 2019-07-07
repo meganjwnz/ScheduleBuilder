@@ -179,8 +179,10 @@ namespace ScheduleBuilder.Controllers
         /// gets all positions from the database
         /// </summary>
         [HttpPost]
-        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete)
+        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList)
         {
+            JavaScriptSerializer thing = new JavaScriptSerializer();
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             //Create shift object from values passed from view
             Shift shift = new Shift();
             shift.shiftID = int.Parse(shiftID);
@@ -215,7 +217,7 @@ namespace ScheduleBuilder.Controllers
             else
             {
                 this.ContactPersonShiftChange("update", shift);
-                return Json(shiftDAL.UpdateShift(shift));
+                return Json(shiftDAL.UpdateShift(shift, otherThing));
 
             }
 

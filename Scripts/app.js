@@ -318,6 +318,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     };
 
     $scope.updateShift = function (selected) {
+        console.log("update shift", selected);
         var shiftID = selected.shiftID;
         var scheduleShiftID = selected.scheduledShiftID;
         var isDelete = selected.delete;
@@ -327,13 +328,15 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var enddt = selected.enddt.getTime();
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
+        var taskArray = JSON.stringify(selected.tasks);
+        console.log("taskArray", taskArray);
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {
             $http.post('/Shift/UpdateShift', {
                 personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
-                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID
+                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray
             }).then(function (response) {
                 $scope.success = response.data;
                 if ($scope.success) {

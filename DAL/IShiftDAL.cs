@@ -26,7 +26,7 @@ namespace ScheduleBuilder.DAL
         /// </summary>
         /// <param name="shift">The shift to be updated</param>
         /// <returns>true if success, false if failure</returns>
-        bool UpdateShift(Shift shift);
+        bool UpdateShift(Shift shift, Dictionary<int, bool> taskList);
 
         /// <summary>
         /// Delete a shift from the db
