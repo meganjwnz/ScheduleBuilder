@@ -150,6 +150,25 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     };
 
+    $scope.getClockedHours = function (shift) {
+        var startTime = $scope.jsDate(shift.actualStartTime);
+        var endTime = $scope.jsDate(shift.actualEndTime);
+
+        if (shift.actualLunchBreakStart && shift.actualLunchBreakEnd) {
+            var lunchTime = $scope.jsDate(shift.actualLunchBreakStart);
+            var lunchEnd = $scope.jsDate(shift.actualLunchBreakEnd);
+            var firstHours = lunchTime.getTime() - startTime.getTime();
+            var secondHours = endTime.getTime() - lunchEnd.getTime();
+            var totalHours = (secondHours + firstHours) / (1000 * 60 * 60);
+
+        } else {
+            var totalHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
+        }
+
+        return totalHours.toFixed(2);
+
+    };
+
     //Verify that all scheduled dates are in order thus valid
     $scope.checkDateOrder = function (start, end, lunch, lunchEnd) {
         if ((lunch && !lunchEnd) || (lunchEnd && !lunch)) {

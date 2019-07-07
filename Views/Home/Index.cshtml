@@ -9,13 +9,14 @@
 <input type="hidden" id="sessionRoleTitleForAngular" value="@Session["roleTitle"].ToString()" />
 
 
-<div class="jumbotron center">
-    <div>
+<div>
+    <div class="jumbotron center">
         <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
+        <h2>Welcome to the {{getSessionRoleTitle()}} Dashboard</h2>
     </div>
-    <h2>Welcome to the {{getSessionRoleTitle()}} Dashboard</h2>
-
+    
     <br />
+
     <select class="form-control" ng-model="filterExprView" ng-required="true" name="filterExprView" ng-change="changeFilter()">
         <option value="current">My Current Shifts</option>
         <option value="past">My Past Shifts</option>
@@ -24,16 +25,14 @@
     <br />
 
     <table style="width:100%;" ng-show="filterExprView == 'current'">
-
         <thead class="tablestyle">
             <tr>
-
                 <th>Name</th>
                 <th>Position</th>
-                <th>scheduledStartTime</th>
-                <th>scheduledEndTime</th>
-                <th>scheduledLunchBreakStart</th>
-                <th>scheduledLunchBreakEnd</th>
+                <th>Scheduled Start</th>
+                <th>Scheduled End</th>
+                <th>Scheduled Lunch Start</th>
+                <th>Scheduled Lunch End</th>
                 <th>Hours per shift</th>
             </tr>
         </thead>
@@ -53,17 +52,15 @@
 
 
     <table style="width:100%;" ng-show="filterExprView == 'past'">
-
         <thead class="tablestyle">
             <tr>
-
                 <th>Name</th>
                 <th>Position</th>
-                <th>scheduledStartTime</th>
-                <th>scheduledEndTime</th>
-                <th>scheduledLunchBreakStart</th>
-                <th>scheduledLunchBreakEnd</th>
-                <th>Hours per shift</th>
+                <th>Actual Start Time</th>
+                <th>Actual End Time</th>
+                <th>Actual Lunch Start</th>
+                <th>Actual Lunch End</th>
+                <th>Clocked Hours</th>
             </tr>
         </thead>
         <tbody>
@@ -71,11 +68,11 @@
 
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}</td>
                 <td>{{sh.positionName}}</td>
-                <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
-                <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
-                <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
-                <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
-                <td>{{getTotalHours(sh)}}</td>
+                <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td>
+                <td>{{getClockedHours(sh)}}</td>
             </tr>
         </tbody>
     </table>
@@ -84,7 +81,7 @@
     <div ng-show="filterExprView == 'past' && !filterShiftPast.length">There are no past shifts to display.</div>
 </div>
 
-
+<br />
 
 
 <div ng-show="getSessionRoleTitle() == 'Adminstrator'">
