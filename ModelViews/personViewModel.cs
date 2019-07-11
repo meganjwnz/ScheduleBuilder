@@ -37,9 +37,9 @@ namespace ScheduleBuilder.ModelViews
         [Required(ErrorMessage = "Gender required")]
         public string Gender { get; set; }
 
-        [Display(Name = "Phone number")]
+        [Display(Name = "Phone number \n##########")]
         [Required(ErrorMessage = "Phone number required")]
-        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Please enter valid phone no.")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Please enter valid phone# Only enter numbers")]
         public string Phone { get; set; }
 
         [Display(Name = "Street address")]
