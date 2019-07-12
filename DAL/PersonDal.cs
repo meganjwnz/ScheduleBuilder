@@ -72,6 +72,8 @@ namespace ScheduleBuilder.DAL
             , string zipcode
             , string email)
         {
+            string username = $"{firstName.Substring(0, 1)}{lastName}";
+            username = this.UsernameCheck(username, 0);
             Person addedPerson = new Person
             {
                 LastName = lastName,
@@ -82,13 +84,13 @@ namespace ScheduleBuilder.DAL
                 Phone = phone,
                 StreetAddress = streetAddress,
                 Zipcode = zipcode,
-                Username = $"{firstName.Substring(0,1).ToLower()}{lastName.ToLower()}",
+                Username = username,
                 Email = email,
                 Password = this.hashingService.PasswordHashing("newHire"),
                 StatusId = 1,
                 RoleId = 3
             };
-            string username = $"{firstName.Substring(0,1)}+{lastName}";
+
             string sql = @"INSERT INTO dbo.person( 
                             [last_name] 
                             , [first_name] 
@@ -120,7 +122,52 @@ namespace ScheduleBuilder.DAL
                             , @Email); ";
 
 
-           this.SaveData(sql, addedPerson);
+            this.SaveData(sql, addedPerson);
+        }
+
+        private string UsernameCheck(string defaultName, int num)
+        {
+            string username = defaultName + num.ToString();
+           // string newUsername = username;
+
+            if (DoesUserNameExists(username))
+            {
+               return this.UsernameCheck(defaultName, num + 1);
+            }
+            //else
+            //{
+            ////    newUsername = username;
+            //}
+            return username; 
+        }
+
+        private bool DoesUserNameExists(string username)
+        {
+            bool doesExist = false;
+            string sqlStatement = "Select count(*) FROM person Where username = @username";
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                {
+                    connection.Open();
+                    using (SqlCommand checkUsername = new SqlCommand(sqlStatement, connection))
+                    {
+                        checkUsername.Parameters.AddWithValue("@username", username);
+                        Int32 count = 0;
+                        count = (Int32)checkUsername.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            doesExist = true;
+                        }
+                    }
+                    connection.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return doesExist;
         }
 
         /// <summary>
@@ -255,13 +302,13 @@ namespace ScheduleBuilder.DAL
             string update = @"UPDATE dbo.person 
                             Set statusId = 4 
                             WHERE id = @id";
-                try
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
                 {
-                    using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                    connection.Open();
+                    using (SqlCommand updateCommand = new SqlCommand(update, connection))
                     {
-                        connection.Open();
-                        using (SqlCommand updateCommand = new SqlCommand(update, connection))
-                        {
                         updateCommand.Parameters.AddWithValue("@lastName", seperatePerson.LastName);
                         updateCommand.Parameters.AddWithValue("@firstName", seperatePerson.FirstName);
                         updateCommand.Parameters.AddWithValue("@dateOfBirth", seperatePerson.DateOfBirth);
@@ -287,16 +334,16 @@ namespace ScheduleBuilder.DAL
                         updateCommand.Parameters.AddWithValue("@password", seperatePerson.Password);
 
                         updateCommand.ExecuteNonQuery();
-                        }
-                        connection.Close();
                     }
+                    connection.Close();
                 }
-                catch (SqlException ex)
-                {
-                    throw ex;
-                }
-            return seperatePerson;
             }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return seperatePerson;
+        }
 
         /// <summary>
         /// Allows users to edit a previously created person
@@ -328,7 +375,7 @@ namespace ScheduleBuilder.DAL
                 throw ex;
             }
         }
-        
+
         /// <summary>
         /// Gets a persons ID by their username
         /// </summary>
