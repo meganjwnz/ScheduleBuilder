@@ -48,7 +48,7 @@ namespace ScheduleBuilder.DAL
 
         /// <summary>
         /// Adds a person to the database 
-        /// all new persons have roleId = 3
+        /// all new persons have roleId = 3s
         /// statusId = 1
         /// password = 'newHire'
         /// </summary>
