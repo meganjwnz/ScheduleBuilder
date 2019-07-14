@@ -67,5 +67,6 @@ namespace ScheduleBuilder.Model
 
         public List<int> TaskIdList { get; set; }
 
+        public string Notes { get; set; }
     }
 }

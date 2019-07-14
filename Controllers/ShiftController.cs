@@ -145,7 +145,7 @@ namespace ScheduleBuilder.Controllers
         /// gets all positions from the database
         /// </summary>
         [HttpPost]
-        public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList)
+        public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
             JavaScriptSerializer thing = new JavaScriptSerializer();
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
@@ -170,6 +170,7 @@ namespace ScheduleBuilder.Controllers
             {
                 shift.scheduledLunchBreakEnd = null;
             }
+            shift.Notes = notes;
 
             return Json(shiftDAL.AddShift(shift, otherThing));
 
@@ -180,7 +181,7 @@ namespace ScheduleBuilder.Controllers
         /// allows updating shifts
         /// </summary>
         [HttpPost]
-        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList)
+        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList, string notes)
         {
             JavaScriptSerializer thing = new JavaScriptSerializer();
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
@@ -208,6 +209,7 @@ namespace ScheduleBuilder.Controllers
             {
                 shift.scheduledLunchBreakEnd = null;
             }
+            shift.Notes = notes;
 
             //Delete or update shift accordingly
             if (string.Equals(isDelete, "delete"))
