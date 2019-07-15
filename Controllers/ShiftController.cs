@@ -147,6 +147,7 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
+            
             JavaScriptSerializer thing = new JavaScriptSerializer();
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             Shift shift = new Shift();
@@ -154,6 +155,17 @@ namespace ScheduleBuilder.Controllers
             shift.positionID = int.Parse(positionID);
             shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
             shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+
+            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
+            if(checkIfAlreadyScheduled == true)
+            {
+                //ERROR MESSAGE THAT EMPLOYEE IS ALREADY SCHEDULED GOES HERE!!!
+                return View();
+            }
+            else
+            {
+
+            
             if (!string.IsNullOrEmpty(startlunchdt))
             {
                 shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
@@ -173,7 +185,7 @@ namespace ScheduleBuilder.Controllers
             shift.Notes = notes;
 
             return Json(shiftDAL.AddShift(shift, otherThing));
-
+            }
         }
 
         /// <summary>
