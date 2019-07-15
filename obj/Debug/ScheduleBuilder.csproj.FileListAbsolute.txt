@@ -555,7 +555,6 @@ C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.Cor
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.dll
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.pdb
-C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
 C:\Users\DrewC\Desktop\SchoolFinalSemester\Schedulebuilder5\schedulebuilder\bin\xunit.runner.visualstudio.testadapter.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\Schedulebuilder5\schedulebuilder\bin\xunit.runner.reporters.net452.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\Schedulebuilder5\schedulebuilder\bin\xunit.runner.utility.net452.dll

@@ -73,7 +73,6 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Login(Person person)
         {
             ViewBag.Error = "Invalid Username or Password";
-
             if (person.Username == null || person.Username == " " || person.Password == null || person.Password == " ")
             {
                 ViewBag.Error = "Username and/or password must not be blank";
@@ -131,6 +130,11 @@ namespace ScheduleBuilder.Controllers
             personDAL.UpdatePassword(person);
             this.success = true;
             return RedirectToAction("Login");
+        }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
         }
     }
     #endregion
