@@ -112,7 +112,6 @@ namespace ScheduleBuilder.Controllers
         {
             Session.Clear();
             Session.Abandon();
-            FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
 
@@ -139,15 +138,22 @@ namespace ScheduleBuilder.Controllers
 
         public ActionResult ForgotPasswordSubmission()
         {
-            Person person = 
             try
             {
-                personDAL.UpdatePassword();
+                int personID = personDAL.GetIDByEmail(Request.Form["confirmEmail"]);
+                if (personID == 0)
+                {
+                    ViewBag.noEmail = "No user with that email.";
+                    return View("ForgotPassword");
+                }
+                Person person = personDAL.GetPersonByID(personID);
+                personDAL.UpdatePasswordOnly(person, Request.Form["newPassword"]);
                 return RedirectToAction("Login");
-            }
-            catch
+
+            } catch
             {
-                return View(person);
+                ViewBag.noEmail = "No user with that email.";
+                return View("ForgetPassword");
             }
         }
     }
