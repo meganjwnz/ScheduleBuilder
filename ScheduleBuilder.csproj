@@ -300,6 +300,7 @@
     <Content Include="Views\Shift\AddTimePunchPage.cshtml" />
     <Content Include="Views\Person\AddPosition.cshtml" />
     <Content Include="Views\Home\ForgotPassword.cshtml" />
+    <Content Include="Views\Shift\ViewShiftDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

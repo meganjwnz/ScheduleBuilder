@@ -1,0 +1,139 @@
+﻿@model ScheduleBuilder.Model.Shift
+
+@{
+    ViewBag.Title = "ViewShiftDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewShiftDetails</h2>
+
+<div>
+    <h4>Shift</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.scheduleShiftID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scheduleShiftID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.positionID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.positionID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.positionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.positionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.scheduledStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scheduledStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.scheduledEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scheduledEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.scheduledLunchBreakStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scheduledLunchBreakStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.scheduledLunchBreakEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.scheduledLunchBreakEnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.actualStartTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.actualStartTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.actualEndTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.actualEndTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.actualLunchBreakStart)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.actualLunchBreakStart)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.actualLunchBreakEnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.shiftID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
