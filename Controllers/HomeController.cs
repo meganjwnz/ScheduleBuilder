@@ -136,6 +136,20 @@ namespace ScheduleBuilder.Controllers
         {
             return View();
         }
+
+        public ActionResult ForgotPasswordSubmission()
+        {
+            Person person = 
+            try
+            {
+                personDAL.UpdatePassword();
+                return RedirectToAction("Login");
+            }
+            catch
+            {
+                return View(person);
+            }
+        }
     }
     #endregion
 }
