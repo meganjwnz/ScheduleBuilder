@@ -263,12 +263,12 @@ namespace ScheduleBuilder.DAL
             bool successful = (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
             if (successful)
             {
-                this.ContactPersonShiftChange(shift);
+                this.ContactPersonShift(shift);
             }
             return successful;
         }
 
-        private void ContactPersonShiftChange(Shift shift)
+        private void ContactPersonShift(Shift shift)
         {
             Person person = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
             Email email = new Email(person);
@@ -455,12 +455,69 @@ namespace ScheduleBuilder.DAL
                         command.ExecuteNonQuery();   
                     }
                     connection.Close();
+                    Shift shift = this.GetAllShifts(" WHERE sh.id = " + shiftHoursId.ToString()).FirstOrDefault<Shift>();
+                    if (IsEmployeeLate(shift))
+                    {
+                        this.AlertManagmentOfLateEmployee(shift);
+                        this.AlertUserOfLateClockin(shift);
+                    }
                 }
                 catch (SqlException ex)
                 {
                     throw ex;
                 }
             }
+        }
+
+        private bool IsEmployeeLate(Shift shift)
+        {
+            bool lateEmployee = false;
+            DateTime clockIn = shift.actualStartTime ?? DateTime.MinValue;
+            if (shift.scheduledStartTime.AddMinutes(5) < clockIn)
+            {
+                lateEmployee = true;
+            }
+
+            return lateEmployee;
+        }
+
+        private void AlertManagmentOfLateEmployee(Shift shift)
+        {
+            Person person = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
+            Email email = new Email("Admin", "schedulebuilder2019@gmail.com");
+
+            string subject = $"Late Shift Alert";
+
+            string body = $"\n" +
+                $"\n Please note that { person.GetFullName()} was supposed to arrive at {shift.scheduledStartTime} \n" +
+                $"\n But failed to arrive until {shift.actualStartTime}\n" +
+
+                $"\n This is unacceptable behavoir \n" +
+                $"Please take appropiate corrective action " +
+                $"\n ";
+
+
+            email.SendMessage(subject, body);
+        }
+
+        private void AlertUserOfLateClockin(Shift shift)
+        {
+            Person person = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
+            Email email = new Email(person);
+
+            string subject = $"Late Shift Alert";
+
+            string body = $"\n" +
+                $"\n { person.GetFullName()} \n you where supposed to arrive at {shift.scheduledStartTime} \n" +
+                $"\n But failed to arrive until {shift.actualStartTime}\n" +
+
+                $"\n This is unacceptable behavoir \n" +
+                $" Please insure that you arrive on time" +
+                $"\n \n" +
+                $"If you believe this is an error please contact Management";
+
+
+            email.SendMessage(subject, body);
         }
 
 

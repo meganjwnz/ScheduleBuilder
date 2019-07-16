@@ -141,9 +141,6 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
-        /// <summary>
-        /// gets all positions from the database
-        /// </summary>
         [HttpPost]
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
