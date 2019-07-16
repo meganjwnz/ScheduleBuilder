@@ -253,7 +253,7 @@ namespace ScheduleBuilder.Controllers
 
                 $"\n If you notice any errors please contact your Admin as soon as possible \n" +
                 $"\n Your initial password is 'newHire' " +
-                $"\n Please log into -URL GOES HERE- to update your password" +
+                $"\n Please log into http://schedulebuildercs6920.azurewebsites.net/Home/Login to update your password" +
                 $"\n Hope you have a wonderful day" +
                 $"";
 

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
 namespace ScheduleBuilder.DAL
 {
     /// <summary>
@@ -12,6 +15,7 @@ namespace ScheduleBuilder.DAL
     /// </summary>
     public class ShiftDAL : IShiftDAL
     {
+        PersonDAL personDAL = new PersonDAL();
         /// <summary>
         /// Get all shifts in the database
         /// </summary>
@@ -256,7 +260,31 @@ namespace ScheduleBuilder.DAL
                     transaction.Rollback();
                 }
             }
-            return (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
+            bool successful = (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
+            if (successful)
+            {
+                this.ContactPersonShiftChange(shift);
+            }
+            return successful;
+        }
+
+        private void ContactPersonShiftChange(Shift shift)
+        {
+            Person person = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
+            Email email = new Email(person);
+
+            string subject = $"You have a new Shift ";
+
+            string body = $"Hello { person.GetFullName()}, \n" +
+                $"\nYou are recieving this email to let you know you have a shift on {shift.scheduledStartTime} \n" +
+                $"\n Please log in to your account to see all schedule changes\n" +
+
+                $"\n If this has been done in error please contact your Admin as soon as possible " +
+                $"\n Hope you have a wonderful day";
+
+
+            email.SendMessage(subject, body);
+
         }
 
         /// <summary>
