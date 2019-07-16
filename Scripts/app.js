@@ -288,6 +288,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
             $scope.selected.tasks[valueTaskId] = 'true';
         }
     }
+    $scope.selected.notes = $scope.selectedShift.notes;
 
     $scope.addShift = function (selected) {
         var personID = selected.personID;
@@ -297,12 +298,12 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
         var taskArray = JSON.stringify(selected.tasks);
-        console.log(taskArray);
+        var notes = selected.notes ? selected.notes : null;
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {
-            $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt, taskList: taskArray }).then(function (response) {
+            $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt, taskList: taskArray, notes: notes }).then(function (response) {
                 $scope.success = response.data;
                 if ($scope.success) {
                     alert("Shift added successfully");
@@ -318,7 +319,6 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     };
 
     $scope.updateShift = function (selected) {
-        console.log("update shift", selected);
         var shiftID = selected.shiftID;
         var scheduleShiftID = selected.scheduledShiftID;
         var isDelete = selected.delete;
@@ -329,14 +329,14 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
         var taskArray = JSON.stringify(selected.tasks);
-        console.log("taskArray", taskArray);
+        var notes = selected.notes ? selected.notes : null;
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {
             $http.post('/Shift/UpdateShift', {
                 personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
-                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray
+                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray, notes: notes
             }).then(function (response) {
                 $scope.success = response.data;
                 if ($scope.success) {

@@ -545,5 +545,54 @@ namespace ScheduleBuilder.DAL
             }
         }
         #endregion
+
+        /// <summary>
+        /// Checks to see if a person is already scheduled for a specific time
+        /// </summary>
+        /// <param name="personId"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns></returns>
+        public bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime)
+        {
+            Person person = new Person();
+            Shift shift = new Shift();
+            string selectStatement =
+                "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
+                "FROM person " +
+                "INNER JOIN shift ON shift.personId = person.id " +
+                "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
+                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
+                {
+                    selectCommand.Parameters.AddWithValue("@personId", personId);
+                    selectCommand.Parameters.AddWithValue("@startTime", startTime);
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            shift.personID = (int)reader["id"];
+                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                        }
+                    }
+                }
+                if (shift.personID == personId && shift.scheduledStartTime == startTime)
+                {
+                    return true;
+                } else if (startTime > shift.scheduledStartTime && startTime < shift.scheduledEndTime)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        
     }
 }

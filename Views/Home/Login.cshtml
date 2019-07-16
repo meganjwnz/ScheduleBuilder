@@ -31,9 +31,8 @@
 
             <input required="" class="form-control" style="font-size:16px; padding:15px" name="Password" type="password" placeholder="Password" />
 
-            <input class="form-control btn-primary" style="font-size:16px; padding:15px" type="submit" value="Login" new { id=item.Id } />
-
-
+            <input class="form-control btn-primary" style="font-size:16px; padding:15px" type="submit" value="Login" /><br />
+            @Html.ActionLink("Forgot Password", "ForgotPassword")
         </div>
     </div>
 }

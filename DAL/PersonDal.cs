@@ -346,9 +346,9 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Allows users to edit a previously created person
+        /// Updates a password of a new person
         /// </summary>
-        /// <param name="editPerson"></param>
+        /// <param name="passwordUpdated"></param>
         public void UpdatePassword(Person passwordUpdated)
         {
             HashingService hashed = new HashingService();
@@ -377,9 +377,9 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Gets a persons ID by their username
+        /// Gets a persons ID by their email
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="email"></param>
         /// <returns></returns>
         public int GetIDByEmail(string email)
         {
@@ -405,6 +405,69 @@ namespace ScheduleBuilder.DAL
                     }
                 }
                 return person.Id;
+            }
+        }
+
+        /// <summary>
+        /// Gets a person by their ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Person GetPersonByID(int id)
+        {
+            Person person = new Person();
+            string selectStatement =
+                         "SELECT id " +
+                         "FROM person " +
+                         "WHERE id = @id";
+
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand(selectStatement, connection))
+                {
+                    sqlCommand.Parameters.AddWithValue("@id", id);
+                    using (SqlDataReader reader = sqlCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            person.Id = (int)reader["id"];
+                        }
+                    }
+                }
+                return person;
+            }
+        }
+
+        /// <summary>
+        /// Updates a persons password with a new password based on email input in controller
+        /// </summary>
+        /// <param name="person"></param>
+        /// <param name="newPassword"></param>
+        public void UpdatePasswordOnly(Person person, string newPassword)
+        {
+            HashingService hashed = new HashingService();
+            string update = @"UPDATE dbo.person 
+                            SET password = @password 
+                            WHERE id = @id";
+            int count = 0;
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                {
+                    connection.Open();
+                    using (SqlCommand updateCommand = new SqlCommand(update, connection))
+                    {
+                        updateCommand.Parameters.AddWithValue("@password", hashed.PasswordHashing(newPassword));
+                        updateCommand.Parameters.AddWithValue("@id", person.Id);
+                        count = updateCommand.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
             }
         }
     }
