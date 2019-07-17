@@ -238,18 +238,20 @@ namespace ScheduleBuilder.Controllers
         }
 
         [HttpPost]
-        public ActionResult RequestTimeOff(string personID, string positionID, string startDate, string endDate, string startlunchdt, string endlunchdt, string taskList, string notes)
+        public ActionResult RequestTimeOffFunction(string personID, string positionID, string startDate, string endDate, string taskList, string notes)
         {
-
+            startDate = Request.Form["startDate"];
+            endDate = Request.Form["endDate"];
             ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
             shift.positionID = 12;
-            shift.scheduledStartTime = ConvertDateToC(long.Parse(startDate));
-            shift.scheduledEndTime = ConvertDateToC(long.Parse(endDate));
-
-            return View();
+            shift.scheduledStartTime = DateTime.Parse(startDate);
+            shift.scheduledEndTime = DateTime.Parse(endDate);
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
+            this.shiftDAL.AddShift(shift, otherThing);
+            return View("RequestTimeOff");
         }
 
         private void ContactPersonShiftChange(string type, Shift shift)
