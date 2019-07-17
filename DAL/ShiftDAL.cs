@@ -25,7 +25,7 @@ namespace ScheduleBuilder.DAL
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
             List<Shift> shiftList = new List<Shift>();
 
-            string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
+            string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, s.notes, sh.scheduledStartTime, sh.scheduledEndTime, " +
                 "sh.scheduledLunchBreakStartTime, sh.scheduledLunchBreakEndTime, sh.actualStartTime, sh.actualEndTime, sh.actualLunchBreakStart, " +
                 "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title, STUFF((SELECT '; ' + CONVERT(varchar, a.taskId) " +
                 "FROM assignedTask as a " +
@@ -51,6 +51,7 @@ namespace ScheduleBuilder.DAL
                             shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
                             shift.personID = int.Parse(reader["personId"].ToString());
                             shift.positionID = int.Parse(reader["positionId"].ToString());
+                            shift.Notes = reader["notes"].ToString();
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
                             shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
@@ -82,7 +83,7 @@ namespace ScheduleBuilder.DAL
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
             List<Shift> shiftList = new List<Shift>();
 
-            string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, sh.scheduledStartTime, sh.scheduledEndTime, " +
+            string selectStatement = "SELECT s.id, s.scheduleShiftId, s.personId, s.positionId, s.notes, sh.scheduledStartTime, sh.scheduledEndTime, " +
                 "sh.scheduledLunchBreakStartTime, sh.scheduledLunchBreakEndTime, sh.actualStartTime, sh.actualEndTime, sh.actualLunchBreakStart, " +
                 "sh.acutalLunchBreakEnd, p.first_name, p.last_name, ps.position_title " +
                 "FROM shift AS s " +
@@ -105,6 +106,7 @@ namespace ScheduleBuilder.DAL
                             shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
                             shift.personID = int.Parse(reader["personId"].ToString());
                             shift.positionID = int.Parse(reader["positionId"].ToString());
+                            shift.Notes = reader["notes"].ToString();
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
                             shift.scheduledLunchBreakStart = reader["scheduledLunchBreakStartTime"] as DateTime?;
@@ -200,8 +202,8 @@ namespace ScheduleBuilder.DAL
             "VALUES(@scheduledStartTime,@scheduledEndTime,@scheduledLunchBreakStartTime,@scheduledLunchBreakEndTime); SELECT SCOPE_IDENTITY()";
 
             string insertShiftStatement =
-            "INSERT INTO shift([scheduleShiftID],[personId],[positionId])" +
-            "VALUES(@scheduleShiftID,@personId,@positionId); SELECT SCOPE_IDENTITY()";
+            "INSERT INTO shift([scheduleShiftID],[personId],[positionId],[notes])" +
+            "VALUES(@scheduleShiftID,@personId,@positionId, @notes); SELECT SCOPE_IDENTITY()";
 
             string insertShiftTaskStatement =
                 "INSERT INTO assignedTask([shiftId],[taskId]) " +
@@ -234,6 +236,7 @@ namespace ScheduleBuilder.DAL
                         insertShiftCommand.Parameters.AddWithValue("@scheduleShiftId", pk);
                         insertShiftCommand.Parameters.AddWithValue("@personId", shift.personID);
                         insertShiftCommand.Parameters.AddWithValue("@positionId", shift.positionID);
+                        insertShiftCommand.Parameters.AddWithValue("@notes", ((object)shift.Notes) ?? DBNull.Value);
 
                         shiftpk = Convert.ToInt32(insertShiftCommand.ExecuteScalar());
                         shiftResult = 1;
@@ -303,7 +306,7 @@ namespace ScheduleBuilder.DAL
             "WHERE id = @id";
 
             string updateShiftStatement =
-            "UPDATE shift SET [personId] = @personId, [positionId] = @positionId " +
+            "UPDATE shift SET [personId] = @personId, [positionId] = @positionId, [notes] = @notes " +
             "WHERE id = @id";
 
             string deleteAssignTask =
@@ -337,6 +340,7 @@ namespace ScheduleBuilder.DAL
                         updateShiftCommand.Parameters.AddWithValue("@id", shift.shiftID);
                         updateShiftCommand.Parameters.AddWithValue("@personId", shift.personID);
                         updateShiftCommand.Parameters.AddWithValue("@positionId", shift.positionID);
+                        updateShiftCommand.Parameters.AddWithValue("@notes", ((object)shift.Notes) ?? DBNull.Value);
 
                         shiftResult = updateShiftCommand.ExecuteNonQuery();
                     }
