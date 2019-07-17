@@ -246,7 +246,7 @@ namespace ScheduleBuilder.Controllers
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
-            shift.positionID = 12;
+            shift.positionID = this.positionDAL.FindPositionIDByUnavailable();
             shift.scheduledStartTime = DateTime.Parse(startDate);
             shift.scheduledEndTime = DateTime.Parse(endDate);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
