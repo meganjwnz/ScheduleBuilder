@@ -265,7 +265,6 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 });
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
-
     $scope.selected = {};
     $scope.selected.shiftID = $scope.selectedShift.shiftID;
     $scope.selected.scheduledShiftID = $scope.selectedShift.scheduleShiftID;
@@ -288,7 +287,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
             $scope.selected.tasks[valueTaskId] = 'true';
         }
     }
-    $scope.selected.notes = $scope.selectedShift.notes;
+    $scope.selected.notes = $scope.selectedShift.Notes;
 
     $scope.addShift = function (selected) {
         var personID = selected.personID;
@@ -330,7 +329,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
         var taskArray = JSON.stringify(selected.tasks);
         var notes = selected.notes ? selected.notes : null;
-
+        console.log(notes);
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {

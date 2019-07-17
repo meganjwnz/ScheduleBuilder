@@ -1,15 +1,19 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
+using ScheduleBuilder.ModelViews;
 using System.Data;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ScheduleBuilder.Controllers
 {
     public class HomeController : Controller
     {
         private bool success;
+        RoleDAL roleDAL = new RoleDAL();
+
         /// <summary>
         /// Returns home page
         /// </summary>
@@ -37,9 +41,12 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult Contact()
         {
-            return View();
+            string whereClause = " Where roleId < 3 ";
+            List<ManagerViewModel> managers = this.personDAL.GetManagersView(whereClause);
+            return View(managers);
         }
 
+     
         /// <summary>
         /// Returns the peopleDirectory page
         /// </summary>
