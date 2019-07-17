@@ -234,6 +234,8 @@ namespace ScheduleBuilder.Controllers
 
         public ActionResult RequestTimeOff()
         {
+            ViewBag.failedRequest = "";
+            ViewBag.successfulRequest = "";
             return View();
         }
 
@@ -242,7 +244,7 @@ namespace ScheduleBuilder.Controllers
         {
             startDate = Request.Form["startDate"];
             endDate = Request.Form["endDate"];
-            ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
+            
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
@@ -250,8 +252,18 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledStartTime = DateTime.Parse(startDate);
             shift.scheduledEndTime = DateTime.Parse(endDate);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
-            this.shiftDAL.AddShift(shift, otherThing);
-            return View("RequestTimeOff");
+            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
+            if(checkIfAlreadyScheduled == true)
+            {
+                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " + 
+                    endDate + " or have requested this time off already. Please check your schedule.";
+                return View("RequestTimeOff");
+            } else
+            {
+                ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
+                this.shiftDAL.AddShift(shift, otherThing);
+                return View("RequestTimeOff");
+            }
         }
 
         private void ContactPersonShiftChange(string type, Shift shift)
