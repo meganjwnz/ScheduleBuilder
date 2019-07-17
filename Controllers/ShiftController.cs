@@ -156,32 +156,29 @@ namespace ScheduleBuilder.Controllers
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
             if(checkIfAlreadyScheduled == true)
             {
-                //ERROR MESSAGE THAT EMPLOYEE IS ALREADY SCHEDULED GOES HERE!!!
                 return View();
             }
             else
             {
+                if (!string.IsNullOrEmpty(startlunchdt))
+                {
+                    shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
+                }
+                else
+                {
+                    shift.scheduledLunchBreakStart = null;
+                }
+                if (!string.IsNullOrEmpty(endlunchdt))
+                {
+                    shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
+                }
+                else
+                {
+                    shift.scheduledLunchBreakEnd = null;
+                }
+                shift.Notes = notes;
 
-            
-            if (!string.IsNullOrEmpty(startlunchdt))
-            {
-                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
-            }
-            else
-            {
-                shift.scheduledLunchBreakStart = null;
-            }
-            if (!string.IsNullOrEmpty(endlunchdt))
-            {
-                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
-            }
-            else
-            {
-                shift.scheduledLunchBreakEnd = null;
-            }
-            shift.Notes = notes;
-
-            return Json(shiftDAL.AddShift(shift, otherThing));
+                return Json(shiftDAL.AddShift(shift, otherThing));
             }
         }
 
@@ -234,6 +231,27 @@ namespace ScheduleBuilder.Controllers
             }
 
         }
+
+        public ActionResult RequestTimeOff()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult RequestTimeOff(string personID, string positionID, string startDate, string endDate, string startlunchdt, string endlunchdt, string taskList, string notes)
+        {
+
+            ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
+
+            Shift shift = new Shift();
+            shift.personID = int.Parse(Session["id"].ToString());
+            shift.positionID = 12;
+            shift.scheduledStartTime = ConvertDateToC(long.Parse(startDate));
+            shift.scheduledEndTime = ConvertDateToC(long.Parse(endDate));
+
+            return View();
+        }
+
         private void ContactPersonShiftChange(string type, Shift shift)
         {
             string loggedInUserId = (Session["id"].ToString());
@@ -294,6 +312,7 @@ namespace ScheduleBuilder.Controllers
             }
             return shift;
         }
+
 
     }
 }
