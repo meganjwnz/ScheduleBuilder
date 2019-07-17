@@ -627,6 +627,7 @@ namespace ScheduleBuilder.DAL
                 {
                     selectCommand.Parameters.AddWithValue("@personId", personId);
                     selectCommand.Parameters.AddWithValue("@startTime", startTime);
+                    selectCommand.Parameters.AddWithValue("@endTime", endTime);
                     using (SqlDataReader reader = selectCommand.ExecuteReader())
                     {
                         while (reader.Read())
@@ -634,13 +635,14 @@ namespace ScheduleBuilder.DAL
                             shift.personID = (int)reader["id"];
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                            if (startTime >= shift.scheduledStartTime.AddHours(4) && startTime <= shift.scheduledEndTime.AddHours(4))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
                 if (shift.personID == personId && shift.scheduledStartTime == startTime)
-                {
-                    return true;
-                } else if (startTime > shift.scheduledStartTime && startTime < shift.scheduledEndTime)
                 {
                     return true;
                 }
