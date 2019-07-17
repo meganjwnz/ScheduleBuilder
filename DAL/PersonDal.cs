@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using Dapper;
 using System.Data;
+using ScheduleBuilder.ModelViews;
 
 namespace ScheduleBuilder.DAL
 {
@@ -469,6 +470,24 @@ namespace ScheduleBuilder.DAL
             {
                 throw ex;
             }
+        }
+
+        public List<ManagerViewModel> GetManagersView(string where)
+        {
+            RoleDAL role = new RoleDAL();
+            List<ManagerViewModel> managers = new List<ManagerViewModel>();
+            List<Person> people = this.GetDesiredPersons(where);
+            foreach (Person person in people)
+            {
+                ManagerViewModel manager = new ManagerViewModel();
+                manager.Email = person.Email;
+                manager.FirstName = person.FirstName;
+                manager.LastName = person.LastName;
+                manager.Phone = ("(" + person.Phone.Substring(0, 3) + ") " + person.Phone.Substring(3, 3) + "-" + person.Phone.Substring(6));
+                manager.Role = role.GetRoleByID(person.RoleId);
+                managers.Add(manager);
+            }
+            return managers;
         }
     }
 }
