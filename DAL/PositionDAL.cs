@@ -38,7 +38,14 @@ namespace ScheduleBuilder.DAL
                             position.positionID = int.Parse(reader["id"].ToString());
                             position.positionTitle = reader["position_title"].ToString();
                             position.positionDescription = reader["position_description"].ToString();
-                            positionList.Add(position);
+                            if(position.positionTitle == "Unavailable")
+                            {
+                                //skips unavailable position 
+                            }
+                            else
+                            {
+                                positionList.Add(position);
+                            }
                         }
                     }
                 }
@@ -73,7 +80,13 @@ namespace ScheduleBuilder.DAL
                             position.positionTitle = reader["position_title"].ToString();
                             position.isActive = (bool)reader["isActive"];
                             position.positionDescription = reader["position_description"].ToString();
-                            positionList.Add(position);
+                            if (position.positionTitle == "Unavailable")
+                            {
+                                //skips unavailable position 
+                            } else
+                            {
+                                positionList.Add(position);
+                            }
                         }
                     }
                 }
