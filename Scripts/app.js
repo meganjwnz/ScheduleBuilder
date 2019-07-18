@@ -220,6 +220,18 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         }).result.then(function () { }, function () { });
     };
 
+    $scope.openShiftDetailModal = function (shift) {
+        $scope.sDetail = shift;
+        $scope.modalInstance = $uibModal.open({
+            ariaLabelledBy: 'modal-title',
+            ariaDescribedBy: 'modal-body',
+            templateUrl: 'shiftDetailModalContent.html',
+            scope: $scope,
+            size: 'lg',
+            controller: 'ShiftDetailModalInstanceCtrl',
+        }).result.then(function () { }, function () { });
+    };
+
     $scope.filterListCurrent = function () {
         $scope.filterShift = [];
         angular.forEach($scope.shift, function (shift) {
@@ -352,6 +364,14 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
     };
 
     $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+});
+
+app.controller('ShiftDetailModalInstanceCtrl', function ($uibModalInstance, $scope) {
+
+    $scope.ok = function () {
         $uibModalInstance.dismiss('cancel');
     };
 

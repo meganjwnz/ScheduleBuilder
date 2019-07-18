@@ -151,8 +151,8 @@
         <tbody>
             <tr class="row_alternate" ng-repeat="sh in shift track by $index">
                 <!-- <td>{{sh.shiftID}}</td>
-                <td>{{sh.scheduleShiftID}}</td>
-                <td>{{sh.personID}}</td> -->
+    <td>{{sh.scheduleShiftID}}</td>
+    <td>{{sh.personID}}</td> -->
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}  </td>
                 <!-- <td>{{sh.positionID}}</td> -->
 
@@ -162,11 +162,14 @@
                 <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
                 <!-- <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
+    <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
+    <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
+    <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
                 <td>
                     <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openShiftDetailModal(sh)">View Details</button>
                 </td>
                 <td>{{getTotalHours(sh)}}</td>
                 <td>{{sh.TaskIdList}}</td>
@@ -328,6 +331,25 @@
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </form>
+</script>
+
+<script type="text/ng-template" id="shiftDetailModalContent.html">
+    
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">Shift Information</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <table>
+                <tr>
+                    <th>Employee:</th>
+                    <th>{{sDetail.personLastName}}, {{sDetail.personFirstName}}</th>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" type="button" ng-click="ok()">OK</button>
+        </div>
+  
 </script>
 
 
