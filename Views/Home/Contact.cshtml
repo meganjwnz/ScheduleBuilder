@@ -1,8 +1,45 @@
-﻿
+﻿@model IEnumerable<ScheduleBuilder.ModelViews.ManagerViewModel>
+
 @{
     ViewBag.Title = "Contact";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Contact</h2>
+<h2>Contact Management</h2>
+<br>
+<br>
+<table class="table a">
+    <thead>
+        <tr class="tablestyle">
+            <th>First</th>
+            <th>Last</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+    </thead>
 
+    @foreach (var item in Model)
+    {
+<tr class="row_alternate">
+    <td>
+        @Html.DisplayFor(modelItem => item.FirstName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.LastName)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Phone)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Role)
+    </td>
+</tr>
+    }
+
+</table>

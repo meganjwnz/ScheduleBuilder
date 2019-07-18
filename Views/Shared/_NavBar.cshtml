@@ -17,6 +17,7 @@
                 else
                 {
                     <li>@Html.ActionLink("TimeCard", "AddTimePunchPage", "Shift")</li>
+                    <li>@Html.ActionLink("Time Off Request", "RequestTimeOff", "Shift")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Employees", "PeopleDirectory", "Home")</li>
                     if (Session["roleTitle"].ToString() == "Employee")

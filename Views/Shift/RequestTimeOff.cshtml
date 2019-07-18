@@ -1,0 +1,25 @@
+﻿@model ScheduleBuilder.Model.Shift
+
+@{
+    ViewBag.Title = "RequestTimeOff";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Request Time Off</h2>
+
+
+<h4>Please select the dates you would like to request off</h4>
+<span class="text-success">@ViewBag.successfulRequest</span>
+<span class="text-danger">@ViewBag.failedRequest</span>
+<hr />
+<form action="RequestTimeOffFunction" method="post">
+    <input type="date" name="startDate" />
+    <input type="date" name="endDate" />
+    <input type="text" name="notes" />
+    <input type="submit" value="Submit Request" />
+</form>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
