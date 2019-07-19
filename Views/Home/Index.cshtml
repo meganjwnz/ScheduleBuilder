@@ -144,8 +144,8 @@
                 <th>actualLunchBreakStart</th>
                 <th>actualLunchBreakEnd</th> -->
                 <th></th>
+                <th></th>
                 <th>Hours per shift</th>
-                <th>Task's</th>
             </tr>
         </thead>
         <tbody>
@@ -172,7 +172,6 @@
                     <button type="button" class="btn btn-default" ng-click="openShiftDetailModal(sh)">View Details</button>
                 </td>
                 <td>{{getTotalHours(sh)}}</td>
-                <td>{{sh.TaskIdList}}</td>
             </tr>
         </tbody>
     </table>
@@ -210,7 +209,6 @@
                             <span ng-show="shiftForm.position.$touched && shiftForm.position.$invalid">You must select a position.</span>
                         </th>
                     </tr>
-                    {{selected.tasks}}
                     <tr ng-show="selected.positionID">
                         <th>Position Tasks: </th>
                         <th>
@@ -343,6 +341,54 @@
                 <tr>
                     <th>Employee:</th>
                     <th>{{sDetail.personLastName}}, {{sDetail.personFirstName}}</th>
+                </tr>
+                <tr>
+                    <th>Position:</th>
+                    <th>{{sDetail.positionName}}</th>
+                </tr>
+                <tr>
+                    <th>Tasks:</th>
+                    <th>
+                        <ul style="list-style:none;">
+                            <li ng-repeat="t in positionTasks">
+                                <label><input type="checkbox" ng-model="sDetail.tasks[t.TaskId]" ng-true-value="'true'" ng-false-value="'false'" ng-disabled="true">&nbsp;{{t.Task_title}}</label>
+                            </li>
+                        </ul>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Notes:</th>
+                    <th>{{sDetail.Notes}}</th>
+                </tr>
+                <tr>
+                    <th>Scheduled Start Time:</th>
+                    <th>{{jsDate(sDetail.scheduledStartTime) | date : "short"}}</th>
+                    <th>Actual Start Time:</th>
+                    <th>{{jsDate(sDetail.actualStartTime) | date : "short"}}</th>
+                </tr>
+                <tr>
+                    <th>Scheduled End Time:</th>
+                    <th>{{jsDate(sDetail.scheduledEndTime) | date : "short"}}</th>
+                    <th>Actual End Time:</th>
+                    <th>{{jsDate(sDetail.actualEndTime) | date : "short"}}</th>
+                </tr>
+                <tr>
+                    <th>Scheduled Lunch Start Time:</th>
+                    <th>{{jsDate(sDetail.scheduledLunchBreakStart) | date : "short"}}</th>
+                    <th>Actual Lunch Start Time:</th>
+                    <th>{{jsDate(sDetail.actualLunchBreakStart) | date : "short"}}</th>
+                </tr>
+                <tr>
+                    <th>Scheduled Lunch End Time:</th>
+                    <th>{{jsDate(sDetail.scheduledLunchBreakEnd) | date : "short"}}</th>
+                    <th>Actual Lunch End Time:</th>
+                    <th>{{jsDate(sDetail.actualLunchBreakEnd) | date : "short"}}</th>
+                </tr>
+                <tr>
+                    <th>Total Scheduled Hours:</th>
+                    <th>{{getTotalHours(sDetail)}}</th>
+                    <th>Total worked Hours:</th>
+                    <th>{{getClockedHours(sDetail)}}</th>
                 </tr>
             </table>
         </div>

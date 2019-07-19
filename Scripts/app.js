@@ -222,6 +222,18 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.openShiftDetailModal = function (shift) {
         $scope.sDetail = shift;
+        $scope.getPositionTasks($scope.sDetail.positionID);
+        if ($scope.sDetail.TaskIdList && $scope.sDetail.TaskIdList.length) {
+            $scope.sDetail.tasks = {};
+            console.log($scope.sDetail.tasks);
+            for (var i = 0; i < $scope.sDetail.TaskIdList.length; i++) {
+                console.log("gets in for loop");
+                var valueTaskId = $scope.sDetail.TaskIdList[i];
+                console.log(valueTaskId);
+                $scope.sDetail.tasks[valueTaskId] = 'true';
+                console.log($scope.sDetail.tasks);
+            }
+        }
         $scope.modalInstance = $uibModal.open({
             ariaLabelledBy: 'modal-title',
             ariaDescribedBy: 'modal-body',
