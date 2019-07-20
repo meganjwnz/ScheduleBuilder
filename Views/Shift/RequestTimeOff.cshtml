@@ -12,14 +12,23 @@
 <span class="text-success">@ViewBag.successfulRequest</span>
 <span class="text-danger">@ViewBag.failedRequest</span>
 <hr />
-<form action="RequestTimeOffFunction" method="post">
-    <input type="date" name="startDate" />
-    <input type="date" name="endDate" />
-    <input type="text" name="notes" />
-    <input type="submit" value="Submit Request" />
-</form>
+<div class="form-group">
+    <form action="RequestTimeOffFunction" method="post">
 
+        <label class="col-sm-2">Request off start date :</label>
+        <input style="margin:2em" type="date" name="startDate" class="form-control" />
+
+        <label class="col-sm-2">Request off end date : </label>
+        <input style="margin:2em" type="date" name="endDate" class="form-control" />
+
+        <label class="col-sm-2">Reason for request (Optional)</label>
+        <input style="margin:2em" type="text" name="notes" class="form-control" />
+
+        <label class="col-sm-2"></label>
+        <input type="submit" value="Submit Request" class="form-control btn-primary" />
+    </form>
+</div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Schedule", "Index", "Home")
 </div>

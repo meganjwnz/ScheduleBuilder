@@ -163,8 +163,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
             var firstHours = lunchTime.getTime() - startTime.getTime();
             var secondHours = endTime.getTime() - lunchEnd.getTime();
             var totalHours = (secondHours + firstHours) / (1000 * 60 * 60);
-
-        } else {
+        }else {
             var totalHours = (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60);
         }
 
