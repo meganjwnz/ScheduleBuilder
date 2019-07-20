@@ -767,3 +767,4 @@ C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.pdb
 C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
