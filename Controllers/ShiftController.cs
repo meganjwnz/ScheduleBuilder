@@ -325,7 +325,7 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledEndTime = DateTime.Parse(endDate);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if (checkIfAlreadyScheduled == true)
+            if (checkIfAlreadyScheduled == false)
             {
                 ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +
                     endDate + " or have requested this time off already. Please check your schedule.";
