@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>GetLastTwoWeeksOfShiftsForEdit</h2>
+<h2>Shifts over the past two weeks</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -78,9 +75,7 @@
             @Html.DisplayFor(modelItem => item.actualLunchBreakEnd)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+         @*   @Html.ActionLink("Edit", "Edit", new {modelItem => item.ShiftId}) |*@
         </td>
     </tr>
 }
