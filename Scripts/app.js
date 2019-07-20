@@ -153,6 +153,7 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     };
 
+    //Calculation to get actual worked hours with or without lunch break
     $scope.getClockedHours = function (shift) {
         if (shift.actualStartTime && shift.actualEndTime) {
             var startTime = $scope.jsDate(shift.actualStartTime);
@@ -289,6 +290,23 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         }
     };
 
+    $scope.positionAssignedInFuture = function (positionID) {
+        $scope.filterListCurrent();
+        console.log($scope.filterShift);
+        var keepGoing = true;
+        angular.forEach($scope.filterShift, function (shift) {
+            console.log(shift.positionName);
+            console.log(keepGoing);
+            if (keepGoing) {
+                if (shift.positionID == positionID) {
+                    keepGoing = false;
+                }
+            }
+        });
+        console.log("finally", keepGoing);
+        return keepGoing;
+    };
+
 });
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
@@ -354,53 +372,53 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         };
     };
 
-$scope.updateShift = function (selected) {
-    var shiftID = selected.shiftID;
-    var scheduleShiftID = selected.scheduledShiftID;
-    var isDelete = selected.delete;
-    var personID = selected.personID;
-    var positionID = selected.positionID;
-    var startdt = selected.startdt.getTime();
-    var enddt = selected.enddt.getTime();
-    var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
-    var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
-    var taskArray = JSON.stringify(selected.tasks);
-    var notes = selected.notes ? selected.notes : null;
-    console.log(notes);
-    if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
-        return;
-    } else {
-        $http.post('/Shift/CheckIfScheduled', { personID: personID, startdt: startdt, enddt: enddt }).then(function (response) {
-            $scope.success = response.data;
-            if ($scope.success) {
-                $http.post('/Shift/UpdateShift', {
-                    personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
-                    endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray, notes: notes
-                }).then(function (response) {
-                    $scope.success = response.data;
-                    if ($scope.success) {
-                        alert("Shift updated successfully");
-                        $scope.cancel();
-                        $scope.getShifts();
-                    } else {
-                        alert("There was an error updating your shift. Please try again.");
-                    }
-                }), function (error) {
-                    alert(error);
-                };
-            } else {
-                alert("This individual already has a shift overlapping this time. Please select a new employee or different times.");
-                return;
-            }
-        }), function (error) {
-            alert(error);
-            }; 
-    }
-};
+    $scope.updateShift = function (selected) {
+        var shiftID = selected.shiftID;
+        var scheduleShiftID = selected.scheduledShiftID;
+        var isDelete = selected.delete;
+        var personID = selected.personID;
+        var positionID = selected.positionID;
+        var startdt = selected.startdt.getTime();
+        var enddt = selected.enddt.getTime();
+        var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
+        var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
+        var taskArray = JSON.stringify(selected.tasks);
+        var notes = selected.notes ? selected.notes : null;
+        console.log(notes);
+        if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
+            return;
+        } else {
+            $http.post('/Shift/CheckIfScheduled', { personID: personID, startdt: startdt, enddt: enddt }).then(function (response) {
+                $scope.success = response.data;
+                if ($scope.success) {
+                    $http.post('/Shift/UpdateShift', {
+                        personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
+                        endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray, notes: notes
+                    }).then(function (response) {
+                        $scope.success = response.data;
+                        if ($scope.success) {
+                            alert("Shift updated successfully");
+                            $scope.cancel();
+                            $scope.getShifts();
+                        } else {
+                            alert("There was an error updating your shift. Please try again.");
+                        }
+                    }), function (error) {
+                        alert(error);
+                    };
+                } else {
+                    alert("This individual already has a shift overlapping this time. Please select a new employee or different times.");
+                    return;
+                }
+            }), function (error) {
+                alert(error);
+            };
+        }
+    };
 
-$scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-};
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 
 });
 
@@ -437,7 +455,6 @@ app.controller('PositionModalInstanceCtrl', function ($uibModalInstance, $scope,
         }), function (error) {
             alert(error);
         };
-
     };
 
     $scope.updatePosition = function (selected) {
@@ -446,18 +463,22 @@ app.controller('PositionModalInstanceCtrl', function ($uibModalInstance, $scope,
         var positionDescription = selected.pDesc;
         var pIsActive = selected.pActive;
 
-        $http.post('/Position/UpdatePosition', { positionTitle: positionTitle, positionDescription: positionDescription, isActive: pIsActive, id: positionID }).then(function (response) {
-            $scope.success = response.data;
-            if ($scope.success) {
-                alert("Position updated successfully");
-                $scope.cancel();
-                $scope.getAllPositions();
-            } else {
-                alert("There was an error updating your position. Please try again.");
-            }
-        }), function (error) {
-            alert(error);
-        };
+        if ((pIsActive == false) && ($scope.positionAssignedInFuture(positionID) == false)) {
+            alert("This position is currently assigned to upcoming shifts and cannot be deactivated.");
+        } else {
+            $http.post('/Position/UpdatePosition', { positionTitle: positionTitle, positionDescription: positionDescription, isActive: pIsActive, id: positionID }).then(function (response) {
+                $scope.success = response.data;
+                if ($scope.success) {
+                    alert("Position updated successfully");
+                    $scope.cancel();
+                    $scope.getAllPositions();
+                } else {
+                    alert("There was an error updating your position. Please try again.");
+                }
+            }), function (error) {
+                alert(error);
+            };
+        }
     };
 
     $scope.cancel = function () {
