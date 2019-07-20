@@ -1,21 +1,11 @@
 ﻿@model IEnumerable<ScheduleBuilder.Model.Person>
 
 @{
-    ViewBag.Title = "GetAllPeoples";
+    ViewBag.Title = "Get All Employees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>All Employees</h2>
-@if (Session["roleTitle"].ToString() == "Employee")
-{
-    <p></p>
-}
-else
-{
-    <p>
-        @Html.ActionLink("Add Employee", "AddPerson")
-    </p>
-}
 <table class="a">
     <thead>
         <tr class="tablestyle">

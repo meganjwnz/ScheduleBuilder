@@ -145,6 +145,11 @@ namespace ScheduleBuilder.Controllers
 
         #region TimeCardEdit
 
+        /// <summary>
+        /// Get last two weeks worth of shifts for person with the accepted personid
+        /// </summary>
+        /// <param name="personid"></param>
+        /// <returns></returns>
         public ActionResult GetLastTwoWeeksOfShiftsForEdit(int personid)
         {
             string whereClause = $"Where p.id =  {personid}  and sh.scheduledStartTime > (DATEADD(day,- 14, GETDATE())) and sh.scheduledStartTime < (GETDATE())";
@@ -161,6 +166,7 @@ namespace ScheduleBuilder.Controllers
             foreach (Shift shift in shifts)
             {
                 TimeCardEditViewModel timeCard = new TimeCardEditViewModel();
+                timeCard.shiftId = shift.shiftID;
                 timeCard.personFirstName = shift.personFirstName;
                 timeCard.personLastName = shift.personLastName;
                 timeCard.scheduledStartTime = shift.scheduledStartTime;
@@ -175,6 +181,15 @@ namespace ScheduleBuilder.Controllers
             }
 
             return timeCardEdits;
+        }
+
+        public ActionResult EditTimecard(int shiftId)
+        {
+            string whereClause = $"WHERE s.id = {shiftId}";
+            List<Shift> shift = this.shiftDAL.GetAllShifts(whereClause);
+            List<TimeCardEditViewModel> selectedTimeCard = this.CovertShiftToTimeCardView(shift);
+            ViewBag.FullName = shift[0].personFirstName + " " + shift[0].personLastName + "'s";
+            return View(selectedTimeCard[0]);
         }
 
         #endregion

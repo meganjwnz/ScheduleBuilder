@@ -762,7 +762,6 @@ C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Http.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Http.WebHost.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CoreCompileInputs.cache
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.dll

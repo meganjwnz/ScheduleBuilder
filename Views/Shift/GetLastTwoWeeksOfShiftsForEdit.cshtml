@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Shifts over the past two week <br />
+<h2>Shifts over the Past two Weeks <br />
     @ViewBag.FullName</h2>
 
 <table class="table">
@@ -64,7 +64,7 @@
             @Html.DisplayFor(modelItem => item.actualLunchBreakEnd)
         </td>
         <td>
-         @*   @Html.ActionLink("Edit", "Edit", new {modelItem => item.ShiftId}) |*@
+            @Html.ActionLink(linkText:"Edit", actionName:"EditTimecard", routeValues: new { shiftId = item.shiftId}, htmlAttributes: null)
         </td>
     </tr>
 }
