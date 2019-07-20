@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ScheduleBuilder.ModelViews.TimeCardEditViewModel>
+
+@{
+    ViewBag.Title = "GetLastTwoWeeksOfShiftsForEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetLastTwoWeeksOfShiftsForEdit</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.personFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.personLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledStartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledEndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledLunchBreakStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledLunchBreakEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualStartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualEndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualLunchBreakStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.personFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.personLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledStartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledEndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledLunchBreakStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledLunchBreakEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualStartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualEndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualLunchBreakStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualLunchBreakEnd)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

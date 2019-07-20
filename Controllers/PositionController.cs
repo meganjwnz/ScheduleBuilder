@@ -71,7 +71,7 @@ namespace ScheduleBuilder.Controllers
                 return View();
             }
         }
-        
+
         // POST: Position/Edit/5
         [HttpPost]
         public ActionResult UpdatePosition(int id, string positionTitle, string positionDescription, bool isActive)
@@ -146,13 +146,13 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult AddTaskShift(string taskTitle, string taskDescription, bool isActive)
         {
-                Task task = new Task
-                {
-                    Task_title = taskTitle,
-                    Task_description = taskDescription,
-                    IsActive = isActive
-                };
-                return Json(this.taskDAL.AddShiftTask(task)); 
+            Task task = new Task
+            {
+                Task_title = taskTitle,
+                Task_description = taskDescription,
+                IsActive = isActive
+            };
+            return Json(this.taskDAL.AddShiftTask(task));
         }
 
         // POST: Task/AddTask
@@ -210,7 +210,7 @@ namespace ScheduleBuilder.Controllers
                     Task_description = taskDescription,
                     IsActive = isActive,
                     TaskId = id,
-                    PositionID =  positionID
+                    PositionID = positionID
                 };
 
                 return Json(this.taskDAL.UpdatePositionTask(task));

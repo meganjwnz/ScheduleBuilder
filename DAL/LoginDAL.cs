@@ -37,9 +37,9 @@ namespace ScheduleBuilder.DAL
                 dt.Columns.Add("name", typeof(string));
                 dt.Columns.Add("roleTitle", typeof(string));
 
-                dt.Load(reader);  
+                dt.Load(reader);
             }
             return dt;
-        }   
+        }
     }
 }

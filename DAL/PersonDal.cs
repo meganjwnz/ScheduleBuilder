@@ -1,11 +1,11 @@
 ﻿
+using Dapper;
 using ScheduleBuilder.Model;
+using ScheduleBuilder.ModelViews;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using Dapper;
 using System.Data;
-using ScheduleBuilder.ModelViews;
+using System.Data.SqlClient;
 
 namespace ScheduleBuilder.DAL
 {
@@ -129,17 +129,17 @@ namespace ScheduleBuilder.DAL
         private string UsernameCheck(string defaultName, int num)
         {
             string username = defaultName + num.ToString();
-           // string newUsername = username;
+            // string newUsername = username;
 
             if (DoesUserNameExists(username))
             {
-               return this.UsernameCheck(defaultName, num + 1);
+                return this.UsernameCheck(defaultName, num + 1);
             }
             //else
             //{
             ////    newUsername = username;
             //}
-            return username; 
+            return username;
         }
 
         private bool DoesUserNameExists(string username)

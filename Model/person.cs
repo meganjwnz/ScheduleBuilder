@@ -66,7 +66,7 @@ namespace ScheduleBuilder.Model
 
         //Person's password
         public string Password { get; set; }
-   
+
         //person's roleID
         public int RoleId { get; set; }
 
@@ -83,7 +83,7 @@ namespace ScheduleBuilder.Model
         //$ style is much better data usage 
         public string GetFullName()
         {
-            return($"{ this.FirstName } { this.LastName}");
+            return ($"{ this.FirstName } { this.LastName}");
         }
     }
 }

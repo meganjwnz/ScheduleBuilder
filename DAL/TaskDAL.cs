@@ -167,7 +167,7 @@ namespace ScheduleBuilder.DAL
                     transaction.Rollback();
                 }
             }
-            return (taskresult == 1 && positiontaskresult >=1 ? true : false);
+            return (taskresult == 1 && positiontaskresult >= 1 ? true : false);
         }
 
         /// <summary>

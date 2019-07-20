@@ -231,6 +231,7 @@
     </Compile>
     <Compile Include="ModelViews\HomeViewModel.cs" />
     <Compile Include="ModelViews\ManagerViewModel.cs" />
+    <Compile Include="ModelViews\TimeCardEditViewModel.cs" />
     <Compile Include="Model\Email.cs" />
     <Compile Include="Model\HashingService.cs" />
     <Compile Include="Model\Person.cs" />
@@ -302,6 +303,7 @@
     <Content Include="Views\Home\ForgotPassword.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Shift\RequestTimeOff.cshtml" />
+    <Content Include="Views\Shift\GetLastTwoWeeksOfShiftsForEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />

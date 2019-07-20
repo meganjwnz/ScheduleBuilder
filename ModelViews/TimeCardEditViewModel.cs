@@ -1,24 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ScheduleBuilder.Model
+namespace ScheduleBuilder.ModelViews
 {
-    /// <summary>
-    /// Values of shift class in the database combinds a few different tables 
-    /// </summary>
-    public class Shift
+    public class TimeCardEditViewModel
     {
-
-        //Shift Id 
-        public int shiftID { get; set; }
-
-        //Scheduled shift id
-        public int scheduleShiftID { get; set; }
-
-        //Scheduled person Id
-        public int personID { get; set; }
-
         //Scheduled persons first name
         [Display(Name = "First Name")]
         public string personFirstName { get; set; }
@@ -26,12 +12,6 @@ namespace ScheduleBuilder.Model
         //Scheduled persons last name
         [Display(Name = "Last Name")]
         public string personLastName { get; set; }
-
-        //Shift postion ID
-        public int positionID { get; set; }
-
-        //Shift postition name
-        public string positionName { get; set; }
 
         //Shift start time
         [Display(Name = "Scheduled Start Time")]
@@ -65,8 +45,5 @@ namespace ScheduleBuilder.Model
         [Display(Name = "Actual Break End")]
         public DateTime? actualLunchBreakEnd { get; set; }
 
-        public List<int> TaskIdList { get; set; }
-
-        public string Notes { get; set; }
     }
 }

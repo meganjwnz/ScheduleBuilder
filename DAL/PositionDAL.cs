@@ -38,7 +38,7 @@ namespace ScheduleBuilder.DAL
                             position.positionID = int.Parse(reader["id"].ToString());
                             position.positionTitle = reader["position_title"].ToString();
                             position.positionDescription = reader["position_description"].ToString();
-                            if(position.positionTitle == "Unavailable")
+                            if (position.positionTitle == "Unavailable")
                             {
                                 //skips unavailable position 
                             }
@@ -83,7 +83,8 @@ namespace ScheduleBuilder.DAL
                             if (position.positionTitle == "Unavailable")
                             {
                                 //skips unavailable position 
-                            } else
+                            }
+                            else
                             {
                                 positionList.Add(position);
                             }
@@ -116,7 +117,7 @@ namespace ScheduleBuilder.DAL
                 SqlCommand selectCommand = new SqlCommand(selectStatement, connection);
                 selectCommand.Parameters.AddWithValue("@personID", personID);
                 SqlDataReader reader = selectCommand.ExecuteReader();
-                
+
                 while (reader.Read())
                 {
                     Position position = new Position();
@@ -249,7 +250,7 @@ namespace ScheduleBuilder.DAL
         public int FindPositionIDByUnavailable()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
-            string selectStatement = 
+            string selectStatement =
                 "SELECT id " +
                 "FROM position " +
                 "WHERE position_title = 'Unavailable'";
@@ -272,8 +273,8 @@ namespace ScheduleBuilder.DAL
             return position.positionID;
         }
     }
-        //// Add position check here
+    //// Add position check here
 
 
-    
+
 }

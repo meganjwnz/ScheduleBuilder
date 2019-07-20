@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
+using ScheduleBuilder.ModelViews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace ScheduleBuilder.Controllers
         }
 
         public bool ValidPunch(string whereClause)
-        { 
+        {
             bool validShift = true;
 
             if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime == DateTime.MinValue)
@@ -72,7 +73,7 @@ namespace ScheduleBuilder.Controllers
             else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(-4).ToUniversalTime() > DateTime.Now.ToUniversalTime()))
             {
                 validShift = false;
-                TempData["notice"] = "You are too early to clock in\n See Mangement";                
+                TempData["notice"] = "You are too early to clock in\n See Mangement";
             }
             return validShift;
         }
@@ -87,7 +88,7 @@ namespace ScheduleBuilder.Controllers
         /// <returns></returns>
         public ActionResult ClockUserIn()
         {
-          
+
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
             if (this.ValidPunch(whereClause))
@@ -142,6 +143,41 @@ namespace ScheduleBuilder.Controllers
             Response.Write("<script>alert('" + xMessage + "')</script>");
         }
 
+        #region TimeCardEdit
+
+        public ActionResult GetLastTwoWeeksOfShiftsForEdit(int personid)
+        {
+            string whereClause = $"Where p.id =  {personid}  and sh.scheduledStartTime > (SELECT DATEADD(day,- 14, GETDATE()))";
+            List<Shift> shifts = this.shiftDAL.GetAllShifts(whereClause);
+            List<TimeCardEditViewModel> timeCardEdits = this.CovertShiftToTimeCardView(shifts);
+
+
+            return View(timeCardEdits);
+        }
+
+        private List<TimeCardEditViewModel> CovertShiftToTimeCardView(List<Shift> shifts)
+        {
+            List<TimeCardEditViewModel> timeCardEdits = new List<TimeCardEditViewModel>();
+            foreach (Shift shift in shifts)
+            {
+                TimeCardEditViewModel timeCard = new TimeCardEditViewModel();
+                timeCard.personFirstName = shift.personFirstName;
+                timeCard.personLastName = shift.personLastName;
+                timeCard.scheduledStartTime = shift.scheduledStartTime;
+                timeCard.scheduledEndTime = shift.scheduledEndTime;
+                timeCard.scheduledLunchBreakStart = shift.scheduledLunchBreakStart;
+                timeCard.scheduledLunchBreakEnd = shift.scheduledLunchBreakEnd;
+                timeCard.actualStartTime = shift.actualStartTime;
+                timeCard.actualEndTime = shift.actualEndTime;
+                timeCard.actualLunchBreakStart = shift.actualLunchBreakStart;
+                timeCard.actualLunchBreakEnd = shift.actualLunchBreakEnd;
+                timeCardEdits.Add(timeCard);
+            }
+
+            return timeCardEdits;
+        }
+
+        #endregion
         /// <summary>
         /// gets all positions from the database
         /// </summary>
@@ -162,7 +198,7 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
-            
+
             JavaScriptSerializer thing = new JavaScriptSerializer();
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             Shift shift = new Shift();
@@ -172,7 +208,7 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
 
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if(checkIfAlreadyScheduled == true)
+            if (checkIfAlreadyScheduled == true)
             {
                 return View();
             }
@@ -262,7 +298,7 @@ namespace ScheduleBuilder.Controllers
         {
             startDate = Request.Form["startDate"];
             endDate = Request.Form["endDate"];
-            
+
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
@@ -271,12 +307,13 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledEndTime = DateTime.Parse(endDate);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if(checkIfAlreadyScheduled == true)
+            if (checkIfAlreadyScheduled == true)
             {
-                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " + 
+                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +
                     endDate + " or have requested this time off already. Please check your schedule.";
                 return View("RequestTimeOff");
-            } else
+            }
+            else
             {
                 ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
                 this.shiftDAL.AddShift(shift, otherThing);
@@ -335,10 +372,13 @@ namespace ScheduleBuilder.Controllers
                 DateTime temp = shift.actualEndTime ?? DateTime.MinValue;
                 shift.actualEndTime = temp.AddHours(timezone);
             }
-            if (shift.actualLunchBreakStart != null) {
+            if (shift.actualLunchBreakStart != null)
+            {
                 DateTime temp = shift.actualLunchBreakStart ?? DateTime.MinValue;
-                shift.actualLunchBreakStart = temp.AddHours(timezone); }
-            if (shift.actualLunchBreakEnd != null) {
+                shift.actualLunchBreakStart = temp.AddHours(timezone);
+            }
+            if (shift.actualLunchBreakEnd != null)
+            {
                 DateTime temp = shift.actualLunchBreakEnd ?? DateTime.MinValue;
                 shift.actualLunchBreakEnd = temp.AddHours(timezone);
             }
