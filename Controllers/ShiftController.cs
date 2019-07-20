@@ -45,43 +45,61 @@ namespace ScheduleBuilder.Controllers
         {
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = " WHERE s.personId = " + loggedInUserId;
+            Shift nearestShift = shiftDAL.GetNearestShift(whereClause);
+            return View(this.TimeUpdate(nearestShift));
+        }
+
+        public bool ValidPunch(string whereClause)
+        { 
+            bool validShift = true;
+
             if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime == DateTime.MinValue)
             {
+                validShift = false;
                 TempData["notice"] = "You have no scheduled shifts\n\n See Mangement";
-                return RedirectToAction("Index", "Home");
             }
             if (!(shiftDAL.GetNearestShift(whereClause).scheduledStartTime.ToUniversalTime() >= DateTime.Now.AddDays(-1).ToUniversalTime() && shiftDAL.GetNearestShift(whereClause).scheduledStartTime < DateTime.Now.AddDays(1).ToUniversalTime()))
             {
+                validShift = false;
                 TempData["notice"] = "You have no shifts scheduled today\n\n See Mangement";
-                return RedirectToAction("Index", "Home");
             }
             //If Users clock in under 4 hours late
             else if (shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(4).ToUniversalTime() < DateTime.Now.ToUniversalTime())
             {
+                validShift = false;
                 TempData["notice"] = "You are too late to clock in\n See Mangement";
-                return RedirectToAction("Index", "Home");
-
             }
             else if ((shiftDAL.GetNearestShift(whereClause).scheduledStartTime.AddHours(-4).ToUniversalTime() > DateTime.Now.ToUniversalTime()))
             {
-                TempData["notice"] = "You are too early to clock in\n See Mangement";
-                return RedirectToAction("Index", "Home");
+                validShift = false;
+                TempData["notice"] = "You are too early to clock in\n See Mangement";                
             }
-            Shift whatever = shiftDAL.GetNearestShift(whereClause);
-            return View(this.timeHack(whatever));
+            return validShift;
         }
 
+        public ActionResult RefreshPageDisplayError()
+        {
+            return RedirectToAction("AddTimePunchPage", "Shift");
+        }
         /// <summary>
         /// Clocks user in retruns them to the time card page
         /// </summary>
         /// <returns></returns>
         public ActionResult ClockUserIn()
         {
-            //This needs to be cleaned up THREE LINES TO GET one ID not cool
+          
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
-            this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
-            return Redirect(Request.UrlReferrer.ToString());
+            if (this.ValidPunch(whereClause))
+            {
+                this.shiftDAL.ClockUserIn(shiftDAL.GetNearestShift(whereClause).scheduleShiftID, DateTime.Now.ToUniversalTime());
+                return Redirect(Request.UrlReferrer.ToString());
+
+            }
+            else
+            {
+                return this.RefreshPageDisplayError();
+            }
         }
 
         /// <summary>
@@ -293,7 +311,7 @@ namespace ScheduleBuilder.Controllers
             return date.AddMilliseconds(jsDate);
         }
 
-        private Shift timeHack(Shift shift)
+        private Shift TimeUpdate(Shift shift)
         {
             int timezone = -4;
             shift.scheduledStartTime = shift.scheduledStartTime.AddHours(timezone);
