@@ -176,16 +176,16 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Edit(Person person)
         {
             this.InitializeViewBag();
-            try
-            {
+            //try
+            //{
                 this.personDAL.EditPerson(person);
                 this.ContactEditedPerson(person);
                 return RedirectToAction("GetAllPeoples");
-            }
-            catch
-            {
-                return View(person);
-            }
+          //  }
+           // catch
+            //{
+             //   return View(person);
+            //}
         }
 
         #region Contact 

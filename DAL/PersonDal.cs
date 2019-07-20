@@ -245,7 +245,6 @@ namespace ScheduleBuilder.DAL
                             , zipcode = @zipcode
                             , username = @username
                             , email = @email
-                            , roleId = @roleId
                             , statusId = @statusId
                             WHERE id = @id 
                             AND  password = @password                            
@@ -278,7 +277,6 @@ namespace ScheduleBuilder.DAL
                         updateCommand.Parameters.AddWithValue("@username", editPerson.Username);
                         updateCommand.Parameters.AddWithValue("@email", editPerson.Email);
                         updateCommand.Parameters.AddWithValue("@id", editPerson.Id);
-                        updateCommand.Parameters.AddWithValue("@roleId", editPerson.RoleId);
                         updateCommand.Parameters.AddWithValue("@statusId", editPerson.StatusId);
                         updateCommand.Parameters.AddWithValue("@password", editPerson.Password);
 
