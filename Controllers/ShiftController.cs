@@ -144,7 +144,7 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
-            
+
             JavaScriptSerializer thing = new JavaScriptSerializer();
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             Shift shift = new Shift();
@@ -153,33 +153,28 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
             shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
 
-            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if(checkIfAlreadyScheduled == true)
+
+
+            if (!string.IsNullOrEmpty(startlunchdt))
             {
-                return View();
+                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
             }
             else
             {
-                if (!string.IsNullOrEmpty(startlunchdt))
-                {
-                    shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
-                }
-                else
-                {
-                    shift.scheduledLunchBreakStart = null;
-                }
-                if (!string.IsNullOrEmpty(endlunchdt))
-                {
-                    shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
-                }
-                else
-                {
-                    shift.scheduledLunchBreakEnd = null;
-                }
-                shift.Notes = notes;
-
-                return Json(shiftDAL.AddShift(shift, otherThing));
+                shift.scheduledLunchBreakStart = null;
             }
+            if (!string.IsNullOrEmpty(endlunchdt))
+            {
+                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakEnd = null;
+            }
+            shift.Notes = notes;
+
+            return Json(shiftDAL.AddShift(shift, otherThing));
+
         }
 
         /// <summary>
@@ -232,6 +227,14 @@ namespace ScheduleBuilder.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
+        {
+            DateTime scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            DateTime scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
+        }
+
         public ActionResult RequestTimeOff()
         {
             ViewBag.failedRequest = "";
@@ -244,7 +247,7 @@ namespace ScheduleBuilder.Controllers
         {
             startDate = Request.Form["startDate"];
             endDate = Request.Form["endDate"];
-            
+
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
@@ -253,12 +256,13 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledEndTime = DateTime.Parse(endDate);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if(checkIfAlreadyScheduled == true)
+            if (checkIfAlreadyScheduled == true)
             {
-                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " + 
+                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +
                     endDate + " or have requested this time off already. Please check your schedule.";
                 return View("RequestTimeOff");
-            } else
+            }
+            else
             {
                 ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
                 this.shiftDAL.AddShift(shift, otherThing);
@@ -317,10 +321,13 @@ namespace ScheduleBuilder.Controllers
                 DateTime temp = shift.actualEndTime ?? DateTime.MinValue;
                 shift.actualEndTime = temp.AddHours(timezone);
             }
-            if (shift.actualLunchBreakStart != null) {
+            if (shift.actualLunchBreakStart != null)
+            {
                 DateTime temp = shift.actualLunchBreakStart ?? DateTime.MinValue;
-                shift.actualLunchBreakStart = temp.AddHours(timezone); }
-            if (shift.actualLunchBreakEnd != null) {
+                shift.actualLunchBreakStart = temp.AddHours(timezone);
+            }
+            if (shift.actualLunchBreakEnd != null)
+            {
                 DateTime temp = shift.actualLunchBreakEnd ?? DateTime.MinValue;
                 shift.actualLunchBreakEnd = temp.AddHours(timezone);
             }
