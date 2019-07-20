@@ -19,7 +19,6 @@ namespace ScheduleBuilder.ModelViews
         //Shift start time
         [Display(Name = "Scheduled Start Time")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime scheduledStartTime { get; set; }
 
         //shift end time

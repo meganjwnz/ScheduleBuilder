@@ -4,9 +4,22 @@
     ViewBag.Title = "GetLastTwoWeeksOfShiftsForEdit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Shifts over the Past two Weeks <br />
-    @ViewBag.FullName</h2>
+@if (TempData["notice"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <p>@TempData["notice"]</p>
+    </div>
+}
+@if (TempData["alert"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>@TempData["alert"]</p>
+    </div>
+}
+<h2>
+    Shifts over the Past two Weeks <br />
+    @ViewBag.FullName
+</h2>
 
 <table class="table">
     <tr>
@@ -37,36 +50,37 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.scheduledStartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.scheduledEndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.scheduledLunchBreakStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.scheduledLunchBreakEnd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.actualStartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.actualEndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.actualLunchBreakStart)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.actualLunchBreakEnd)
-        </td>
-        <td>
-            @Html.ActionLink(linkText:"Edit", actionName:"EditTimecard", routeValues: new { shiftId = item.shiftId}, htmlAttributes: null)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.scheduledStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.scheduledEndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.scheduledLunchBreakStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.scheduledLunchBreakEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.actualStartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.actualEndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.actualLunchBreakStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.actualLunchBreakEnd)
+            </td>
+            <td>
+                @Html.ActionLink(linkText: "Edit", actionName: "EditTimecard", routeValues: new { shiftId = item.shiftId }, htmlAttributes: null)
+            </td>
+        </tr>
+    }
 
 </table>

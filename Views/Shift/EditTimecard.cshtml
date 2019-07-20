@@ -4,7 +4,12 @@
     ViewBag.Title = "EditTimecard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@if (TempData["alert"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <p>@TempData["alert"]</p>
+    </div>
+}
 <h2>Edit @ViewBag.FullName Timecard</h2>
 
 @using (Html.BeginForm())
