@@ -222,33 +222,28 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
             shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
 
-            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if (checkIfAlreadyScheduled == true)
+
+
+            if (!string.IsNullOrEmpty(startlunchdt))
             {
-                return View();
+                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
             }
             else
             {
-                if (!string.IsNullOrEmpty(startlunchdt))
-                {
-                    shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
-                }
-                else
-                {
-                    shift.scheduledLunchBreakStart = null;
-                }
-                if (!string.IsNullOrEmpty(endlunchdt))
-                {
-                    shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
-                }
-                else
-                {
-                    shift.scheduledLunchBreakEnd = null;
-                }
-                shift.Notes = notes;
-
-                return Json(shiftDAL.AddShift(shift, otherThing));
+                shift.scheduledLunchBreakStart = null;
             }
+            if (!string.IsNullOrEmpty(endlunchdt))
+            {
+                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakEnd = null;
+            }
+            shift.Notes = notes;
+
+            return Json(shiftDAL.AddShift(shift, otherThing));
+
         }
 
         /// <summary>
@@ -299,6 +294,14 @@ namespace ScheduleBuilder.Controllers
 
             }
 
+        }
+
+        [HttpPost]
+        public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
+        {
+            DateTime scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            DateTime scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
         }
 
         public ActionResult RequestTimeOff()

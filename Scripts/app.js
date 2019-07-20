@@ -278,8 +278,8 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         start.setHours(0, 0, 0, 0);
         var end = new Date();
         end.setHours(23, 59, 59, 999);
-        
-        if (($scope.jsDate(shift.scheduledStartTime) > start) && ($scope.jsDate(shift.scheduledStartTime) < end) ) {
+
+        if (($scope.jsDate(shift.scheduledStartTime) > start) && ($scope.jsDate(shift.scheduledStartTime) < end)) {
             return true;
         } else {
             return false;
@@ -323,17 +323,27 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var taskArray = JSON.stringify(selected.tasks);
         var notes = selected.notes ? selected.notes : null;
 
-        if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
+        if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) === false) {
             return;
         } else {
-            $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt, taskList: taskArray, notes: notes }).then(function (response) {
+            $http.post('/Shift/CheckIfScheduled', { personID: personID, startdt: startdt, enddt: enddt }).then(function (response) {
                 $scope.success = response.data;
                 if ($scope.success) {
-                    alert("Shift added successfully");
-                    $scope.cancel();
-                    $scope.getShifts();
+                    $http.post('/Shift/AddShift', { personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt, endlunchdt: endlunchdt, taskList: taskArray, notes: notes }).then(function (response) {
+                        $scope.success = response.data;
+                        if ($scope.success) {
+                            alert("Shift added successfully");
+                            $scope.cancel();
+                            $scope.getShifts();
+                        } else {
+                            alert("There was an error adding your shift. Please try again.");
+                        }
+                    }), function (error) {
+                        alert(error);
+                    };
                 } else {
-                    alert("There was an error adding your shift. Please try again.");
+                    alert("This individual already has a shift overlapping this time. Please select a new employee or different times.");
+                    return;
                 }
             }), function (error) {
                 alert(error);
@@ -341,43 +351,53 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         };
     };
 
-    $scope.updateShift = function (selected) {
-        var shiftID = selected.shiftID;
-        var scheduleShiftID = selected.scheduledShiftID;
-        var isDelete = selected.delete;
-        var personID = selected.personID;
-        var positionID = selected.positionID;
-        var startdt = selected.startdt.getTime();
-        var enddt = selected.enddt.getTime();
-        var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
-        var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
-        var taskArray = JSON.stringify(selected.tasks);
-        var notes = selected.notes ? selected.notes : null;
-        console.log(notes);
-        if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
-            return;
-        } else {
-            $http.post('/Shift/UpdateShift', {
-                personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
-                endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray, notes: notes
-            }).then(function (response) {
-                $scope.success = response.data;
-                if ($scope.success) {
-                    alert("Shift updated successfully");
-                    $scope.cancel();
-                    $scope.getShifts();
-                } else {
-                    alert("There was an error updating your shift. Please try again.");
-                }
-            }), function (error) {
-                alert(error);
-            };
-        }
-    };
+$scope.updateShift = function (selected) {
+    var shiftID = selected.shiftID;
+    var scheduleShiftID = selected.scheduledShiftID;
+    var isDelete = selected.delete;
+    var personID = selected.personID;
+    var positionID = selected.positionID;
+    var startdt = selected.startdt.getTime();
+    var enddt = selected.enddt.getTime();
+    var startlunchdt = selected.startlunchdt ? selected.startlunchdt.getTime() : null;
+    var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
+    var taskArray = JSON.stringify(selected.tasks);
+    var notes = selected.notes ? selected.notes : null;
+    console.log(notes);
+    if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
+        return;
+    } else {
+        $http.post('/Shift/CheckIfScheduled', { personID: personID, startdt: startdt, enddt: enddt }).then(function (response) {
+            $scope.success = response.data;
+            if ($scope.success) {
+                $http.post('/Shift/UpdateShift', {
+                    personID: personID, positionID: positionID, startdt: startdt, enddt: enddt, startlunchdt: startlunchdt,
+                    endlunchdt: endlunchdt, isDelete: isDelete, shiftID: shiftID, scheduleshiftID: scheduleShiftID, taskList: taskArray, notes: notes
+                }).then(function (response) {
+                    $scope.success = response.data;
+                    if ($scope.success) {
+                        alert("Shift updated successfully");
+                        $scope.cancel();
+                        $scope.getShifts();
+                    } else {
+                        alert("There was an error updating your shift. Please try again.");
+                    }
+                }), function (error) {
+                    alert(error);
+                };
+            } else {
+                alert("This individual already has a shift overlapping this time. Please select a new employee or different times.");
+                return;
+            }
+        }), function (error) {
+            alert(error);
+            }; 
+    }
+};
 
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
+$scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+};
 
 });
 
@@ -441,7 +461,7 @@ app.controller('PositionModalInstanceCtrl', function ($uibModalInstance, $scope,
         $uibModalInstance.dismiss('cancel');
     };
 
- });
+});
 
 app.controller('TaskModalInstanceCtrl', function ($uibModalInstance, $scope, $http) {
 
