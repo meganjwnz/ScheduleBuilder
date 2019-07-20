@@ -132,6 +132,9 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     //Calculation to get total hours scheduled with or without lunch break
     $scope.getTotalHours = function (shift) {
+        if (shift.positionName == 'Unavailable') {
+            return 0.00;
+        }
         var startTime = $scope.jsDate(shift.scheduledStartTime);
         var endTime = $scope.jsDate(shift.scheduledEndTime);
 
