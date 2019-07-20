@@ -291,18 +291,31 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
 
     $scope.positionAssignedInFuture = function (positionID) {
         $scope.filterListCurrent();
-        console.log($scope.filterShift);
         var keepGoing = true;
         angular.forEach($scope.filterShift, function (shift) {
-            console.log(shift.positionName);
-            console.log(keepGoing);
             if (keepGoing) {
                 if (shift.positionID == positionID) {
                     keepGoing = false;
                 }
             }
         });
-        console.log("finally", keepGoing);
+        return keepGoing;
+    };
+
+    $scope.taskAssignedInFuture = function (taskID) {
+        $scope.filterListCurrent();
+        var keepGoing = true;
+        angular.forEach($scope.filterShift, function (shift) {
+            if (keepGoing) {
+                console.log(shift.TaskIdList);
+                angular.forEach(shift.TaskIdList, function (t) {
+                    console.log(t, keepGoing);
+                    if (t == taskID) {
+                        keepGoing = false;
+                    }
+                });
+            }
+        });
         return keepGoing;
     };
 
@@ -523,18 +536,22 @@ app.controller('TaskModalInstanceCtrl', function ($uibModalInstance, $scope, $ht
         var tIsActive = selected.tActive;
         var positionID = selected.positionID;
 
-        $http.post('/Position/UpdateTaskPosition', { id: tId, taskTitle: tTitle, taskDescription: tDescription, isActive: tIsActive, positionID: positionID }).then(function (response) {
-            $scope.success = response.data;
-            if ($scope.success) {
-                alert("Task updated successfully");
-                $scope.cancel();
-                $scope.getAllTasks();
-            } else {
-                alert("There was an error adding your task. Please try again.");
-            }
-        }), function (error) {
-            alert(error);
-        };
+        if ((tIsActive == false) && ($scope.taskAssignedInFuture(tId) == false)) {
+            alert("This task is currently assigned to upcoming shifts and cannot be deactivated.");
+        } else {
+            $http.post('/Position/UpdateTaskPosition', { id: tId, taskTitle: tTitle, taskDescription: tDescription, isActive: tIsActive, positionID: positionID }).then(function (response) {
+                $scope.success = response.data;
+                if ($scope.success) {
+                    alert("Task updated successfully");
+                    $scope.cancel();
+                    $scope.getAllTasks();
+                } else {
+                    alert("There was an error updating your task. Please try again.");
+                }
+            }), function (error) {
+                alert(error);
+            };
+        }
     };
 
     $scope.cancel = function () {
