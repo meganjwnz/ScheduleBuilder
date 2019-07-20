@@ -150,8 +150,8 @@ namespace ScheduleBuilder.Controllers
             string whereClause = $"Where p.id =  {personid}  and sh.scheduledStartTime > (DATEADD(day,- 14, GETDATE())) and sh.scheduledStartTime < (GETDATE())";
             List<Shift> shifts = this.shiftDAL.GetAllShifts(whereClause);
             List<TimeCardEditViewModel> timeCardEdits = this.CovertShiftToTimeCardView(shifts);
-
-
+            Person person = this.personDAL.GetPersonByID(personid);
+            ViewBag.FullName = person.GetFullName();
             return View(timeCardEdits);
         }
 

@@ -5,16 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Shifts over the past two weeks</h2>
+<h2>Shifts over the past two week <br />
+    @ViewBag.FullName</h2>
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.personFirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.personLastName)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.scheduledStartTime)
         </th>
@@ -44,12 +39,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.personFirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.personLastName)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.scheduledStartTime)
         </td>

@@ -418,7 +418,20 @@ namespace ScheduleBuilder.DAL
         {
             Person person = new Person();
             string selectStatement =
-                         "SELECT id " +
+                         "SELECT id" +
+                         ", last_name" +
+                         ", first_name" +
+                         ", date_of_birth" +
+                         ", ssn" +
+                         ", gender" +
+                         ", street_address" +
+                         ", phone" +
+                         ", zipcode" +
+                         ", username" +
+                         ", password" +
+                         ", roleId" +
+                         ", statusId" +
+                         ", email " +
                          "FROM person " +
                          "WHERE id = @id";
 
@@ -433,6 +446,19 @@ namespace ScheduleBuilder.DAL
                         while (reader.Read())
                         {
                             person.Id = (int)reader["id"];
+                            person.LastName = reader["last_name"].ToString();
+                            person.FirstName = reader["first_name"].ToString();
+                            person.DateOfBirth = (DateTime)reader["date_of_birth"];
+                            person.Ssn = reader["ssn"].ToString();
+                            person.Gender = reader["gender"].ToString();
+                            person.StreetAddress = reader["street_address"].ToString();
+                            person.Phone = reader["phone"].ToString();
+                            person.Zipcode = reader["zipcode"].ToString();
+                            person.Username = reader["username"].ToString();
+                            person.Password = reader["password"].ToString();
+                            person.RoleId = (int)reader["roleId"];
+                            person.StatusId = (int)reader["statusId"];
+                            person.Email = reader["email"].ToString();
                         }
                     }
                 }
