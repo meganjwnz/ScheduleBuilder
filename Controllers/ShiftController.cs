@@ -147,7 +147,7 @@ namespace ScheduleBuilder.Controllers
 
         public ActionResult GetLastTwoWeeksOfShiftsForEdit(int personid)
         {
-            string whereClause = $"Where p.id =  {personid}  and sh.scheduledStartTime > (SELECT DATEADD(day,- 14, GETDATE()))";
+            string whereClause = $"Where p.id =  {personid}  and sh.scheduledStartTime > (DATEADD(day,- 14, GETDATE())) and sh.scheduledStartTime < (GETDATE())";
             List<Shift> shifts = this.shiftDAL.GetAllShifts(whereClause);
             List<TimeCardEditViewModel> timeCardEdits = this.CovertShiftToTimeCardView(shifts);
 

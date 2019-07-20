@@ -7,9 +7,7 @@
 
 <h2>Search People</h2>
 
-<p>
-    @Html.ActionLink("Add Employee", "AddPerson", "Person")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -78,9 +76,14 @@
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Deactivate", "Delete", new { id=item.Id })
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Deactivate", "Delete", new { id = item.Id }) |
+            @Html.ActionLink(linkText: "TimeCard",
+                                           actionName: "GetLastTwoWeeksOfShiftsForEdit",
+                                           controllerName: "Shift",
+                                           routeValues: new { personid = item.Id },
+                                           htmlAttributes: null)
         </td>
     </tr>
 }
