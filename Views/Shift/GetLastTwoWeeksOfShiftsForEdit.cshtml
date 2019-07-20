@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ScheduleBuilder.ModelViews.TimeCardEditViewModel>
+
+@{
+    ViewBag.Title = "GetLastTwoWeeksOfShiftsForEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Shifts over the Past two Weeks <br />
+    @ViewBag.FullName</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledStartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledEndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledLunchBreakStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.scheduledLunchBreakEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualStartTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualEndTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualLunchBreakStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.actualLunchBreakEnd)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledStartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledEndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledLunchBreakStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.scheduledLunchBreakEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualStartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualEndTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualLunchBreakStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.actualLunchBreakEnd)
+        </td>
+        <td>
+            @Html.ActionLink(linkText:"Edit", actionName:"EditTimecard", routeValues: new { shiftId = item.shiftId}, htmlAttributes: null)
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace ScheduleBuilder.ModelViews
+﻿namespace ScheduleBuilder.ModelViews
 {
     public class ManagerViewModel
     {
         public string LastName { get; set; }
-    
+
         public string FirstName { get; set; }
 
         public string Phone { get; set; }

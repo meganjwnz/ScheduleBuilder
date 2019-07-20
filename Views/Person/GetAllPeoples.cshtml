@@ -1,21 +1,11 @@
 ﻿@model IEnumerable<ScheduleBuilder.Model.Person>
 
 @{
-    ViewBag.Title = "GetAllPeoples";
+    ViewBag.Title = "Get All Employees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>All Employees</h2>
-@if (Session["roleTitle"].ToString() == "Employee")
-{
-    <p></p>
-}
-else
-{
-    <p>
-        @Html.ActionLink("Add Employee", "AddPerson")
-    </p>
-}
 <table class="a">
     <thead>
         <tr class="tablestyle">
@@ -60,7 +50,12 @@ else
                     {
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span>|</span>
                         @Html.ActionLink("Details", "Details", new { id = item.Id }) <span>|</span>
-                        @Html.ActionLink("Deactivate", "Delete", new { id = item.Id })
+                        @Html.ActionLink("Deactivate", "Delete", new { id = item.Id }) <span>|</span>
+                        @Html.ActionLink(   linkText: "TimeCard",
+                                            actionName:"GetLastTwoWeeksOfShiftsForEdit",
+                                            controllerName: "Shift",
+                                            routeValues: new { personid = item.Id },                                       
+                                            htmlAttributes: null)
                     }
                 </td>
             </tr>

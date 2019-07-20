@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ScheduleBuilder.Model.Person>
 
 @{
-    ViewBag.Title = "GetAllActivePeoplesPage";
+    ViewBag.Title = "Get All Active Employees";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -61,10 +61,16 @@ else
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <span>|</span>
                     @Html.ActionLink("Add Position", "AddPosition", new { id = item.Id }) <span>|</span>
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) <span>|</span>
-                    @Html.ActionLink("Deactivate", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Deactivate", "Delete", new { id = item.Id }) <span>|</span>
+                    @Html.ActionLink(linkText: "TimeCard",
+                            actionName: "GetLastTwoWeeksOfShiftsForEdit",
+                            controllerName: "Shift",
+                            routeValues: new { personid = item.Id },
+                            htmlAttributes: null)
                 }
             </td>
         </tr>
     }
+
 
 </table>

@@ -1,11 +1,11 @@
-﻿using ScheduleBuilder.Model;
-using ScheduleBuilder.DAL;
-using System.Web.Mvc;
+﻿using ScheduleBuilder.DAL;
+using ScheduleBuilder.Model;
+using ScheduleBuilder.ModelViews;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using ScheduleBuilder.ModelViews;
-using System;
+using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -194,8 +194,8 @@ namespace ScheduleBuilder.Controllers
         private void ContactEditedPerson(Person editPerson)
         {
             string loggedInUserId = (Session["id"].ToString());
-            Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault(); 
-            Email email = new Email(editPerson); 
+            Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault();
+            Email email = new Email(editPerson);
 
             string subject = "Your personal information has been edited";
 
@@ -205,7 +205,7 @@ namespace ScheduleBuilder.Controllers
                 $"\n Full name:        {editPerson.GetFullName()}" +
                 $"\n Gender:           {editPerson.Gender}" +
                 $"\n Address:          {editPerson.StreetAddress}" +
-                $"\n Zipcode:          {editPerson.Zipcode}" +                
+                $"\n Zipcode:          {editPerson.Zipcode}" +
                 $"\n Date of Birth:    {editPerson.DateOfBirth.Date}" +
                 $"\n Phone:            {editPerson.Phone}" +
                 $"\n SSn:              {editPerson.Ssn}" +
@@ -249,7 +249,7 @@ namespace ScheduleBuilder.Controllers
                 $"\n Date of Birth:    {dateOfBirth}" +
                 $"\n Phone:            {phone}" +
                 $"\n SSn:              {ssn}" +
-                $"\n Username:         {firstname.Substring(0, 1).ToLower()}{lastname.ToLower()}"+
+                $"\n Username:         {firstname.Substring(0, 1).ToLower()}{lastname.ToLower()}" +
 
                 $"\n If you notice any errors please contact your Admin as soon as possible \n" +
                 $"\n Your initial password is 'newHire' " +
@@ -326,11 +326,11 @@ namespace ScheduleBuilder.Controllers
             person = this.personDAL.SeperateEmployee(person);
             return RedirectToAction("GetAllActivePeoplePage");
         }
-            #endregion
+        #endregion
 
-            #region person related model methods
+        #region person related model methods
 
-            private void SetRole(Person person)
+        private void SetRole(Person person)
         {
             string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;
@@ -354,7 +354,7 @@ namespace ScheduleBuilder.Controllers
 
             }
 
-             ViewBag.userSSn = formattedSSN;
+            ViewBag.userSSn = formattedSSN;
         }
 
         private void FormatPhone(Person person)

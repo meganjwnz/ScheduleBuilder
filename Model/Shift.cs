@@ -9,27 +9,27 @@ namespace ScheduleBuilder.Model
     /// </summary>
     public class Shift
     {
-        
+
         //Shift Id 
         public int shiftID { get; set; }
-        
+
         //Scheduled shift id
         public int scheduleShiftID { get; set; }
-        
+
         //Scheduled person Id
-        public int personID { get; set;}
-        
+        public int personID { get; set; }
+
         //Scheduled persons first name
         [Display(Name = "First Name")]
         public string personFirstName { get; set; }
-       
+
         //Scheduled persons last name
         [Display(Name = "Last Name")]
         public string personLastName { get; set; }
-        
+
         //Shift postion ID
         public int positionID { get; set; }
-        
+
         //Shift postition name
         public string positionName { get; set; }
 
@@ -60,7 +60,7 @@ namespace ScheduleBuilder.Model
         //shift actual lunch start time
         [Display(Name = "Actual Break Start")]
         public DateTime? actualLunchBreakStart { get; set; }
-        
+
         //shift actual lunch end time
         [Display(Name = "Actual Break End")]
         public DateTime? actualLunchBreakEnd { get; set; }

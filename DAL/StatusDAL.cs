@@ -42,7 +42,7 @@ namespace ScheduleBuilder.DAL
 
         public List<Status> GetStatuses()
         {
-            
+
             List<Status> statuses = new List<Status>();
             string selectStatement =
                                "SELECT id, status_description, isAbleToWork, status_title " +
@@ -65,10 +65,10 @@ namespace ScheduleBuilder.DAL
                             };
                             statuses.Add(status);
                         }
-                       
+
                     }
                 }
-                
+
             }
             return statuses;
         }

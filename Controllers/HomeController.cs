@@ -1,11 +1,11 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using ScheduleBuilder.ModelViews;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace ScheduleBuilder.Controllers
 {
@@ -46,7 +46,7 @@ namespace ScheduleBuilder.Controllers
             return View(managers);
         }
 
-     
+
         /// <summary>
         /// Returns the peopleDirectory page
         /// </summary>
@@ -157,7 +157,8 @@ namespace ScheduleBuilder.Controllers
                 personDAL.UpdatePasswordOnly(person, Request.Form["newPassword"]);
                 return RedirectToAction("Login");
 
-            } catch
+            }
+            catch
             {
                 ViewBag.noEmail = "No user with that email.";
                 return View("ForgetPassword");

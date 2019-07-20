@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 
-using System.Web.Mvc;
-using System.Web.Script.Serialization;
-
 namespace ScheduleBuilder.DAL
 {
     /// <summary>
@@ -150,7 +147,7 @@ namespace ScheduleBuilder.DAL
                 $" JOIN shiftHours AS sh ON s.scheduleShiftId = sh.id " +
                 $" JOIN person AS p ON s.personId = p.id " +
                 $" JOIN position AS ps ON s.positionId = ps.id "
-                +  whereClause +
+                + whereClause +
                 $"  ORDER BY ABS(DATEDIFF(MINUTE, scheduledStartTime, GETDATE()))";
 
             using (connection)
@@ -165,7 +162,7 @@ namespace ScheduleBuilder.DAL
                         {
                             shift.shiftID = int.Parse(reader["id"].ToString());
                             shift.scheduleShiftID = int.Parse(reader["scheduleShiftId"].ToString());
-                        
+
                             shift.positionID = int.Parse(reader["positionId"].ToString());
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
@@ -226,7 +223,7 @@ namespace ScheduleBuilder.DAL
                         insertCommand.Parameters.AddWithValue("@scheduledEndTime", shift.scheduledEndTime);
                         insertCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", ((object)shift.scheduledLunchBreakStart) ?? DBNull.Value);
                         insertCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", ((object)shift.scheduledLunchBreakEnd) ?? DBNull.Value);
-                        
+
                         pk = Convert.ToInt32(insertCommand.ExecuteScalar());
                         shiftHoursResult = 1;
                     }
@@ -241,7 +238,7 @@ namespace ScheduleBuilder.DAL
                         shiftpk = Convert.ToInt32(insertShiftCommand.ExecuteScalar());
                         shiftResult = 1;
                     }
-                    foreach(KeyValuePair<int,bool> taskActive in taskList)
+                    foreach (KeyValuePair<int, bool> taskActive in taskList)
                     {
                         if (taskActive.Value)
                         {
@@ -254,12 +251,12 @@ namespace ScheduleBuilder.DAL
                             }
                         }
                     }
-                    
+
                     transaction.Commit();
                 }
                 catch
                 {
-                    
+
                     transaction.Rollback();
                 }
             }
@@ -456,7 +453,7 @@ namespace ScheduleBuilder.DAL
                         command.Parameters.AddWithValue("@shiftId", shiftHoursId);
                         command.Parameters.AddWithValue("@clockInTime", clockIn);
 
-                        command.ExecuteNonQuery();   
+                        command.ExecuteNonQuery();
                     }
                     connection.Close();
                     Shift shift = this.GetAllShifts(" WHERE sh.id = " + shiftHoursId.ToString()).FirstOrDefault<Shift>();
@@ -538,9 +535,9 @@ namespace ScheduleBuilder.DAL
                     using (SqlCommand command = new SqlCommand(insert, connection))
                     {
                         command.Parameters.AddWithValue("@shiftId", scheduleShiftID);
-                     
+
                         command.Parameters.AddWithValue("@clockOutTime", now);
-                        
+
                         command.ExecuteNonQuery();
                     }
                     connection.Close();
@@ -551,7 +548,7 @@ namespace ScheduleBuilder.DAL
                 }
             }
         }
-  
+
         public void ClockLunchStart(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -656,6 +653,6 @@ namespace ScheduleBuilder.DAL
                 }
             }
         }
-        
+
     }
 }
