@@ -11,9 +11,13 @@
 <h4>Please select the dates you would like to request off</h4>
 <span class="text-success">@ViewBag.successfulRequest</span>
 <span class="text-danger">@ViewBag.failedRequest</span>
+
+<span class="text-danger">@ViewBag.startError</span>
+<span class="text-danger">@ViewBag.endError</span>
 <hr />
 <div class="form-group">
     <form action="RequestTimeOffFunction" method="post">
+
 
         <label class="col-sm-2">Request off start date :</label>
         <input style="margin:2em" type="date" name="startDate" class="form-control" />
