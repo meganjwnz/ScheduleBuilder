@@ -276,7 +276,7 @@ namespace ScheduleBuilder.Controllers
                 hasErrors = true;
                 alert += "\n If a Lunch break is scheduled it must have both a start and end time";
             }
-            if (timeCardEditViewModel.scheduledLunchBreakEnd == null  && timeCardEditViewModel.scheduledLunchBreakStart != null)
+            if (timeCardEditViewModel.scheduledLunchBreakEnd == null && timeCardEditViewModel.scheduledLunchBreakStart != null)
             {
                 hasErrors = true;
                 alert += "\n If a Lunch break is scheduled it must have both a start and end time";
@@ -351,16 +351,6 @@ namespace ScheduleBuilder.Controllers
                 hasErrors = true;
                 alert += "\n Actual Start time must exist for end time to exist";
             }
-            //if (timeCardEditViewModel.scheduledLunchBreakStart != DateTime.MinValue && timeCardEditViewModel.scheduledStartTime == DateTime.MinValue)
-            //{
-            //    hasErrors = true;
-            //    alert += "\n Actual Start time must exist for Lunch start time to exist";
-            //}
-            //if (timeCardEditViewModel.scheduledLunchBreakEnd != DateTime.MinValue && timeCardEditViewModel.scheduledStartTime == DateTime.MinValue)
-            //{
-            //    hasErrors = true;
-            //    alert += "\n Actual Start time must exist for Lunch end time to exist";
-            //}
             if (timeCardEditViewModel.actualLunchBreakEnd != DateTime.MinValue && timeCardEditViewModel.actualStartTime == null)
             {
                 hasErrors = true;
@@ -414,7 +404,7 @@ namespace ScheduleBuilder.Controllers
             {
                 TempData["alert"] = MvcHtmlString.Create(HttpUtility.HtmlEncode(alert).Replace("\n", "<br />")); ;
             }
-            
+
             return hasErrors;
         }
 
@@ -431,6 +421,7 @@ namespace ScheduleBuilder.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditTimecard(TimeCardEditViewModel editedViewModel)
         {
+            editedViewModel = this.AddUserAddedValuesToTimeCard(editedViewModel);
             if (EditTimeCardErrorCheck(editedViewModel))
             {
                 return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
@@ -448,6 +439,22 @@ namespace ScheduleBuilder.Controllers
             }
             var herefortest = updatedShift;
             return RedirectToAction("GetLastTwoWeeksOfShiftsForEdit", "Shift", new { personid = updatedShift.personID });
+        }
+
+        private TimeCardEditViewModel AddUserAddedValuesToTimeCard(TimeCardEditViewModel timeCardEditViewModel)
+        {
+
+            DateTime temp;
+            if (DateTime.TryParse(Request.Form["scheduledLunchBreakStart"], out temp))
+            {
+                timeCardEditViewModel.scheduledLunchBreakStart = temp;
+            }
+            if (DateTime.TryParse(Request.Form["scheduledLunchBreakEnd"], out temp))
+            {
+                timeCardEditViewModel.scheduledLunchBreakEnd = temp;
+            }
+            
+            return timeCardEditViewModel;
         }
 
         #endregion
