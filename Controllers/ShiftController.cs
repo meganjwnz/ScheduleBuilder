@@ -326,32 +326,32 @@ namespace ScheduleBuilder.Controllers
                 hasErrors = true;
                 alert += "\n No actual values can exist before actual end time";
             }
-            if (timeCardEditViewModel.actualEndTime != DateTime.MinValue && timeCardEditViewModel.actualStartTime == DateTime.MinValue)
+            if (timeCardEditViewModel.actualEndTime != null && timeCardEditViewModel.actualStartTime == null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist for end time to exist";
             }
-            if (timeCardEditViewModel.actualLunchBreakStart != DateTime.MinValue && timeCardEditViewModel.actualStartTime == null)
+            if (timeCardEditViewModel.actualLunchBreakStart != null && timeCardEditViewModel.actualStartTime == null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist for Lunch start time to exist";
             }
-            if (timeCardEditViewModel.actualLunchBreakEnd != DateTime.MinValue && timeCardEditViewModel.actualStartTime == DateTime.MinValue)
+            if (timeCardEditViewModel.actualLunchBreakEnd != null && timeCardEditViewModel.actualStartTime == null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist for Lunch end time to exist";
             }
-            if (timeCardEditViewModel.actualLunchBreakEnd != DateTime.MinValue && timeCardEditViewModel.actualLunchBreakStart == null)
+            if (timeCardEditViewModel.actualLunchBreakEnd != null && timeCardEditViewModel.actualLunchBreakStart == null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start Lunch must exist for Lunch End time to exist";
             }
-            if (timeCardEditViewModel.actualEndTime != DateTime.MinValue && timeCardEditViewModel.actualStartTime == null)
+            if (timeCardEditViewModel.actualEndTime != null && timeCardEditViewModel.actualStartTime == null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist for end time to exist";
             }
-            if (timeCardEditViewModel.actualLunchBreakEnd != DateTime.MinValue && timeCardEditViewModel.actualStartTime == null)
+            if (timeCardEditViewModel.actualLunchBreakEnd != null && timeCardEditViewModel.actualStartTime == null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start Lunch must exist for Lunch End time to exist";
@@ -366,27 +366,27 @@ namespace ScheduleBuilder.Controllers
                 hasErrors = true;
                 alert += "\n Scheduled Start Lunch cannot exist before Scheduled start time";
             }
-            if (timeCardEditViewModel.scheduledLunchBreakStart == DateTime.MinValue || timeCardEditViewModel.scheduledLunchBreakEnd == DateTime.MinValue)
+            if (timeCardEditViewModel.scheduledLunchBreakStart == null || timeCardEditViewModel.scheduledLunchBreakEnd == null)
             {
                 hasErrors = true;
                 alert += "\n Scheduled Lunch Breaks must have both start and end or not exist";
             }
-            if (timeCardEditViewModel.actualLunchBreakStart == DateTime.MinValue && timeCardEditViewModel.actualLunchBreakEnd != DateTime.MinValue)
+            if (timeCardEditViewModel.actualLunchBreakStart == null && timeCardEditViewModel.actualLunchBreakEnd != null)
             {
                 hasErrors = true;
                 alert += "\n Actual Lunch Breaks cannot end without starting";
             }
-            if (timeCardEditViewModel.actualStartTime == DateTime.MinValue && timeCardEditViewModel.actualEndTime != DateTime.MinValue)
+            if (timeCardEditViewModel.actualStartTime == null && timeCardEditViewModel.actualEndTime != null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist before any other actual time";
             }
-            if (timeCardEditViewModel.actualStartTime == DateTime.MinValue && timeCardEditViewModel.actualLunchBreakStart != DateTime.MinValue)
+            if (timeCardEditViewModel.actualStartTime == null && timeCardEditViewModel.actualLunchBreakStart != null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist before any other actual time";
             }
-            if (timeCardEditViewModel.actualStartTime == DateTime.MinValue && timeCardEditViewModel.actualLunchBreakEnd != DateTime.MinValue)
+            if (timeCardEditViewModel.actualStartTime == null && timeCardEditViewModel.actualLunchBreakEnd != null)
             {
                 hasErrors = true;
                 alert += "\n Actual Start time must exist before any other actual time";
