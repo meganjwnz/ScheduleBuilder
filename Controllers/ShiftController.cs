@@ -687,7 +687,7 @@ namespace ScheduleBuilder.Controllers
             else
             {
                 ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
-                this.shiftDAL.AddShift(shift, otherThing);
+                this.shiftDAL.AddShift(this.TimeUpdate(shift), otherThing);
                 return View("RequestTimeOff");
             }
         }
