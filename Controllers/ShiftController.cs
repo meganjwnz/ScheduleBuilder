@@ -709,6 +709,15 @@ namespace ScheduleBuilder.Controllers
                 ViewBag.startError = "You must include an end date.";
                 return View("RequestTimeOff");
             }
+            if (DateTime.Parse(endDate) < DateTime.Parse(startDate)){
+                ViewBag.timingError = "Your end date must not be before your start date.";
+                return View("RequestTimeOff");
+            }
+            if(DateTime.Parse(startDate) < DateTime.Now)
+            {
+                ViewBag.pastError = "You cannot request off in the past.";
+                return View("RequestTimeOff");
+            }
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
@@ -726,7 +735,7 @@ namespace ScheduleBuilder.Controllers
             else
             {
                 ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
-                this.shiftDAL.AddShift(this.TimeUpdate(shift), otherThing);
+                this.shiftDAL.AddShift(shift, otherThing);
                 return View("RequestTimeOff");
             }
         }
