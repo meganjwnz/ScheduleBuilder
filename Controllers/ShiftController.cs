@@ -48,6 +48,12 @@ namespace ScheduleBuilder.Controllers
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = " WHERE s.personId = " + loggedInUserId;
             Shift nearestShift = shiftDAL.GetNearestShift(whereClause);
+            if (nearestShift.scheduledStartTime == DateTime.MinValue)
+            {
+                TempData["notice"] = "You have no scheduled shifts\n\n See Mangement";
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(this.TimeUpdate(nearestShift));
         }
 
@@ -553,6 +559,18 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a shift
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <param name="positionID"></param>
+        /// <param name="startdt"></param>
+        /// <param name="enddt"></param>
+        /// <param name="startlunchdt"></param>
+        /// <param name="endlunchdt"></param>
+        /// <param name="taskList"></param>
+        /// <param name="notes"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
@@ -639,6 +657,13 @@ namespace ScheduleBuilder.Controllers
 
         }
 
+        /// <summary>
+        /// Checks if user is scheduled - prevents double scheduling
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <param name="startdt"></param>
+        /// <param name="enddt"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
         {
@@ -647,6 +672,10 @@ namespace ScheduleBuilder.Controllers
             return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
         }
 
+        /// <summary>
+        /// Request time off
+        /// </summary>
+        /// <returns></returns>
         public ActionResult RequestTimeOff()
         {
             ViewBag.failedRequest = "";
@@ -654,6 +683,16 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Accepts request off time
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <param name="positionID"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="taskList"></param>
+        /// <param name="notes"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult RequestTimeOffFunction(string personID, string positionID, string startDate, string endDate, string taskList, string notes)
         {
