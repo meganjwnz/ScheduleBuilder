@@ -691,7 +691,7 @@ namespace ScheduleBuilder.DAL
                 {
                     if (item.personID == personId)
                     {
-                        if (startTime >= item.scheduledStartTime.AddHours(4) && startTime <= item.scheduledEndTime.AddHours(4))
+                        if (startTime >= item.scheduledStartTime && startTime <= item.scheduledEndTime)
                         {
                             return false;
                         }
