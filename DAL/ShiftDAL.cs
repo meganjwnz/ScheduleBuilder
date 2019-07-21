@@ -683,10 +683,6 @@ namespace ScheduleBuilder.DAL
                             shift.personID = (int)reader["id"];
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
-                            if (startTime >= shift.scheduledStartTime.AddHours(4) && startTime <= shift.scheduledEndTime.AddHours(4))
-                            {
-                                return false;
-                            }
                         }
                     }
                 }
@@ -695,7 +691,7 @@ namespace ScheduleBuilder.DAL
                 {
                     if (item.personID == personId)
                     {
-                        if (startTime.AddHours(4) >= item.scheduledStartTime && startTime.AddHours(4) <= item.scheduledEndTime)
+                        if (startTime >= item.scheduledStartTime.AddHours(4) && startTime <= item.scheduledEndTime.AddHours(4))
                         {
                             return false;
                         }
