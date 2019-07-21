@@ -1,5 +1,4 @@
-﻿
-using Dapper;
+﻿using Dapper;
 using ScheduleBuilder.Model;
 using ScheduleBuilder.ModelViews;
 using System;
@@ -496,6 +495,11 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// Returns a list of ManagerViewModels
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
         public List<ManagerViewModel> GetManagersView(string where)
         {
             RoleDAL role = new RoleDAL();

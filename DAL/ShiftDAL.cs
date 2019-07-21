@@ -124,6 +124,11 @@ namespace ScheduleBuilder.DAL
 
         }
 
+        /// <summary>
+        /// Returns the NearestShift to the datetime now
+        /// </summary>
+        /// <param name="whereClause"></param>
+        /// <returns></returns>
         public Shift GetNearestShift(string whereClause)
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -287,6 +292,13 @@ namespace ScheduleBuilder.DAL
 
         }
 
+        /// <summary>
+        /// Allows Edits the shift from the orignal shift
+        /// accepts two shifts to compare the changes
+        /// </summary>
+        /// <param name="shift"></param>
+        /// <param name="orignalShift"></param>
+        /// <returns></returns>
         public bool EditShift(Shift shift, Shift orignalShift)
         {
             int shiftHoursResult = 0;
@@ -364,6 +376,7 @@ namespace ScheduleBuilder.DAL
             
             email.SendMessage(subject, body);
         }
+    
         /// <summary>
         /// Update an existing shift/shift hours
         /// </summary>
@@ -514,6 +527,11 @@ namespace ScheduleBuilder.DAL
         }
 
         #region TimeCard 
+        /// <summary>
+        /// Adds the accepted clockIn value and attaches it to the shiftHourID
+        /// </summary>
+        /// <param name="shiftHoursId"></param>
+        /// <param name="clockIn"></param>
         public void ClockUserIn(int shiftHoursId, DateTime clockIn)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -598,7 +616,11 @@ namespace ScheduleBuilder.DAL
             email.SendMessage(subject, body);
         }
 
-
+        /// <summary>
+        /// Adds the accepted clockOut value and attaches it to the shiftHourID
+        /// </summary>
+        /// <param name="scheduleShiftID"></param>
+        /// <param name="now"></param>
         public void ClockUserOut(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -626,6 +648,11 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// Adds the accepted LunchbreakStart value and attaches it to the shiftHourID
+        /// </summary>
+        /// <param name="scheduleShiftID"></param>
+        /// <param name="now"></param>
         public void ClockLunchStart(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -653,6 +680,11 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// Adds the accepted LunchBreakEnd value and attaches it to the shiftHourID
+        /// </summary>
+        /// <param name="scheduleShiftID"></param>
+        /// <param name="now"></param>
         public void ClockLunchEnd(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +

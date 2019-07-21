@@ -66,8 +66,10 @@ namespace ScheduleBuilder.Model
         [Display(Name = "Actual Break End")]
         public DateTime? actualLunchBreakEnd { get; set; }
 
+        //List of Task
         public List<int> TaskIdList { get; set; }
 
+        //Notes about the shift
         public string Notes { get; set; }
     }
 }

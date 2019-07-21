@@ -5,6 +5,7 @@ namespace ScheduleBuilder.ModelViews
 {
     public class HomeViewModel
     {
+        //List of Shifts 
         public List<Shift> Shifts { get; set; }
     }
 }

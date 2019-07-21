@@ -1,5 +1,4 @@
-﻿
-using ScheduleBuilder.Model;
+﻿using ScheduleBuilder.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,6 +8,10 @@ namespace ScheduleBuilder.DAL
 {
     public class TaskDAL : ITaskDAL
     {
+        /// <summary>
+        /// Returns a list of All Tasks
+        /// </summary>
+        /// <returns></returns>
         public List<Task> GetAllTasks()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -44,6 +47,11 @@ namespace ScheduleBuilder.DAL
             return taskList;
         }
 
+        /// <summary>
+        /// Gests all position tasks
+        /// </summary>
+        /// <param name="positionID"></param>
+        /// <returns></returns>
         public List<Task> GetPositionTasks(int positionID)
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();

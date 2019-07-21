@@ -441,7 +441,7 @@ namespace ScheduleBuilder.Controllers
 
             Shift updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, orignalShift);
             
-            //Alerts and prevents user from 'saving' when no changes are made
+            //Alerts and prevents user from 'saving' when no changes are made  
             if (!this.HasShiftChanged(updatedShift, tempOrignalShift))
             {
                 TempData["alert"] = "No values where changed";
