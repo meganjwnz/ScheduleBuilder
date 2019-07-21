@@ -426,6 +426,7 @@ namespace ScheduleBuilder.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditTimecard(TimeCardEditViewModel editedViewModel)
         {
+
             editedViewModel = this.AddUserAddedValuesToTimeCard(editedViewModel);
             if (EditTimeCardErrorCheck(editedViewModel))
             {
@@ -434,6 +435,7 @@ namespace ScheduleBuilder.Controllers
             string whereClause = $"WHERE s.id ={editedViewModel.shiftId}";
             Shift updatedShift = this.shiftDAL.GetAllShifts(whereClause)[0];
             updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, updatedShift);
+            //updatedShift = this.TimeUpdate(updatedShift);
             if (this.shiftDAL.EditShift(updatedShift))
             {
                 TempData["notice"] = "Shift Updated successfully";
