@@ -216,7 +216,7 @@ namespace ScheduleBuilder.Controllers
                 hasErrors = true;
                 alert += "\n Scheduled End Time is invalid datetime";
             }
-            if (timeCardEditViewModel.scheduledStartTime == DateTime.MinValue || timeCardEditViewModel.scheduledEndTime == DateTime.MinValue)
+            if (timeCardEditViewModel.scheduledStartTime == null || timeCardEditViewModel.scheduledEndTime == null)
             {
                 hasErrors = true;
                 alert += "\n Scheduled Start and End times cannot be empty";
@@ -366,7 +366,12 @@ namespace ScheduleBuilder.Controllers
                 hasErrors = true;
                 alert += "\n Scheduled Start Lunch cannot exist before Scheduled start time";
             }
-            if (timeCardEditViewModel.scheduledLunchBreakStart == null || timeCardEditViewModel.scheduledLunchBreakEnd == null)
+            if (timeCardEditViewModel.scheduledLunchBreakStart != null && timeCardEditViewModel.scheduledLunchBreakEnd == null)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Lunch Breaks must have both start and end or not exist";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart == null && timeCardEditViewModel.scheduledLunchBreakEnd != null)
             {
                 hasErrors = true;
                 alert += "\n Scheduled Lunch Breaks must have both start and end or not exist";
@@ -449,11 +454,32 @@ namespace ScheduleBuilder.Controllers
             {
                 timeCardEditViewModel.scheduledLunchBreakStart = temp;
             }
+
             if (DateTime.TryParse(Request.Form["scheduledLunchBreakEnd"], out temp))
             {
                 timeCardEditViewModel.scheduledLunchBreakEnd = temp;
             }
-            
+
+            if (DateTime.TryParse(Request.Form["actualStartTime"], out temp))
+            {
+                timeCardEditViewModel.actualStartTime = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualEndTime"], out temp))
+            {
+                timeCardEditViewModel.actualEndTime = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualLunchBreakStart"], out temp))
+            {
+                timeCardEditViewModel.actualLunchBreakStart = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualLunchBreakEnd"], out temp))
+            {
+                timeCardEditViewModel.actualLunchBreakEnd = temp;
+            }
+
             return timeCardEditViewModel;
         }
 
