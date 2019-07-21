@@ -3,7 +3,9 @@
 }
 @if (TempData["notice"] != null)
 {
-    <p>@TempData["notice"]</p>
+    <div class="alert alert-danger" role="alert">
+        <p>@TempData["notice"]</p>
+    </div>
 }
 <input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
 <input type="hidden" id="sessionRoleTitleForAngular" value="@Session["roleTitle"].ToString()" />

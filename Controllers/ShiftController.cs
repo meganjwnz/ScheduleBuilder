@@ -48,6 +48,12 @@ namespace ScheduleBuilder.Controllers
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = " WHERE s.personId = " + loggedInUserId;
             Shift nearestShift = shiftDAL.GetNearestShift(whereClause);
+            if (nearestShift.scheduledStartTime == DateTime.MinValue)
+            {
+                TempData["notice"] = "You have no scheduled shifts\n\n See Mangement";
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(this.TimeUpdate(nearestShift));
         }
 
@@ -185,8 +191,9 @@ namespace ScheduleBuilder.Controllers
             return timeCardEdits;
         }
 
-        private Shift ConvertTimeCardEditViewModelToShift(TimeCardEditViewModel timeCardEditViewModel, Shift shift)
+        private Shift ConvertTimeCardEditViewModelToShift(TimeCardEditViewModel timeCardEditViewModel, Shift orignalShift)
         {
+            Shift shift = orignalShift;
             shift.personFirstName = timeCardEditViewModel.personFirstName;
             shift.personLastName = timeCardEditViewModel.personLastName;
             shift.scheduledStartTime = timeCardEditViewModel.scheduledStartTime;
@@ -433,10 +440,24 @@ namespace ScheduleBuilder.Controllers
                 return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
             }
             string whereClause = $"WHERE s.id ={editedViewModel.shiftId}";
-            Shift updatedShift = this.shiftDAL.GetAllShifts(whereClause)[0];
-            updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, updatedShift);
-            //updatedShift = this.TimeUpdate(updatedShift);
-            if (this.shiftDAL.EditShift(updatedShift))
+            Shift orignalShift = this.shiftDAL.GetAllShifts(whereClause)[0];
+            //test
+            Shift tempOrignalShift = this.shiftDAL.GetAllShifts(whereClause)[0];
+            tempOrignalShift.scheduleShiftID = Int32.MinValue + 500;
+
+            Shift updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, orignalShift);
+            
+            //Alerts and prevents user from 'saving' when no changes are made  
+            if (!this.HasShiftChanged(updatedShift, tempOrignalShift))
+            {
+                TempData["alert"] = "No values where changed";
+                return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
+
+            }
+
+
+
+            if (this.shiftDAL.EditShift(updatedShift, tempOrignalShift))
             {
                 TempData["notice"] = "Shift Updated successfully";
             }
@@ -447,7 +468,42 @@ namespace ScheduleBuilder.Controllers
             var herefortest = updatedShift;
             return RedirectToAction("GetLastTwoWeeksOfShiftsForEdit", "Shift", new { personid = updatedShift.personID });
         }
-
+        private bool HasShiftChanged(Shift updated, Shift orignal)
+        {
+            if (updated.scheduledStartTime != orignal.scheduledStartTime)
+            {
+                 return true;
+            }
+            if (updated.scheduledEndTime != orignal.scheduledEndTime)
+            {
+                return true;
+            }
+            if (updated.scheduledLunchBreakStart != orignal.scheduledLunchBreakStart)
+            {
+                 return true;
+            }
+            if (updated.scheduledLunchBreakEnd != orignal.scheduledLunchBreakEnd)
+            {
+                 return true;
+            }
+            if (updated.actualStartTime != orignal.actualStartTime)
+            {
+                 return true;
+            }
+            if (updated.actualEndTime != orignal.actualEndTime)
+            {
+                 return true;
+            }
+            if (updated.actualLunchBreakStart != orignal.actualLunchBreakStart)
+            {
+                 return true;
+            }
+            if (updated.actualLunchBreakEnd != orignal.actualLunchBreakEnd)
+            {
+                 return true;
+            }
+            return false;
+        }
         private TimeCardEditViewModel AddUserAddedValuesToTimeCard(TimeCardEditViewModel timeCardEditViewModel)
         {
 
@@ -503,6 +559,18 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a shift
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <param name="positionID"></param>
+        /// <param name="startdt"></param>
+        /// <param name="enddt"></param>
+        /// <param name="startlunchdt"></param>
+        /// <param name="endlunchdt"></param>
+        /// <param name="taskList"></param>
+        /// <param name="notes"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
         {
@@ -589,6 +657,13 @@ namespace ScheduleBuilder.Controllers
 
         }
 
+        /// <summary>
+        /// Checks if user is scheduled - prevents double scheduling
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <param name="startdt"></param>
+        /// <param name="enddt"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
         {
@@ -597,6 +672,10 @@ namespace ScheduleBuilder.Controllers
             return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
         }
 
+        /// <summary>
+        /// Request time off
+        /// </summary>
+        /// <returns></returns>
         public ActionResult RequestTimeOff()
         {
             ViewBag.failedRequest = "";
@@ -604,6 +683,16 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Accepts request off time
+        /// </summary>
+        /// <param name="personID"></param>
+        /// <param name="positionID"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="taskList"></param>
+        /// <param name="notes"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult RequestTimeOffFunction(string personID, string positionID, string startDate, string endDate, string taskList, string notes)
         {

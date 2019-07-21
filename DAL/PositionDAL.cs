@@ -247,6 +247,10 @@ namespace ScheduleBuilder.DAL
             return (positionResult >= 1 ? true : false);
         }
 
+        /// <summary>
+        /// Finds PositionIDByUnavailable
+        /// </summary>
+        /// <returns></returns>
         public int FindPositionIDByUnavailable()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();

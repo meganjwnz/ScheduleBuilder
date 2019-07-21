@@ -1,6 +1,4 @@
-﻿
-
-using ScheduleBuilder.Model;
+﻿using ScheduleBuilder.Model;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 

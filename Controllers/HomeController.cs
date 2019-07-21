@@ -122,6 +122,11 @@ namespace ScheduleBuilder.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Allows users to update thier password
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult UpdatePassword(int id)
         {
             string whereClause = "";
@@ -130,6 +135,11 @@ namespace ScheduleBuilder.Controllers
             return View("UpdatePassword", person);
         }
 
+        /// <summary>
+        /// Recieves the new user's password and encrypts/updates it
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult UpdatePassword(Person person)
         {
@@ -138,11 +148,19 @@ namespace ScheduleBuilder.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Populates the view when the user has forgotten thier password
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
+        /// <summary>
+        /// Resets the user's password
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ForgotPasswordSubmission()
         {
             try

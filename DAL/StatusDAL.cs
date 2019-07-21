@@ -40,6 +40,10 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// Returns a list of Statuses
+        /// </summary>
+        /// <returns></returns>
         public List<Status> GetStatuses()
         {
 

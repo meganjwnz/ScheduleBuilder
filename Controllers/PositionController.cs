@@ -106,9 +106,14 @@ namespace ScheduleBuilder.Controllers
 
         #endregion
 
+
         #region task methods
         private readonly TaskDAL taskDAL = new TaskDAL();
 
+        /// <summary>
+        /// Returns all tasks
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GetAllTasks()
         {
             try
@@ -122,6 +127,11 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns all postion tasks
+        /// </summary>
+        /// <param name="positionID"></param>
+        /// <returns></returns>
         public ActionResult GetPositionTasks(int positionID)
         {
             try
@@ -226,6 +236,10 @@ namespace ScheduleBuilder.Controllers
         #region position_tasks method
         private readonly PositionTaskDAL positionTaskDAL = new PositionTaskDAL();
 
+        /// <summary>
+        /// Gets all position task
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GetAllPositionTask()
         {
             try

@@ -39,6 +39,11 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Catches the newly added person and sends the information to the DAL
+        /// </summary>
+        /// <param name="personViewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddPerson(PersonViewModel personViewModel)
@@ -278,6 +283,11 @@ namespace ScheduleBuilder.Controllers
             return View(person);
         }
 
+        /// <summary>
+        /// populates view to allow a new position
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult AddPosition(int id)
         {
             ViewBag.allPositions = this.positionDAL.GetAllActivePositions();
@@ -286,7 +296,12 @@ namespace ScheduleBuilder.Controllers
             return View(person);
 
         }
-
+        
+        /// <summary>
+        /// Catches the infromation about the add positon and sends it to the DAL
+        /// </summary>
+        /// <param name="person"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AddPosition(Person person)
         {
@@ -330,13 +345,20 @@ namespace ScheduleBuilder.Controllers
 
         #region person related model methods
 
+        /// <summary>
+        /// Sets the person's role
+        /// </summary>
+        /// <param name="person"></param>
         private void SetRole(Person person)
         {
             string roleTitle = this.roleDAL.GetRoleByID(person.RoleId);
             ViewBag.userRoleTitle = roleTitle;
         }
 
-
+        /// <summary>
+        /// Sets the person's status
+        /// </summary>
+        /// <param name="person"></param>
         private void SetStatus(Person person)
         {
             string statusDescription = this.statusDAL.GetStatusByID(person.StatusId).StatusDescription;
@@ -351,6 +373,10 @@ namespace ScheduleBuilder.Controllers
             ViewBag.userStatusDescription = statusDescription;
         }
 
+        /// <summary>
+        /// Converts the SSN to a view which hids the majority of the characters
+        /// </summary>
+        /// <param name="person"></param>
         private void ConvertSSN(Person person)
         {
             string formattedSSN = "";
@@ -365,6 +391,10 @@ namespace ScheduleBuilder.Controllers
             ViewBag.userSSn = formattedSSN;
         }
 
+        /// <summary>
+        /// formats the phone to be readable
+        /// </summary>
+        /// <param name="person"></param>
         private void FormatPhone(Person person)
         {
             string formattedPhone = "(" + person.Phone.Substring(0, 3) + ") " + person.Phone.Substring(3, 3) + "-" + person.Phone.Substring(6);
