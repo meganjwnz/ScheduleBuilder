@@ -287,7 +287,7 @@ namespace ScheduleBuilder.DAL
 
         }
 
-        public bool EditShift(Shift shift)
+        public bool EditShift(Shift shift, Shift orignalShift)
         {
             int shiftHoursResult = 0;
             string updateShiftHoursStatement = @"UPDATE shiftHours SET scheduledStartTime = @scheduledStartTime 
@@ -329,11 +329,41 @@ namespace ScheduleBuilder.DAL
             {
                 throw ex;
             }
-            return (shiftHoursResult == 1 ? true : false);
+            bool successfulChange = (shiftHoursResult == 1 ? true : false);
+            if (successfulChange)
+            {
+                this.AlertTimeCardEdit(shift, orignalShift);
+            }
+            return successfulChange;
         }
 
+        private void AlertTimeCardEdit(Shift editedShift, Shift orignal)
+        {
+            Person person = this.personDAL.GetDesiredPersons($"Where Id = {editedShift.personID}").FirstOrDefault();
+            Email email = new Email(person);
 
+            string subject = $"Timecard has been modified";
 
+            string body = $"\n" +
+                $"Hello { person.GetFullName()},\n" +
+                $"\nPlease note that your timecard was edited \n" +
+                $"\n Please overview the following changes \n" +
+                $"\n Updated Timecard \t \t \t Orignal Timecard \n" +
+                $"\n {editedShift.scheduledStartTime, -5}  {orignal.scheduledStartTime, 50}" +
+                $"\n {editedShift.scheduledLunchBreakStart, -5}  {orignal.scheduledLunchBreakStart, 50}" +
+                $"\n {editedShift.scheduledLunchBreakEnd,-5} {orignal.scheduledLunchBreakEnd, 50}" +
+                $"\n {editedShift.scheduledEndTime, -5} {orignal.scheduledEndTime, 50}" +
+                $"\n {editedShift.actualStartTime, -5}   {orignal.actualStartTime, 50}" +
+                $"\n {editedShift.actualLunchBreakStart, -5}  {orignal.actualLunchBreakStart, 50}" +
+                $"\n {editedShift.actualLunchBreakEnd, -5}   {orignal.actualLunchBreakEnd, 50}" +
+                $"\n {editedShift.actualEndTime, -5}  {orignal.actualEndTime, 50}" +
+                $"\n" +
+                $"\n If this has been done in error please contact your Admin as soon as possible " +
+                $"\n Hope you have a wonderful day";
+
+            
+            email.SendMessage(subject, body);
+        }
         /// <summary>
         /// Update an existing shift/shift hours
         /// </summary>
@@ -691,7 +721,7 @@ namespace ScheduleBuilder.DAL
                     }
                 }
                 List<Shift> allShifts = this.GetAllShifts("");
-                foreach(Shift item in allShifts)
+                foreach (Shift item in allShifts)
                 {
                     if (item.personID == personId)
                     {

@@ -185,8 +185,9 @@ namespace ScheduleBuilder.Controllers
             return timeCardEdits;
         }
 
-        private Shift ConvertTimeCardEditViewModelToShift(TimeCardEditViewModel timeCardEditViewModel, Shift shift)
+        private Shift ConvertTimeCardEditViewModelToShift(TimeCardEditViewModel timeCardEditViewModel, Shift orignalShift)
         {
+            Shift shift = orignalShift;
             shift.personFirstName = timeCardEditViewModel.personFirstName;
             shift.personLastName = timeCardEditViewModel.personLastName;
             shift.scheduledStartTime = timeCardEditViewModel.scheduledStartTime;
@@ -433,10 +434,24 @@ namespace ScheduleBuilder.Controllers
                 return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
             }
             string whereClause = $"WHERE s.id ={editedViewModel.shiftId}";
-            Shift updatedShift = this.shiftDAL.GetAllShifts(whereClause)[0];
-            updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, updatedShift);
-            //updatedShift = this.TimeUpdate(updatedShift);
-            if (this.shiftDAL.EditShift(updatedShift))
+            Shift orignalShift = this.shiftDAL.GetAllShifts(whereClause)[0];
+            //test
+            Shift tempOrignalShift = this.shiftDAL.GetAllShifts(whereClause)[0];
+            tempOrignalShift.scheduleShiftID = Int32.MinValue + 500;
+
+            Shift updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, orignalShift);
+            
+            //Alerts and prevents user from 'saving' when no changes are made
+            if (!this.HasShiftChanged(updatedShift, tempOrignalShift))
+            {
+                TempData["alert"] = "No values where changed";
+                return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
+
+            }
+
+
+
+            if (this.shiftDAL.EditShift(updatedShift, tempOrignalShift))
             {
                 TempData["notice"] = "Shift Updated successfully";
             }
@@ -447,7 +462,42 @@ namespace ScheduleBuilder.Controllers
             var herefortest = updatedShift;
             return RedirectToAction("GetLastTwoWeeksOfShiftsForEdit", "Shift", new { personid = updatedShift.personID });
         }
-
+        private bool HasShiftChanged(Shift updated, Shift orignal)
+        {
+            if (updated.scheduledStartTime != orignal.scheduledStartTime)
+            {
+                 return true;
+            }
+            if (updated.scheduledEndTime != orignal.scheduledEndTime)
+            {
+                return true;
+            }
+            if (updated.scheduledLunchBreakStart != orignal.scheduledLunchBreakStart)
+            {
+                 return true;
+            }
+            if (updated.scheduledLunchBreakEnd != orignal.scheduledLunchBreakEnd)
+            {
+                 return true;
+            }
+            if (updated.actualStartTime != orignal.actualStartTime)
+            {
+                 return true;
+            }
+            if (updated.actualEndTime != orignal.actualEndTime)
+            {
+                 return true;
+            }
+            if (updated.actualLunchBreakStart != orignal.actualLunchBreakStart)
+            {
+                 return true;
+            }
+            if (updated.actualLunchBreakEnd != orignal.actualLunchBreakEnd)
+            {
+                 return true;
+            }
+            return false;
+        }
         private TimeCardEditViewModel AddUserAddedValuesToTimeCard(TimeCardEditViewModel timeCardEditViewModel)
         {
 
