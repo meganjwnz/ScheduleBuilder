@@ -661,10 +661,12 @@ C:\Users\megan\Source\Repos\schedulebuilder\bin\MailKit.dll
 C:\Users\megan\Source\Repos\schedulebuilder\bin\MimeKit.dll
 C:\Users\megan\Source\Repos\schedulebuilder\bin\MailKit.xml
 C:\Users\megan\Source\Repos\schedulebuilder\bin\MimeKit.xml
+C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CoreCompileInputs.cache
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\xunit.abstractions.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\xunit.runner.visualstudio.testadapter.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\xunit.runner.reporters.net452.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\xunit.runner.utility.net452.dll
-C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\xunit.abstractions.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\ScheduleBuilder.dll.config
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\ScheduleBuilder.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\ScheduleBuilder.pdb
@@ -746,8 +748,8 @@ C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\MimeKit.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\SendGrid.pdb
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\SendGrid.xml
-C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Helpers.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Mvc.xml
+C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Helpers.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Optimization.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Razor.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.WebPages.xml
@@ -762,9 +764,6 @@ C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Http.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\System.Web.Http.WebHost.xml
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CoreCompileInputs.cache
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csproj.CopyComplete
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.dll
 C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.pdb
-C:\Users\megan\Source\Repos\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache
-C:\Users\DrewC\Desktop\SchoolFinalSemester\ScheduleBuilder6\schedulebuilder\obj\Debug\ScheduleBuilder.csprojAssemblyReference.cache

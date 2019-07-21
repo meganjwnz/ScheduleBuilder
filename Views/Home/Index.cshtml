@@ -1,22 +1,22 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+
+<input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
+<input type="hidden" id="sessionRoleTitleForAngular" value="@Session["roleTitle"].ToString()" />
 @if (TempData["notice"] != null)
 {
     <div class="alert alert-danger" role="alert">
         <p>@TempData["notice"]</p>
     </div>
 }
-<input type="hidden" id="sessionIDForAngular" value="@Session["id"].ToString()" />
-<input type="hidden" id="sessionRoleTitleForAngular" value="@Session["roleTitle"].ToString()" />
-
 
 <div>
     <div class="jumbotron center">
         <img src="@Url.Content("~/Content/Images/SM.png")" width="131" height="120" />
         <h2>Welcome to the {{getSessionRoleTitle()}} Dashboard</h2>
     </div>
-    
+
     <br />
 
     <select class="form-control" ng-model="filterExprView" ng-required="true" name="filterExprView" ng-change="changeFilter()">
@@ -74,7 +74,7 @@
                 <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td>
-                <td>{{getClockedHours(sh)}}</td> 
+                <td>{{getClockedHours(sh)}}</td>
             </tr>
         </tbody>
     </table>
@@ -87,7 +87,7 @@
 
 
 <div ng-show="getSessionRoleTitle() == 'Adminstrator'">
-    
+
     <h4>Today's Schedule:</h4>
     <table style="width:100%;">
         <thead class="tablestyle">
@@ -132,8 +132,8 @@
         <thead class="tablestyle">
             <tr>
                 <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
-    <th>scheduleShiftID</th>
-    <th>personID</th> -->
+                <th>scheduleShiftID</th>
+                <th>personID</th> -->
                 <th>Name</th>
                 <!-- <th>positionID</th> -->
                 <th>Position</th>
@@ -142,9 +142,9 @@
                 <th>Scheduled Lunch Start</th>
                 <th>Scheduled Lunch End</th>
                 <!-- <th>actualStartTime</th>
-    <th>actualEndTime</th>
-    <th>actualLunchBreakStart</th>
-    <th>actualLunchBreakEnd</th> -->
+                <th>actualEndTime</th>
+                <th>actualLunchBreakStart</th>
+                <th>actualLunchBreakEnd</th> -->
                 <th></th>
                 <th></th>
                 <th>Hours per shift</th>
@@ -153,8 +153,8 @@
         <tbody>
             <tr class="row_alternate" ng-repeat="sh in shift track by $index">
                 <!-- <td>{{sh.shiftID}}</td>
-    <td>{{sh.scheduleShiftID}}</td>
-    <td>{{sh.personID}}</td> -->
+                <td>{{sh.scheduleShiftID}}</td>
+                <td>{{sh.personID}}</td> -->
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}  </td>
                 <!-- <td>{{sh.positionID}}</td> -->
 
@@ -164,9 +164,9 @@
                 <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
                 <!-- <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
-    <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
-    <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
-    <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
+                <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
+                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
                 <td>
                     <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
                 </td>
@@ -317,11 +317,11 @@
                     </tr>
                     <tr><th>*Optional fields</th></tr>
                     <!--<tr ng-if="type == 'Update'">
-        <th>
-            <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
-            <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
-        </th>
-    </tr>-->
+                        <th>
+                            <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
+                            <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
+                        </th>
+                    </tr>-->
                 </tbody>
             </table>
         </div>
@@ -334,70 +334,70 @@
 </script>
 
 <script type="text/ng-template" id="shiftDetailModalContent.html">
-    
-        <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">Shift Information</h3>
-        </div>
-        <div class="modal-body" id="modal-body">
-            <table>
-                <tr>
-                    <th>Employee:</th>
-                    <th>{{sDetail.personLastName}}, {{sDetail.personFirstName}}</th>
-                </tr>
-                <tr>
-                    <th>Position:</th>
-                    <th>{{sDetail.positionName}}</th>
-                </tr>
-                <tr>
-                    <th>Tasks:</th>
-                    <th>
-                        <ul style="list-style:none;">
-                            <li ng-repeat="t in positionTasks">
-                                <label><input type="checkbox" ng-model="sDetail.tasks[t.TaskId]" ng-true-value="'true'" ng-false-value="'false'" ng-disabled="true">&nbsp;{{t.Task_title}}</label>
-                            </li>
-                        </ul>
-                    </th>
-                </tr>
-                <tr>
-                    <th>Notes:</th>
-                    <th>{{sDetail.Notes}}</th>
-                </tr>
-                <tr>
-                    <th>Scheduled Start Time:</th>
-                    <th>{{jsDate(sDetail.scheduledStartTime) | date : "short"}}</th>
-                    <th>Actual Start Time:</th>
-                    <th>{{jsDate(sDetail.actualStartTime) | date : "short"}}</th>
-                </tr>
-                <tr>
-                    <th>Scheduled End Time:</th>
-                    <th>{{jsDate(sDetail.scheduledEndTime) | date : "short"}}</th>
-                    <th>Actual End Time:</th>
-                    <th>{{jsDate(sDetail.actualEndTime) | date : "short"}}</th>
-                </tr>
-                <tr>
-                    <th>Scheduled Lunch Start Time:</th>
-                    <th>{{jsDate(sDetail.scheduledLunchBreakStart) | date : "short"}}</th>
-                    <th>Actual Lunch Start Time:</th>
-                    <th>{{jsDate(sDetail.actualLunchBreakStart) | date : "short"}}</th>
-                </tr>
-                <tr>
-                    <th>Scheduled Lunch End Time:</th>
-                    <th>{{jsDate(sDetail.scheduledLunchBreakEnd) | date : "short"}}</th>
-                    <th>Actual Lunch End Time:</th>
-                    <th>{{jsDate(sDetail.actualLunchBreakEnd) | date : "short"}}</th>
-                </tr>
-                <tr>
-                    <th>Total Scheduled Hours:</th>
-                    <th>{{getTotalHours(sDetail)}}</th>
-                    <th>Total worked Hours:</th>
-                    <th>{{getClockedHours(sDetail)}}</th>
-                </tr>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-warning" type="button" ng-click="ok()">OK</button>
-        </div>
-  
+
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Shift Information</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <table>
+            <tr>
+                <th>Employee:</th>
+                <th>{{sDetail.personLastName}}, {{sDetail.personFirstName}}</th>
+            </tr>
+            <tr>
+                <th>Position:</th>
+                <th>{{sDetail.positionName}}</th>
+            </tr>
+            <tr>
+                <th>Tasks:</th>
+                <th>
+                    <ul style="list-style:none;">
+                        <li ng-repeat="t in positionTasks">
+                            <label><input type="checkbox" ng-model="sDetail.tasks[t.TaskId]" ng-true-value="'true'" ng-false-value="'false'" ng-disabled="true">&nbsp;{{t.Task_title}}</label>
+                        </li>
+                    </ul>
+                </th>
+            </tr>
+            <tr>
+                <th>Notes:</th>
+                <th>{{sDetail.Notes}}</th>
+            </tr>
+            <tr>
+                <th>Scheduled Start Time:</th>
+                <th>{{jsDate(sDetail.scheduledStartTime) | date : "short"}}</th>
+                <th>Actual Start Time:</th>
+                <th>{{jsDate(sDetail.actualStartTime) | date : "short"}}</th>
+            </tr>
+            <tr>
+                <th>Scheduled End Time:</th>
+                <th>{{jsDate(sDetail.scheduledEndTime) | date : "short"}}</th>
+                <th>Actual End Time:</th>
+                <th>{{jsDate(sDetail.actualEndTime) | date : "short"}}</th>
+            </tr>
+            <tr>
+                <th>Scheduled Lunch Start Time:</th>
+                <th>{{jsDate(sDetail.scheduledLunchBreakStart) | date : "short"}}</th>
+                <th>Actual Lunch Start Time:</th>
+                <th>{{jsDate(sDetail.actualLunchBreakStart) | date : "short"}}</th>
+            </tr>
+            <tr>
+                <th>Scheduled Lunch End Time:</th>
+                <th>{{jsDate(sDetail.scheduledLunchBreakEnd) | date : "short"}}</th>
+                <th>Actual Lunch End Time:</th>
+                <th>{{jsDate(sDetail.actualLunchBreakEnd) | date : "short"}}</th>
+            </tr>
+            <tr>
+                <th>Total Scheduled Hours:</th>
+                <th>{{getTotalHours(sDetail)}}</th>
+                <th>Total worked Hours:</th>
+                <th>{{getClockedHours(sDetail)}}</th>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="ok()">OK</button>
+    </div>
+
 </script>
 
 
