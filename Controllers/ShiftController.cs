@@ -5,6 +5,7 @@ using ScheduleBuilder.ModelViews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -82,6 +83,7 @@ namespace ScheduleBuilder.Controllers
         {
             return RedirectToAction("AddTimePunchPage", "Shift");
         }
+
         /// <summary>
         /// Clocks user in retruns them to the time card page
         /// </summary>
@@ -183,6 +185,234 @@ namespace ScheduleBuilder.Controllers
             return timeCardEdits;
         }
 
+        private Shift ConvertTimeCardEditViewModelToShift(TimeCardEditViewModel timeCardEditViewModel, Shift shift)
+        {
+            shift.personFirstName = timeCardEditViewModel.personFirstName;
+            shift.personLastName = timeCardEditViewModel.personLastName;
+            shift.scheduledStartTime = timeCardEditViewModel.scheduledStartTime;
+            shift.scheduledEndTime = timeCardEditViewModel.scheduledEndTime;
+            shift.scheduledLunchBreakStart = timeCardEditViewModel.scheduledLunchBreakStart;
+            shift.scheduledLunchBreakEnd = timeCardEditViewModel.scheduledLunchBreakEnd;
+            shift.actualStartTime = timeCardEditViewModel.actualStartTime;
+            shift.actualEndTime = timeCardEditViewModel.actualEndTime;
+            shift.actualLunchBreakStart = timeCardEditViewModel.actualLunchBreakStart;
+            shift.actualLunchBreakEnd = timeCardEditViewModel.actualLunchBreakEnd;
+            return shift;
+        }
+
+        private bool EditTimeCardErrorCheck(TimeCardEditViewModel timeCardEditViewModel)
+        {
+            bool hasErrors = false;
+            string alert = "There are errors in this edit The fields have been reset";
+            DateTime temp;
+            #region Insure Valid DateTimes
+            if (!DateTime.TryParse(timeCardEditViewModel.scheduledStartTime.ToString(), out temp))
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Start Time is invalid datetime";
+            }
+            if (!DateTime.TryParse(timeCardEditViewModel.scheduledEndTime.ToString(), out temp))
+            {
+                hasErrors = true;
+                alert += "\n Scheduled End Time is invalid datetime";
+            }
+            if (timeCardEditViewModel.scheduledStartTime == null || timeCardEditViewModel.scheduledEndTime == null)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Start and End times cannot be empty";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart != null)
+            {
+                if (!DateTime.TryParse(timeCardEditViewModel.scheduledLunchBreakStart.ToString(), out temp))
+                {
+                    hasErrors = true;
+                    alert += "\n Scheduled LunchBreak Start is invalid datetime";
+                }
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakEnd != null)
+            {
+                if (!DateTime.TryParse(timeCardEditViewModel.scheduledLunchBreakEnd.ToString(), out temp))
+                {
+                    hasErrors = true;
+                    alert += "\n Scheduled LunchBreak End is invalid datetime";
+                }
+            }
+            if (timeCardEditViewModel.actualStartTime != null)
+            {
+                if (!DateTime.TryParse(timeCardEditViewModel.actualStartTime.ToString(), out temp))
+                {
+                    hasErrors = true;
+                    alert += "\n Actual Start Time is invalid datetime";
+                }
+            }
+            if (timeCardEditViewModel.actualEndTime != null)
+            {
+                if (!DateTime.TryParse(timeCardEditViewModel.actualEndTime.ToString(), out temp))
+                {
+                    hasErrors = true;
+                    alert += "\n Actual End Time is invalid datetime";
+                }
+            }
+            if (timeCardEditViewModel.actualLunchBreakStart != null)
+            {
+                if (!DateTime.TryParse(timeCardEditViewModel.actualLunchBreakStart.ToString(), out temp))
+                {
+                    hasErrors = true;
+                    alert += "\n Actual LunchBreak Start is invalid datetime";
+                }
+            }
+            if (timeCardEditViewModel.actualLunchBreakEnd != null)
+            {
+                if (!DateTime.TryParse(timeCardEditViewModel.actualLunchBreakEnd.ToString(), out temp))
+                {
+                    hasErrors = true;
+                    alert += "\n Actual LunchBreak End is invalid datetime";
+                }
+            }
+            #endregion
+            #region Insure Datetime logic
+            if (timeCardEditViewModel.scheduledLunchBreakStart == null && timeCardEditViewModel.scheduledLunchBreakEnd != null)
+            {
+                hasErrors = true;
+                alert += "\n If a Lunch break is scheduled it must have both a start and end time";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakEnd == null && timeCardEditViewModel.scheduledLunchBreakStart != null)
+            {
+                hasErrors = true;
+                alert += "\n If a Lunch break is scheduled it must have both a start and end time";
+            }
+            if (timeCardEditViewModel.actualStartTime > timeCardEditViewModel.actualEndTime)
+            {
+                hasErrors = true;
+                alert += "\n Actual start time must exist before end time";
+            }
+            if (timeCardEditViewModel.scheduledStartTime > timeCardEditViewModel.scheduledEndTime)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled start Time must exist before end time";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart > timeCardEditViewModel.scheduledLunchBreakEnd)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Lunch start Time must exist before end time";
+            }
+            if (timeCardEditViewModel.actualLunchBreakStart > timeCardEditViewModel.actualLunchBreakEnd)
+            {
+                hasErrors = true;
+                alert += "\n Actual Lunch start Time must exist before end time";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart > timeCardEditViewModel.scheduledEndTime)
+            {
+                hasErrors = true;
+                alert += "\n No Scheduled values can exist before Scheduled end time";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakEnd > timeCardEditViewModel.scheduledEndTime)
+            {
+                hasErrors = true;
+                alert += "\n No Scheduled values can exist before Scheduled end time";
+            }
+            if (timeCardEditViewModel.actualStartTime > timeCardEditViewModel.actualEndTime)
+            {
+                hasErrors = true;
+                alert += "\n No actual values can exist before actual end time";
+            }
+            if (timeCardEditViewModel.actualLunchBreakEnd > timeCardEditViewModel.actualEndTime)
+            {
+                hasErrors = true;
+                alert += "\n No actual values can exist before actual end time";
+            }
+            if (timeCardEditViewModel.actualLunchBreakStart > timeCardEditViewModel.actualEndTime)
+            {
+                hasErrors = true;
+                alert += "\n No actual values can exist before actual end time";
+            }
+            if (timeCardEditViewModel.actualEndTime != null && timeCardEditViewModel.actualStartTime == null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist for end time to exist";
+            }
+            if (timeCardEditViewModel.actualLunchBreakStart != null && timeCardEditViewModel.actualStartTime == null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist for Lunch start time to exist";
+            }
+            if (timeCardEditViewModel.actualLunchBreakEnd != null && timeCardEditViewModel.actualStartTime == null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist for Lunch end time to exist";
+            }
+            if (timeCardEditViewModel.actualLunchBreakEnd != null && timeCardEditViewModel.actualLunchBreakStart == null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start Lunch must exist for Lunch End time to exist";
+            }
+            if (timeCardEditViewModel.actualEndTime != null && timeCardEditViewModel.actualStartTime == null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist for end time to exist";
+            }
+            if (timeCardEditViewModel.actualLunchBreakEnd != null && timeCardEditViewModel.actualStartTime == null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start Lunch must exist for Lunch End time to exist";
+            }
+            if (timeCardEditViewModel.actualLunchBreakStart < timeCardEditViewModel.actualStartTime)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start Lunch cannot exist before actual start time";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart < timeCardEditViewModel.scheduledStartTime)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Start Lunch cannot exist before Scheduled start time";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart != null && timeCardEditViewModel.scheduledLunchBreakEnd == null)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Lunch Breaks must have both start and end or not exist";
+            }
+            if (timeCardEditViewModel.scheduledLunchBreakStart == null && timeCardEditViewModel.scheduledLunchBreakEnd != null)
+            {
+                hasErrors = true;
+                alert += "\n Scheduled Lunch Breaks must have both start and end or not exist";
+            }
+            if (timeCardEditViewModel.actualLunchBreakStart == null && timeCardEditViewModel.actualLunchBreakEnd != null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Lunch Breaks cannot end without starting";
+            }
+            if (timeCardEditViewModel.actualStartTime == null && timeCardEditViewModel.actualEndTime != null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist before any other actual time";
+            }
+            if (timeCardEditViewModel.actualStartTime == null && timeCardEditViewModel.actualLunchBreakStart != null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist before any other actual time";
+            }
+            if (timeCardEditViewModel.actualStartTime == null && timeCardEditViewModel.actualLunchBreakEnd != null)
+            {
+                hasErrors = true;
+                alert += "\n Actual Start time must exist before any other actual time";
+            }
+            if (timeCardEditViewModel.actualEndTime != null && timeCardEditViewModel.actualLunchBreakStart != null && timeCardEditViewModel.actualLunchBreakEnd == null)
+            {
+                hasErrors = true;
+                alert += "\n Shifts cannot end with an actual Start lunch and no actual end lunch";
+            }
+            #endregion
+
+
+
+            if (hasErrors)
+            {
+                TempData["alert"] = MvcHtmlString.Create(HttpUtility.HtmlEncode(alert).Replace("\n", "<br />")); ;
+            }
+
+            return hasErrors;
+        }
+
         public ActionResult EditTimecard(int shiftId)
         {
             string whereClause = $"WHERE s.id = {shiftId}";
@@ -190,6 +420,69 @@ namespace ScheduleBuilder.Controllers
             List<TimeCardEditViewModel> selectedTimeCard = this.CovertShiftToTimeCardView(shift);
             ViewBag.FullName = shift[0].personFirstName + " " + shift[0].personLastName + "'s";
             return View(selectedTimeCard[0]);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditTimecard(TimeCardEditViewModel editedViewModel)
+        {
+
+            editedViewModel = this.AddUserAddedValuesToTimeCard(editedViewModel);
+            if (EditTimeCardErrorCheck(editedViewModel))
+            {
+                return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
+            }
+            string whereClause = $"WHERE s.id ={editedViewModel.shiftId}";
+            Shift updatedShift = this.shiftDAL.GetAllShifts(whereClause)[0];
+            updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, updatedShift);
+            //updatedShift = this.TimeUpdate(updatedShift);
+            if (this.shiftDAL.EditShift(updatedShift))
+            {
+                TempData["notice"] = "Shift Updated successfully";
+            }
+            else
+            {
+                TempData["alert"] = "There was an issue with the update";
+            }
+            var herefortest = updatedShift;
+            return RedirectToAction("GetLastTwoWeeksOfShiftsForEdit", "Shift", new { personid = updatedShift.personID });
+        }
+
+        private TimeCardEditViewModel AddUserAddedValuesToTimeCard(TimeCardEditViewModel timeCardEditViewModel)
+        {
+
+            DateTime temp;
+            if (DateTime.TryParse(Request.Form["scheduledLunchBreakStart"], out temp))
+            {
+                timeCardEditViewModel.scheduledLunchBreakStart = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["scheduledLunchBreakEnd"], out temp))
+            {
+                timeCardEditViewModel.scheduledLunchBreakEnd = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualStartTime"], out temp))
+            {
+                timeCardEditViewModel.actualStartTime = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualEndTime"], out temp))
+            {
+                timeCardEditViewModel.actualEndTime = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualLunchBreakStart"], out temp))
+            {
+                timeCardEditViewModel.actualLunchBreakStart = temp;
+            }
+
+            if (DateTime.TryParse(Request.Form["actualLunchBreakEnd"], out temp))
+            {
+                timeCardEditViewModel.actualLunchBreakEnd = temp;
+            }
+
+            return timeCardEditViewModel;
         }
 
         #endregion

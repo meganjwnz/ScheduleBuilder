@@ -18,43 +18,49 @@ namespace ScheduleBuilder.ModelViews
 
         //Shift start time
         [Display(Name = "Scheduled Start Time")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime scheduledStartTime { get; set; }
 
         //shift end time
         [Display(Name = "Scheduled End Time")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
         public DateTime scheduledEndTime { get; set; }
 
         //shift lunch start time
         [Display(Name = "Scheduled Break Start")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
         public DateTime? scheduledLunchBreakStart { get; set; }
 
         //shift lunch end time
         [Display(Name = "Scheduled Break End")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
         public DateTime? scheduledLunchBreakEnd { get; set; }
 
         //shift actual start time
         [Display(Name = "Actual Clock In")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy hh:mm tt}", ApplyFormatInEditMode = true)]
         public DateTime? actualStartTime { get; set; }
 
         //shift actual end time
         [Display(Name = "Actual Clock Out")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
         public DateTime? actualEndTime { get; set; }
 
         //shift actual lunch start time
         [Display(Name = "Actual Break Start")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
         public DateTime? actualLunchBreakStart { get; set; }
 
         //shift actual lunch end time
         [Display(Name = "Actual Break End")]
+        [Required(ErrorMessage = "Proper date required")]
         [DataType(DataType.DateTime)]
         public DateTime? actualLunchBreakEnd { get; set; }
 

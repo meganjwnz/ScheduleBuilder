@@ -287,6 +287,53 @@ namespace ScheduleBuilder.DAL
 
         }
 
+        public bool EditShift(Shift shift)
+        {
+            int shiftHoursResult = 0;
+            string updateShiftHoursStatement = @"UPDATE shiftHours SET scheduledStartTime = @scheduledStartTime 
+            , scheduledEndTime = @scheduledEndTime 
+            , scheduledLunchBreakStartTime = @scheduledLunchBreakStartTime 
+            , scheduledLunchBreakEndTime = @scheduledLunchBreakEndTime  
+            , actualStartTime = @actualStartTime 
+            , actualEndTime = @actualEndTime 
+            , actualLunchBreakStart = @actualLunchBreakStart 
+            , acutalLunchBreakEnd = @actualLunchBreakEnd 
+            WHERE id = @id";
+
+
+            try
+            {
+                using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+                {
+                    connection.Open();
+                    using (SqlCommand updateShiftHoursCommand = new SqlCommand(updateShiftHoursStatement, connection))
+                    {
+
+                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledStartTime", shift.scheduledStartTime);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledEndTime", shift.scheduledEndTime);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakStartTime", ((object)shift.scheduledLunchBreakStart) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@scheduledLunchBreakEndTime", ((object)shift.scheduledLunchBreakEnd) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@actualStartTime", ((object)shift.actualStartTime) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@actualEndTime", ((object)shift.actualEndTime) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@actualLunchBreakStart", ((object)shift.actualLunchBreakStart) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@actualLunchBreakEnd", ((object)shift.actualLunchBreakEnd) ?? DBNull.Value);
+                        updateShiftHoursCommand.Parameters.AddWithValue("@id", shift.scheduleShiftID);
+
+                        shiftHoursResult = updateShiftHoursCommand.ExecuteNonQuery();
+                    }
+                    connection.Close();
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+            return (shiftHoursResult == 1 ? true : false);
+        }
+
+
+
         /// <summary>
         /// Update an existing shift/shift hours
         /// </summary>
