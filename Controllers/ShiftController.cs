@@ -722,8 +722,8 @@ namespace ScheduleBuilder.Controllers
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
             shift.positionID = this.positionDAL.FindPositionIDByUnavailable();
-            shift.scheduledStartTime = DateTime.Parse(startDate).AddHours(-4);
-            shift.scheduledEndTime = DateTime.Parse(endDate).AddHours(-4);
+            shift.scheduledStartTime = DateTime.Parse(startDate).AddHours(4);
+            shift.scheduledEndTime = DateTime.Parse(endDate).AddHours(4);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
             if (checkIfAlreadyScheduled == false)
