@@ -176,16 +176,16 @@ namespace ScheduleBuilder.Controllers
         public ActionResult Edit(Person person)
         {
             this.InitializeViewBag();
-            try
-            {
+            //try
+            //{
                 this.personDAL.EditPerson(person);
                 this.ContactEditedPerson(person);
                 return RedirectToAction("GetAllPeoples");
-            }
-            catch
-            {
-                return View(person);
-            }
+          //  }
+           // catch
+            //{
+             //   return View(person);
+            //}
         }
 
         #region Contact 
@@ -340,6 +340,14 @@ namespace ScheduleBuilder.Controllers
         private void SetStatus(Person person)
         {
             string statusDescription = this.statusDAL.GetStatusByID(person.StatusId).StatusDescription;
+            if(person.StatusId == 1 || person.StatusId == 5)
+            {
+                ViewBag.activeStatus = "Active";
+            }
+            else
+            {
+                ViewBag.activeStatus = "Inactive";
+            }
             ViewBag.userStatusDescription = statusDescription;
         }
 

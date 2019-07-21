@@ -605,9 +605,19 @@ namespace ScheduleBuilder.Controllers
         [HttpPost]
         public ActionResult RequestTimeOffFunction(string personID, string positionID, string startDate, string endDate, string taskList, string notes)
         {
-            startDate = Request.Form["startDate"];
-            endDate = Request.Form["endDate"];
 
+            startDate = Request.Form["startDate"];
+            if(startDate == "")
+            {
+                ViewBag.startError = "You must include a start date.";
+                return View("RequestTimeOff");   
+            }
+            endDate = Request.Form["endDate"];
+            if (endDate == "")
+            {
+                ViewBag.startError = "You must include an end date.";
+                return View("RequestTimeOff");
+            }
 
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
@@ -616,7 +626,7 @@ namespace ScheduleBuilder.Controllers
             shift.scheduledEndTime = DateTime.Parse(endDate);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
             bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if (checkIfAlreadyScheduled == true)
+            if (checkIfAlreadyScheduled == false)
             {
                 ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +
                     endDate + " or have requested this time off already. Please check your schedule.";

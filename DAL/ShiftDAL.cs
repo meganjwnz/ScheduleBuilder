@@ -685,19 +685,31 @@ namespace ScheduleBuilder.DAL
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
                             if (startTime >= shift.scheduledStartTime.AddHours(4) && startTime <= shift.scheduledEndTime.AddHours(4))
                             {
-                                return true;
+                                return false;
                             }
+                        }
+                    }
+                }
+                List<Shift> allShifts = this.GetAllShifts("");
+                foreach(Shift item in allShifts)
+                {
+                    if (item.personID == personId)
+                    {
+                        if (startTime.AddHours(4) >= item.scheduledStartTime && startTime.AddHours(4) <= item.scheduledEndTime)
+                        {
+                            return false;
                         }
                     }
                 }
                 if (shift.personID == personId && shift.scheduledStartTime == startTime)
                 {
-                    return true;
+                    return false;
                 }
                 else
                 {
-                    return false;
+                    return true;
                 }
+
             }
         }
 

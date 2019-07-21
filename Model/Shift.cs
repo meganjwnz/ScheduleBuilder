@@ -31,6 +31,7 @@ namespace ScheduleBuilder.Model
         public int positionID { get; set; }
 
         //Shift postition name
+        [Display(Name = "Position")]
         public string positionName { get; set; }
 
         //Shift start time

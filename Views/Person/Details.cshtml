@@ -4,7 +4,7 @@
     <h2>@Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h2>
     <hr />
     <dl class="dl-horizontal">
-        
+
         <dt>
             @Html.DisplayNameFor(model => model.DateOfBirth) :
         </dt>
@@ -59,11 +59,10 @@
 
         <dd>
             @Html.DisplayFor(model => model.Username)
-
         </dd>
 
         <dt>
-            Role :           
+            Role :
         </dt>
 
         <dd>
@@ -76,6 +75,14 @@
 
         <dd>
             @ViewBag.userStatusDescription
+        </dd>
+
+        <dt>
+            Active Status :
+        </dt>
+
+        <dd>
+            @ViewBag.activeStatus
         </dd>
 
     </dl>

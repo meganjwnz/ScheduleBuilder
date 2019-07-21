@@ -9,12 +9,13 @@
 <table class="a">
     <thead>
         <tr class="tablestyle">
-            <th>Name</th> 
+            <th>Name</th>
             <th>Date Of Birth</th>
             <th>Phone Number</th>
             <th>Address</th>
             <th>Zip Code</th>
             <th>Email</th>
+            <th>Status</th>
             <th></th>
         </tr>
     </thead>
@@ -40,6 +41,15 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @if(item.StatusId == 1 || item.StatusId == 5)
+                    {
+                        <p class="text-success">Active</p>
+                    } else
+                    {
+                        <p class="text-danger">Inactive</p>
+                    }
                 </td>
                 <td>
                     @if (Session["roleTitle"].ToString() == "Employee")
