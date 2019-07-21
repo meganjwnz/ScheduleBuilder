@@ -62,7 +62,7 @@ namespace ScheduleBuilder.DAL
         /// <param name="zipcode"></param>
         /// <param name="username"></param>
         /// <param name="email"></param>
-        public void AddPerson(string lastName
+        public int AddPerson(string lastName
             , string firstName
             , DateTime dateOfBirth
             , string ssn
@@ -119,10 +119,11 @@ namespace ScheduleBuilder.DAL
                             , @Password 
                             , @RoleId 
                             , @StatusId 
-                            , @Email); ";
+                            , @Email); SELECT SCOPE_IDENTITY() ";
 
 
-            this.SaveData(sql, addedPerson);
+            int id = this.SaveData(sql, addedPerson);
+            return id;
         }
 
         private string UsernameCheck(string defaultName, int num)
@@ -181,7 +182,7 @@ namespace ScheduleBuilder.DAL
         {
             using (IDbConnection cnn = ScheduleBuilder_DB_Connection.GetConnection())
             {
-                return cnn.Execute(sql, data);
+                return Convert.ToInt32(cnn.ExecuteScalar(sql, data));
             }
         }
 

@@ -58,7 +58,7 @@ namespace ScheduleBuilder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    this.personDAL.AddPerson(personViewModel.LastName
+                 int personid = this.personDAL.AddPerson(personViewModel.LastName
                             , personViewModel.FirstName
                             , personViewModel.DateOfBirth
                             , personViewModel.Ssn
@@ -67,16 +67,8 @@ namespace ScheduleBuilder.Controllers
                             , personViewModel.StreetAddress
                             , personViewModel.Zipcode
                             , personViewModel.Email);
-                    this.ContactAddedPerson(personViewModel.LastName
-                        , personViewModel.FirstName
-                        , personViewModel.Email
-                        , personViewModel.Gender
-                        , personViewModel.StreetAddress
-                        , personViewModel.Phone
-                        , personViewModel.Zipcode
-                        , personViewModel.DateOfBirth
-                        , personViewModel.Ssn);
                     this.positionDAL.AddPositionToPerson(this.personDAL.GetIDByEmail(personViewModel.Email), Convert.ToInt32(Request.Form["assignedPosition"]));
+                    this.ContactAddedPerson(this.personDAL.GetDesiredPersons($"Where id = {personid}")[0]);
                     return RedirectToAction("GetAllPeoples");
                 }
             }
@@ -225,36 +217,27 @@ namespace ScheduleBuilder.Controllers
 
         }
 
-        private void ContactAddedPerson(string lastname
-            , string firstname
-            , string emailAddress
-            , string gender
-            , string address
-            , string phone
-            , string zipcode
-            , DateTime dateOfBirth
-            , string ssn)
+        private void ContactAddedPerson(Person addedPerson)
         {
-            string fullname = firstname + " " + lastname;
             string loggedInUserId = (Session["id"].ToString());
             Person loggedInUser = this.personDAL.GetDesiredPersons($"Where Id = {loggedInUserId}").FirstOrDefault();
-            Email email = new Email(fullname, emailAddress);
+            Email email = new Email(addedPerson);
 
             string subject = "Your personal information has been added";
 
-            string body = $"Hello { firstname}, \n" +
+            string body = $"Hello { addedPerson.FirstName}, \n" +
                 $"\n Welcome to ScheduleBuilder \n" +
                 $"\n In this webased application you will discover that you can see your shifts," +
                 $"\n request time off, change your availbility, and even swap shifts \n" +
                 $"\n Your personal details are as follows \n" +
-                $"\n Full name:        {fullname}" +
-                $"\n Gender:           {gender}" +
-                $"\n Address:          {address}" +
-                $"\n Zipcode:          {zipcode}" +
-                $"\n Date of Birth:    {dateOfBirth}" +
-                $"\n Phone:            {phone}" +
-                $"\n SSn:              {ssn}" +
-                $"\n Username:         {firstname.Substring(0, 1).ToLower()}{lastname.ToLower()}" +
+                $"\n Full name:        {addedPerson.GetFullName()}" +
+                $"\n Gender:           {addedPerson.Gender}" +
+                $"\n Address:          {addedPerson.StreetAddress}" +
+                $"\n Zipcode:          {addedPerson.Zipcode}" +
+                $"\n Date of Birth:    {addedPerson.DateOfBirth}" +
+                $"\n Phone:            {addedPerson.Phone}" +
+                $"\n SSn:              {addedPerson.Ssn}" +
+                $"\n Username:         {addedPerson.Username}" +
 
                 $"\n If you notice any errors please contact your Admin as soon as possible \n" +
                 $"\n Your initial password is 'newHire' " +

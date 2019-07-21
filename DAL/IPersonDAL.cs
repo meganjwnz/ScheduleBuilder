@@ -30,7 +30,7 @@ namespace ScheduleBuilder.DAL
         /// <param name="zipcode"></param>
         /// <param name="username"></param>
         /// <param name="email"></param>
-        void AddPerson(string lastName
+        int AddPerson(string lastName
             , string firstName
             , DateTime dateOfBirth
             , string ssn
