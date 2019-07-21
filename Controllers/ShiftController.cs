@@ -622,10 +622,12 @@ namespace ScheduleBuilder.Controllers
             }
             if (DateTime.Parse(endDate) < DateTime.Parse(startDate)){
                 ViewBag.timingError = "Your end date must not be before your start date.";
+                return View("RequestTimeOff");
             }
             if(DateTime.Parse(startDate) < DateTime.Now)
             {
                 ViewBag.pastError = "You cannot request off in the past.";
+                return View("RequestTimeOff");
             }
 
             Shift shift = new Shift();
