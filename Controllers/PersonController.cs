@@ -39,6 +39,11 @@ namespace ScheduleBuilder.Controllers
             return View();
         }
 
+
+        private bool ZipcodeExisits(string zipcode)
+        {
+            return this.personDAL.ZipCodeExisits(zipcode);
+        }
         /// <summary>
         /// Catches the newly added person and sends the information to the DAL
         /// </summary>
@@ -58,18 +63,30 @@ namespace ScheduleBuilder.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                 int personid = this.personDAL.AddPerson(personViewModel.LastName
-                            , personViewModel.FirstName
-                            , personViewModel.DateOfBirth
-                            , personViewModel.Ssn
-                            , personViewModel.Gender
-                            , personViewModel.Phone
-                            , personViewModel.StreetAddress
-                            , personViewModel.Zipcode
-                            , personViewModel.Email);
-                    this.positionDAL.AddPositionToPerson(this.personDAL.GetIDByEmail(personViewModel.Email), Convert.ToInt32(Request.Form["assignedPosition"]));
-                    this.ContactAddedPerson(this.personDAL.GetDesiredPersons($"Where id = {personid}")[0]);
-                    return RedirectToAction("GetAllPeoples");
+                    if (this.ZipcodeExisits(personViewModel.Zipcode))
+                    {
+
+                        int personid = this.personDAL.AddPerson(personViewModel.LastName
+                               , personViewModel.FirstName
+                               , personViewModel.DateOfBirth
+                               , personViewModel.Ssn
+                               , personViewModel.Gender
+                               , personViewModel.Phone
+                               , personViewModel.StreetAddress
+                               , personViewModel.Zipcode
+                               , personViewModel.Email);
+                 
+                        this.positionDAL.AddPositionToPerson(this.personDAL.GetIDByEmail(personViewModel.Email), Convert.ToInt32(Request.Form["assignedPosition"]));
+                        this.ContactAddedPerson(this.personDAL.GetDesiredPersons($"Where id = {personid}")[0]);
+                        return RedirectToAction("GetAllPeoples");
+                    }
+                    else
+                    {
+                        {
+                            TempData["notice"] = "You entered an Invalid Zipcode";
+                            return RedirectToAction("AddPerson", "Person");
+                        }
+                    }
                 }
             }
             return View();
@@ -175,13 +192,13 @@ namespace ScheduleBuilder.Controllers
             this.InitializeViewBag();
             //try
             //{
-                this.personDAL.EditPerson(person);
-                this.ContactEditedPerson(person);
-                return RedirectToAction("GetAllPeoples");
-          //  }
-           // catch
+            this.personDAL.EditPerson(person);
+            this.ContactEditedPerson(person);
+            return RedirectToAction("GetAllPeoples");
+            //  }
+            // catch
             //{
-             //   return View(person);
+            //   return View(person);
             //}
         }
 
@@ -279,7 +296,7 @@ namespace ScheduleBuilder.Controllers
             return View(person);
 
         }
-        
+
         /// <summary>
         /// Catches the infromation about the add positon and sends it to the DAL
         /// </summary>
@@ -345,7 +362,7 @@ namespace ScheduleBuilder.Controllers
         private void SetStatus(Person person)
         {
             string statusDescription = this.statusDAL.GetStatusByID(person.StatusId).StatusDescription;
-            if(person.StatusId == 1 || person.StatusId == 5)
+            if (person.StatusId == 1 || person.StatusId == 5)
             {
                 ViewBag.activeStatus = "Active";
             }

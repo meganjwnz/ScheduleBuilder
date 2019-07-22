@@ -45,6 +45,40 @@ namespace ScheduleBuilder.DAL
             }
         }
 
+        /// <summary>
+        /// returns true if zipcode exists
+        /// </summary>
+        /// <param name="zipcode"></param>
+        /// <returns></returns>
+        public bool ZipCodeExisits(string zipcode)
+        {
+            bool doesExist = false;
+            int count = 0;
+            string sqlStatement = $" SELECT *" +
+                                    $" FROM zipcode" +
+                                    $" WHERE zipcode = @zipcode";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sqlStatement, connection))
+                {
+                    command.Parameters.AddWithValue("@zipcode", zipcode);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            count++;
+                        }
+                    }
+                    if (count > 0)
+                    {
+                        doesExist = true;
+                    }
+                }
+                connection.Close();
+            }
+            return doesExist;
+        }
 
         /// <summary>
         /// Adds a person to the database 
