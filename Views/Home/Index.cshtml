@@ -35,6 +35,7 @@
                 <th>Scheduled End</th>
                 <th>Scheduled Lunch Start</th>
                 <th>Scheduled Lunch End</th>
+                <th></th>
                 <th>Hours per shift</th>
             </tr>
         </thead>
@@ -47,6 +48,9 @@
                 <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openShiftDetailModal(sh)">View Details</button>
+                </td>
                 <td>{{getTotalHours(sh)}}</td>
             </tr>
         </tbody>
@@ -62,6 +66,7 @@
                 <th>Actual End Time</th>
                 <th>Actual Lunch Start</th>
                 <th>Actual Lunch End</th>
+                <th></th>
                 <th>Clocked Hours</th>
             </tr>
         </thead>
@@ -74,6 +79,9 @@
                 <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openShiftDetailModal(sh)">View Details</button>
+                </td>
                 <td>{{getClockedHours(sh)}}</td>
             </tr>
         </tbody>
@@ -98,6 +106,7 @@
                 <th>Scheduled End Time</th>
                 <th>Scheduled Lunch Start</th>
                 <th>Scheduled Lunch End</th>
+                <th></th>
                 <th>Hours per shift</th>
             </tr>
         </thead>
@@ -109,9 +118,13 @@
                 <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="openShiftDetailModal(sh)">View Details</button>
+                </td>
                 <td>{{getTotalHours(sh)}}</td>
             </tr>
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -123,11 +136,6 @@
         </tbody>
     </table>
 </div>
-
-
-
-
-
 
 <script type="text/ng-template" id="shiftDetailModalContent.html">
 
