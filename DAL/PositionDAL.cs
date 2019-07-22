@@ -5,8 +5,7 @@ using System.Data.SqlClient;
 namespace ScheduleBuilder.DAL
 {
     /// <summary>
-    /// This class provides access to the database 
-    /// It is conserned with Person 
+    /// The Position Class Data Access Layer
     /// </summary>
     public class PositionDAL : IPositionDAL
     {

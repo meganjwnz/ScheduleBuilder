@@ -1,9 +1,10 @@
-﻿
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ScheduleBuilder.Model
 {
+    /// <summary>
+    /// The Position Model Class used to represent a position at a place of employment
+    /// </summary>
     public class Position
     {
         /// <summary>
@@ -24,7 +25,5 @@ namespace ScheduleBuilder.Model
         [Display(Name = "Position Description")]
         public string positionDescription { get; set; }
 
-        //Postions allowed Tasks
-        public List<Task> PositionTasks { get; set; }
     }
 }

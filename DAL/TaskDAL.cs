@@ -6,12 +6,15 @@ using System.Windows.Forms;
 
 namespace ScheduleBuilder.DAL
 {
+    /// <summary>
+    /// The Task Data Access Layer
+    /// </summary>
     public class TaskDAL : ITaskDAL
     {
         /// <summary>
         /// Returns a list of All Tasks
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of task objects</returns>
         public List<Task> GetAllTasks()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -48,10 +51,10 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Gests all position tasks
+        /// Gests all tasks associated with a position
         /// </summary>
-        /// <param name="positionID"></param>
-        /// <returns></returns>
+        /// <param name="positionID">The position ID as an integer</param>
+        /// <returns>A list of task objects</returns>
         public List<Task> GetPositionTasks(int positionID)
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -87,43 +90,6 @@ namespace ScheduleBuilder.DAL
                 }
             }
             return taskList;
-        }
-
-        /// <summary>
-        /// Adds a new task
-        /// </summary>
-        /// <param name="task">A task object</param>
-        /// <returns>True if successful, false otherwise</returns>
-        public bool AddShiftTask(Task task)
-        {
-            int taskresult = 0;
-
-            string insertStatement =
-                "INSERT INTO task([task_title],[isActive], [task_description]) " +
-                "VALUES(@task_title, @isActive, @task_description)";
-
-            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {
-                connection.Open();
-                SqlTransaction transaction = connection.BeginTransaction();
-                try
-                {
-                    using (SqlCommand insertCommand = new SqlCommand(insertStatement, connection))
-                    {
-                        insertCommand.Transaction = transaction;
-                        insertCommand.Parameters.AddWithValue("@task_title", task.Task_title);
-                        insertCommand.Parameters.AddWithValue("@isActive", task.IsActive);
-                        insertCommand.Parameters.AddWithValue("@task_description", task.Task_description);
-                        taskresult = insertCommand.ExecuteNonQuery();
-                    }
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                }
-            }
-            return (taskresult >= 1 ? true : false);
         }
 
         /// <summary>
@@ -177,50 +143,9 @@ namespace ScheduleBuilder.DAL
             }
             return (taskresult == 1 && positiontaskresult >= 1 ? true : false);
         }
-
+        
         /// <summary>
-        /// Updates a shift task 
-        /// </summary>
-        /// <param name="task">A task object</param>
-        /// <returns>True if successful, false otherwise</returns>
-        public bool UpdateShiftTask(Task task)
-        {
-            string updateStatement =
-                "UPDATE task " +
-                "SET [task_title] = @task_title, " +
-                "[isActive] = @isActive, " +
-                "[task_description] = @task_description " +
-                "WHERE id = @id";
-
-            int taskResult = 0;
-            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {
-                connection.Open();
-                SqlTransaction transaction = connection.BeginTransaction();
-                try
-                {
-                    using (SqlCommand updateCommand = new SqlCommand(updateStatement, connection))
-                    {
-                        updateCommand.Transaction = transaction;
-                        updateCommand.Parameters.AddWithValue("@id", task.TaskId);
-                        updateCommand.Parameters.AddWithValue("@task_title", task.Task_title);
-                        updateCommand.Parameters.AddWithValue("@isActive", task.IsActive);
-                        updateCommand.Parameters.AddWithValue("@task_description", task.Task_description);
-
-                        taskResult = updateCommand.ExecuteNonQuery();
-                    }
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                }
-            }
-            return (taskResult >= 1 ? true : false);
-        }
-
-        /// <summary>
-        /// Update a position task
+        /// Update an existing task with a position
         /// </summary>
         /// <param name="task">A task object</param>
         /// <returns>True if successful, false otherwise</returns>
@@ -273,43 +198,6 @@ namespace ScheduleBuilder.DAL
                 }
             }
             return (taskResult >= 1 && positionTaskResult >= 1 ? true : false);
-        }
-
-        /// <summary>
-        /// Connects a task to a shift
-        /// </summary>
-        /// <param name="shiftID">The shiftID as an integer</param>
-        /// <param name="taskID">The taskID as an integer</param>
-        /// <returns></returns>
-        public bool InsertShiftTask(int shiftID, int taskID)
-        {
-            int shiftTaskResult = 0;
-
-            string insertStatement =
-                "INSERT INTO assignedTask([shiftId],[taskId]) " +
-                "VALUES(@shiftID, @taskID)";
-
-            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {
-                connection.Open();
-                SqlTransaction transaction = connection.BeginTransaction();
-                try
-                {
-                    using (SqlCommand insertCommand = new SqlCommand(insertStatement, connection))
-                    {
-                        insertCommand.Transaction = transaction;
-                        insertCommand.Parameters.AddWithValue("@shiftID", shiftID);
-                        insertCommand.Parameters.AddWithValue("@taskID", taskID);
-                        shiftTaskResult = insertCommand.ExecuteNonQuery();
-                    }
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                }
-            }
-            return (shiftTaskResult >= 1 ? true : false);
         }
 
     }

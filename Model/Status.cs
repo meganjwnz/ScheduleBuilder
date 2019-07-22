@@ -1,9 +1,7 @@
-﻿
-
-namespace ScheduleBuilder.Model
+﻿namespace ScheduleBuilder.Model
 {
     /// <summary>
-    /// Values of the Status class
+    /// The Status Model Class represents a person's ablitiy to work/activity level
     /// </summary>
     public class Status
     {

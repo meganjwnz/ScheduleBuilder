@@ -5,11 +5,11 @@ using System.ComponentModel.DataAnnotations;
 namespace ScheduleBuilder.Model
 {
     /// <summary>
-    /// Values of shift class in the database combinds a few different tables 
+    /// The Shift Model Class represents a shift at a place of employment and references a person, position, tasks
+    /// and specific dates and times.
     /// </summary>
     public class Shift
     {
-
         //Shift Id 
         public int shiftID { get; set; }
 

@@ -3,10 +3,17 @@ using System.Text;
 
 namespace ScheduleBuilder.Model
 {
+    /// <summary>
+    /// The Hashing Service Model class used to hash passwords
+    /// </summary>
     public class HashingService
     {
-        //converts string passwords to appropriate hashed string
-        //Developed using tutorial at https://youtu.be/AU-4oLUV5VU
+        /// <summary>
+        /// converts string passwords to appropriate hashed string
+        /// Developed using tutorial at https://youtu.be/AU-4oLUV5VU
+        /// </summary>
+        /// <param name="password">The password as a string</param>
+        /// <returns>The hashed password</returns>
         public String PasswordHashing(string password)
         {
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password);
