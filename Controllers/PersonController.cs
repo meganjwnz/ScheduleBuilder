@@ -144,6 +144,7 @@ namespace ScheduleBuilder.Controllers
 
         /// <summary>
         /// Return a json list of all active employees that can be scheduled to work.
+        /// Called from app.js file
         /// </summary>
         /// <returns></returns>
         [HttpPost]
