@@ -1,6 +1,9 @@
-﻿
-namespace ScheduleBuilder.Model
+﻿namespace ScheduleBuilder.Model
 {
+    /// <summary>
+    /// The Role Model Class references the role a user will have, thus allowing them
+    /// specific permissions to parts of the site
+    /// </summary>
     public class Role
     {
         //Id

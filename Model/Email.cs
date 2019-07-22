@@ -3,6 +3,9 @@ using MimeKit;
 
 namespace ScheduleBuilder.Model
 {
+    /// <summary>
+    /// The Email Model Class
+    /// </summary>
     public class Email
     {
         MimeMessage message = new MimeMessage();
@@ -10,7 +13,7 @@ namespace ScheduleBuilder.Model
         /// <summary>
         /// Email constructor - the person who will be email will be sent too
         /// </summary>
-        /// <param name="addressie"></param>
+        /// <param name="addressie">The person object to go to</param>
         public Email(Person addressie)
         {
             message.To.Add(new MailboxAddress(addressie.GetFullName(), addressie.Email));
@@ -19,8 +22,8 @@ namespace ScheduleBuilder.Model
         /// <summary>
         /// Builds message using accepted name and email
         /// </summary>
-        /// <param name="fullname"></param>
-        /// <param name="email"></param>
+        /// <param name="fullname">The full name of the person</param>
+        /// <param name="email">The email address of the person</param>
         public Email(string fullname, string email)
         {
             message.To.Add(new MailboxAddress(fullname, email));
@@ -29,8 +32,8 @@ namespace ScheduleBuilder.Model
         /// <summary>
         /// Sends an email with the subject and body
         /// </summary>
-        /// <param name="subject"></param>
-        /// <param name="body"></param>
+        /// <param name="subject">The subject of the email</param>
+        /// <param name="body">The body of the email</param>
         public void SendMessage(string subject, string body)
         {
             message.Subject = subject;

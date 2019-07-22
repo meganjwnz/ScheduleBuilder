@@ -1,6 +1,9 @@
-﻿
-namespace ScheduleBuilder.Model
+﻿namespace ScheduleBuilder.Model
 {
+    /// <summary>
+    /// The Task Model Class represents an individual task associated with a position that can be assigned
+    /// to a shift.
+    /// </summary>
     public class Task
     {
         //id
