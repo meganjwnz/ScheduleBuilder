@@ -8,9 +8,7 @@ namespace ScheduleBuilder.DAL
     {
         List<Task> GetAllTasks();
         List<Task> GetPositionTasks(int positionID);
-        bool AddShiftTask(Task task);
         bool AddPositionTask(Task task);
-        bool UpdateShiftTask(Task task);
         bool UpdatePositionTask(Task task);
     }
 }
