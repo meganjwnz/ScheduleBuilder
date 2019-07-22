@@ -7,8 +7,7 @@ using System.Linq;
 namespace ScheduleBuilder.DAL
 {
     /// <summary>
-    /// This class provides access to the database 
-    /// It is conserned with Person 
+    /// The Shift Class Data Access Layer
     /// </summary>
     public class ShiftDAL : IShiftDAL
     {
@@ -74,7 +73,7 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Returns list equal to the accepted where statement
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of shift objects</returns>
         public List<Shift> GetAllShifts(string whereClause)
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -127,8 +126,8 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Returns the NearestShift to the datetime now
         /// </summary>
-        /// <param name="whereClause"></param>
-        /// <returns></returns>
+        /// <param name="whereClause">Where clause to except date range</param>
+        /// <returns>A shift object</returns>
         public Shift GetNearestShift(string whereClause)
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -190,9 +189,10 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Add a shift
+        /// Inserts a shift and shift hours
         /// </summary>
         /// <param name="shift">A shift object to be sent to db</param>
+        /// <param name="taskList">A dictionary of task list</param>
         /// <returns>A boolean value of success or not</returns>
         public bool AddShift(Shift shift, Dictionary<int, bool> taskList)
         {
@@ -273,31 +273,12 @@ namespace ScheduleBuilder.DAL
             return successful;
         }
 
-        private void ContactPersonShift(Shift shift)
-        {
-            Person person = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
-            Email email = new Email(person);
-
-            string subject = $"You have a new Shift ";
-
-            string body = $"Hello { person.GetFullName()}, \n" +
-                $"\nYou are recieving this email to let you know you have a shift on {shift.scheduledStartTime} \n" +
-                $"\n Please log in to your account to see all schedule changes\n" +
-
-                $"\n If this has been done in error please contact your Admin as soon as possible " +
-                $"\n Hope you have a wonderful day";
-
-
-            email.SendMessage(subject, body);
-
-        }
-
         /// <summary>
         /// Allows Edits the shift from the orignal shift
         /// accepts two shifts to compare the changes
         /// </summary>
-        /// <param name="shift"></param>
-        /// <param name="orignalShift"></param>
+        /// <param name="shift">The shift object</param>
+        /// <param name="orignalShift">The original shift object</param>
         /// <returns></returns>
         public bool EditShift(Shift shift, Shift orignalShift)
         {
@@ -349,38 +330,11 @@ namespace ScheduleBuilder.DAL
             return successfulChange;
         }
 
-        private void AlertTimeCardEdit(Shift editedShift, Shift orignal)
-        {
-            Person person = this.personDAL.GetDesiredPersons($"Where Id = {editedShift.personID}").FirstOrDefault();
-            Email email = new Email(person);
-
-            string subject = $"Timecard has been modified";
-
-            string body = $"\n" +
-                $"Hello { person.GetFullName()},\n" +
-                $"\nPlease note that your timecard was edited \n" +
-                $"\n Please overview the following changes \n" +
-                $"\n Updated Timecard \t \t \t Orignal Timecard \n" +
-                $"\n {editedShift.scheduledStartTime, -5}  {orignal.scheduledStartTime, 50}" +
-                $"\n {editedShift.scheduledLunchBreakStart, -5}  {orignal.scheduledLunchBreakStart, 50}" +
-                $"\n {editedShift.scheduledLunchBreakEnd,-5} {orignal.scheduledLunchBreakEnd, 50}" +
-                $"\n {editedShift.scheduledEndTime, -5} {orignal.scheduledEndTime, 50}" +
-                $"\n {editedShift.actualStartTime, -5}   {orignal.actualStartTime, 50}" +
-                $"\n {editedShift.actualLunchBreakStart, -5}  {orignal.actualLunchBreakStart, 50}" +
-                $"\n {editedShift.actualLunchBreakEnd, -5}   {orignal.actualLunchBreakEnd, 50}" +
-                $"\n {editedShift.actualEndTime, -5}  {orignal.actualEndTime, 50}" +
-                $"\n" +
-                $"\n If this has been done in error please contact your Admin as soon as possible " +
-                $"\n Hope you have a wonderful day";
-
-            
-            email.SendMessage(subject, body);
-        }
-    
         /// <summary>
         /// Update an existing shift/shift hours
         /// </summary>
         /// <param name="shift">The shift object to be updated</param>
+        /// <param name="taskList">The list of tasks for the shift</param>
         /// <returns>A boolean value based on the success or failure of the update</returns>
         public bool UpdateShift(Shift shift, Dictionary<int, bool> taskList)
         {
@@ -465,10 +419,10 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Delete a shift
+        /// Delete a shift and associated data
         /// </summary>
-        /// <param name="shift"></param>
-        /// <returns></returns>
+        /// <param name="shift">The shift object to be deleted</param>
+        /// <returns>A boolean value based on success or failure of the delete</returns>
         public bool DeleteShift(Shift shift)
         {
             int shiftHoursResult = 0;
@@ -526,12 +480,70 @@ namespace ScheduleBuilder.DAL
             return (shiftHoursResult == 1 && shiftResult >= 1 ? true : false);
         }
 
+        /// <summary>
+        /// Checks to see if a person is already scheduled for a specific time
+        /// </summary>
+        /// <param name="personId">The person's id</param>
+        /// <param name="startTime">The shift start date time</param>
+        /// <param name="endTime">The shift end date time</param>
+        /// <returns>True or false if they are or are not scheduled</returns>
+        public bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime)
+        {
+            Person person = new Person();
+            Shift shift = new Shift();
+            string selectStatement =
+                "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
+                "FROM person " +
+                "INNER JOIN shift ON shift.personId = person.id " +
+                "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
+                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
+            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            {
+                connection.Open();
+                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
+                {
+                    selectCommand.Parameters.AddWithValue("@personId", personId);
+                    selectCommand.Parameters.AddWithValue("@startTime", startTime);
+                    selectCommand.Parameters.AddWithValue("@endTime", endTime);
+                    using (SqlDataReader reader = selectCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            shift.personID = (int)reader["id"];
+                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+                        }
+                    }
+                }
+                List<Shift> allShifts = this.GetAllShifts("");
+                foreach (Shift item in allShifts)
+                {
+                    if (item.personID == personId)
+                    {
+                        if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                if (shift.personID == personId && shift.scheduledStartTime == startTime)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+
+            }
+        }
+
         #region TimeCard 
         /// <summary>
         /// Adds the accepted clockIn value and attaches it to the shiftHourID
         /// </summary>
-        /// <param name="shiftHoursId"></param>
-        /// <param name="clockIn"></param>
+        /// <param name="shiftHoursId">Shift hours id</param>
+        /// <param name="clockIn">The date time of the clock in</param>
         public void ClockUserIn(int shiftHoursId, DateTime clockIn)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -619,8 +631,8 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Adds the accepted clockOut value and attaches it to the shiftHourID
         /// </summary>
-        /// <param name="scheduleShiftID"></param>
-        /// <param name="now"></param>
+        /// <param name="scheduleShiftID">The shift hours id</param>
+        /// <param name="now">The current date time for the clock out</param>
         public void ClockUserOut(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -651,8 +663,8 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Adds the accepted LunchbreakStart value and attaches it to the shiftHourID
         /// </summary>
-        /// <param name="scheduleShiftID"></param>
-        /// <param name="now"></param>
+        /// <param name="scheduleShiftID">The shift hours id</param>
+        /// <param name="now">The current date time for clock out lunch start</param>
         public void ClockLunchStart(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -683,8 +695,8 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Adds the accepted LunchBreakEnd value and attaches it to the shiftHourID
         /// </summary>
-        /// <param name="scheduleShiftID"></param>
-        /// <param name="now"></param>
+        /// <param name="scheduleShiftID">The shift hours id</param>
+        /// <param name="now">The current date time for the clock out lunch end</param>
         public void ClockLunchEnd(int scheduleShiftID, DateTime now)
         {
             string insert = $" UPDATE ShiftHours" +
@@ -713,63 +725,51 @@ namespace ScheduleBuilder.DAL
         }
         #endregion
 
-        /// <summary>
-        /// Checks to see if a person is already scheduled for a specific time
-        /// </summary>
-        /// <param name="personId"></param>
-        /// <param name="startTime"></param>
-        /// <param name="endTime"></param>
-        /// <returns></returns>
-        public bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime)
+        private void AlertTimeCardEdit(Shift editedShift, Shift orignal)
         {
-            Person person = new Person();
-            Shift shift = new Shift();
-            string selectStatement =
-                "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
-                "FROM person " +
-                "INNER JOIN shift ON shift.personId = person.id " +
-                "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
-                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
-            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {
-                connection.Open();
-                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
-                {
-                    selectCommand.Parameters.AddWithValue("@personId", personId);
-                    selectCommand.Parameters.AddWithValue("@startTime", startTime);
-                    selectCommand.Parameters.AddWithValue("@endTime", endTime);
-                    using (SqlDataReader reader = selectCommand.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            shift.personID = (int)reader["id"];
-                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
-                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
-                        }
-                    }
-                }
-                List<Shift> allShifts = this.GetAllShifts("");
-                foreach (Shift item in allShifts)
-                {
-                    if (item.personID == personId)
-                    {
-                        if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
-                        {
-                            return false;
-                        }
-                    }
-                }
-                if (shift.personID == personId && shift.scheduledStartTime == startTime)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+            Person person = this.personDAL.GetDesiredPersons($"Where Id = {editedShift.personID}").FirstOrDefault();
+            Email email = new Email(person);
 
-            }
+            string subject = $"Timecard has been modified";
+
+            string body = $"\n" +
+                $"Hello { person.GetFullName()},\n" +
+                $"\nPlease note that your timecard was edited \n" +
+                $"\n Please overview the following changes \n" +
+                $"\n Updated Timecard \t \t \t Orignal Timecard \n" +
+                $"\n {editedShift.scheduledStartTime,-5}  {orignal.scheduledStartTime,50}" +
+                $"\n {editedShift.scheduledLunchBreakStart,-5}  {orignal.scheduledLunchBreakStart,50}" +
+                $"\n {editedShift.scheduledLunchBreakEnd,-5} {orignal.scheduledLunchBreakEnd,50}" +
+                $"\n {editedShift.scheduledEndTime,-5} {orignal.scheduledEndTime,50}" +
+                $"\n {editedShift.actualStartTime,-5}   {orignal.actualStartTime,50}" +
+                $"\n {editedShift.actualLunchBreakStart,-5}  {orignal.actualLunchBreakStart,50}" +
+                $"\n {editedShift.actualLunchBreakEnd,-5}   {orignal.actualLunchBreakEnd,50}" +
+                $"\n {editedShift.actualEndTime,-5}  {orignal.actualEndTime,50}" +
+                $"\n" +
+                $"\n If this has been done in error please contact your Admin as soon as possible " +
+                $"\n Hope you have a wonderful day";
+
+
+            email.SendMessage(subject, body);
         }
 
+        private void ContactPersonShift(Shift shift)
+        {
+            Person person = this.personDAL.GetDesiredPersons($"Where Id = {shift.personID}").FirstOrDefault();
+            Email email = new Email(person);
+
+            string subject = $"You have a new Shift ";
+
+            string body = $"Hello { person.GetFullName()}, \n" +
+                $"\nYou are recieving this email to let you know you have a shift on {shift.scheduledStartTime} \n" +
+                $"\n Please log in to your account to see all schedule changes\n" +
+
+                $"\n If this has been done in error please contact your Admin as soon as possible " +
+                $"\n Hope you have a wonderful day";
+
+
+            email.SendMessage(subject, body);
+
+        }
     }
 }
