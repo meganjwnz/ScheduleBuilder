@@ -94,6 +94,10 @@ input[type="password"] {
     width: 100%;
 }
 
+.tablestyle a{
+    color:white;
+}
+
 th {
     width:auto;
     padding:8px;
