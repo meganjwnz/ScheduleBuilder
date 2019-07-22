@@ -217,7 +217,6 @@
     <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\PersonDal.cs" />
     <Compile Include="DAL\PositionDAL.cs" />
-    <Compile Include="DAL\PositionTaskDAL.cs" />
     <Compile Include="DAL\RoleDAL.cs" />
     <Compile Include="DAL\ScheduleBuilder_DB_Connection.cs" />
     <Compile Include="DAL\ShiftDAL.cs" />
@@ -236,7 +235,6 @@
     <Compile Include="Model\HashingService.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Position.cs" />
-    <Compile Include="Model\PositionTask.cs" />
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Shift.cs" />
     <Compile Include="ModelViews\PersonViewModel.cs" />
