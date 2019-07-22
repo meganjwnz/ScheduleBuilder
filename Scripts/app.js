@@ -25,6 +25,10 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
     };
     $scope.getShifts();
 
+    $scope.sortType = 'personLastName';
+    $scope.sortReverse = false; 
+    $scope.searchShift = '';     
+
     $scope.jsDate = function (dateIn) {
         if (dateIn) {
             return new Date(parseInt(dateIn.substr(6)));

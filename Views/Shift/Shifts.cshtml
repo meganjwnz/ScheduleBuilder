@@ -7,49 +7,69 @@
 
 <h2>All Shifts</h2>
 
-<div ng-show="getSessionRoleTitle() == 'Adminstrator'">
+<div>
     <button type="button" class="btn btn-default" ng-click="openModal('Add', {})">Add Shift</button>
     <h4>All Shifts:</h4>
     <table style="width:100%;">
 
         <thead class="tablestyle">
             <tr>
-                <!-- Leave these out for the time being, maybe add back later or put in another area <th>shiftID</th>
-                <th>scheduleShiftID</th>
-                <th>personID</th> -->
-                <th>Name</th>
-                <!-- <th>positionID</th> -->
-                <th>Position</th>
-                <th>Scheduled Start Time</th>
-                <th>Scheduled End Time</th>
-                <th>Scheduled Lunch Start</th>
-                <th>Scheduled Lunch End</th>
-                <!-- <th>actualStartTime</th>
-                <th>actualEndTime</th>
-                <th>actualLunchBreakStart</th>
-                <th>actualLunchBreakEnd</th> -->
+
+                <th>
+                    <a href="#" ng-click="sortType = 'personLastName'; sortReverse = !sortReverse">
+                        Name
+                        <span ng-show="sortType == 'personLastName' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'personLastName' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="sortType = 'positionName'; sortReverse = !sortReverse">
+                        Position
+                        <span ng-show="sortType == 'positionName' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'positionName' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="sortType = 'scheduledStartTime'; sortReverse = !sortReverse">
+                        Scheduled Start Time
+                        <span ng-show="sortType == 'scheduledStartTime' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'scheduledStartTime' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="sortType = 'scheduledEndTime'; sortReverse = !sortReverse">
+                        Scheduled End Time
+                        <span ng-show="sortType == 'scheduledEndTime' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'scheduledEndTime' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="sortType = 'scheduledLunchBreakStart'; sortReverse = !sortReverse">
+                        Scheduled Lunch Start
+                        <span ng-show="sortType == 'scheduledLunchBreakStart' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'scheduledLunchBreakStart' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href="#" ng-click="sortType = 'scheduledLunchBreakEnd'; sortReverse = !sortReverse">
+                        Scheduled Lunch End
+                        <span ng-show="sortType == 'scheduledLunchBreakEnd' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'scheduledLunchBreakEnd' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
                 <th></th>
                 <th></th>
                 <th>Hours per shift</th>
             </tr>
         </thead>
         <tbody>
-            <tr class="row_alternate" ng-repeat="sh in shift track by $index">
-                <!-- <td>{{sh.shiftID}}</td>
-                <td>{{sh.scheduleShiftID}}</td>
-                <td>{{sh.personID}}</td> -->
+            <tr class="row_alternate" ng-repeat="sh in shift | orderBy:sortType:sortReverse | filter:searchShift track by $index">
                 <td>{{sh.personLastName}}, {{sh.personFirstName}}  </td>
-                <!-- <td>{{sh.positionID}}</td> -->
-
                 <td>{{sh.positionName}}</td>
                 <td>{{jsDate(sh.scheduledStartTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledEndTime) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakStart) | date : "short"}}</td>
                 <td>{{jsDate(sh.scheduledLunchBreakEnd) | date : "short"}}</td>
-                <!-- <td>{{jsDate(sh.actualStartTime) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualEndTime) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualLunchBreakStart) | date : "short"}}</td>
-                <td>{{jsDate(sh.actualLunchBreakEnd) | date : "short"}}</td> -->
                 <td>
                     <button type="button" class="btn btn-default" ng-click="openModal('Update', sh)" ng-disabled="checkDate(jsDate(sh.scheduledEndTime))">Update Shift</button>
                 </td>
@@ -61,7 +81,7 @@
         </tbody>
     </table>
 </div>
-
+<!-- Add/Update Shift Modal Content -->
 <script type="text/ng-template" id="myModalContent.html">
     <form name="shiftForm">
         <div class="modal-header">
@@ -198,12 +218,6 @@
 
                     </tr>
                     <tr><th>*Optional fields</th></tr>
-                    <!--<tr ng-if="type == 'Update'">
-                        <th>
-                            <input type="hidden" model="selected.shiftID" ng-init="hell" ng-value="hell" />
-                            <input type="hidden" model="selected.scheduleShiftID" ng-init="115" ng-value="115" />
-                        </th>
-                    </tr>-->
                 </tbody>
             </table>
         </div>
@@ -214,7 +228,7 @@
         </div>
     </form>
 </script>
-
+<!-- Shift Detail Modal Content -->
 <script type="text/ng-template" id="shiftDetailModalContent.html">
 
     <div class="modal-header">
