@@ -13,23 +13,25 @@ namespace ScheduleBuilder.Controllers
 {
     public class ShiftController : Controller
     {
-
         ShiftDAL shiftDAL = new ShiftDAL();
         PositionDAL positionDAL = new PositionDAL();
         PersonDAL personDAL = new PersonDAL();
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
 
-
+        /// <summary>
+        /// Load the Shifts tab view and content
+        /// </summary>
+        /// <returns>The shift tab view and content</returns>
         public ActionResult Shifts()
         {
             return View();
         }
 
         /// <summary>
-        /// gets all shifts from the database
+        /// Gets all shifts from the database
+        /// Called from app.js
         /// </summary>
-        [HttpPost]
         public ActionResult ViewAllShifts()
         {
             try
@@ -43,12 +45,200 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds a new shift to the database
+        /// Called from app.js
+        /// </summary>
+        /// <param name="personID">The person's id as an integer</param>
+        /// <param name="positionID">The position id as an integer</param>
+        /// <param name="startdt">The shift start date time</param>
+        /// <param name="enddt">The shift end date time</param>
+        /// <param name="startlunchdt">The shift start lunch date time</param>
+        /// <param name="endlunchdt">The shift lunch end date time</param>
+        /// <param name="taskList">The task list assigned to the shift</param>
+        /// <param name="notes">Shift notes</param>
+        /// <returns>True if insert was successful, false otherwise</returns>
+        public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
+        {
+            JavaScriptSerializer thing = new JavaScriptSerializer();
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
+            Shift shift = new Shift();
+            shift.personID = int.Parse(personID);
+            shift.positionID = int.Parse(positionID);
+            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+
+            if (!string.IsNullOrEmpty(startlunchdt))
+            {
+                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakStart = null;
+            }
+            if (!string.IsNullOrEmpty(endlunchdt))
+            {
+                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakEnd = null;
+            }
+            shift.Notes = notes;
+
+            return Json(shiftDAL.AddShift(shift, otherThing));
+
+        }
+
+        /// <summary>
+        /// Updates an existing shift
+        /// Called from app.js file
+        /// </summary>
+        /// <param name="personID">The person's id as an integer</param>
+        /// <param name="positionID">The position id</param>
+        /// <param name="startdt">The shift start date time</param>
+        /// <param name="enddt">The shift end date time</param>
+        /// <param name="startlunchdt">The shift lunch start date time</param>
+        /// <param name="endlunchdt">The shift lunch end date time</param>
+        /// <param name="shiftID">The shift's id</param>
+        /// <param name="scheduleshiftID">The shift hour's id</param>
+        /// <param name="isDelete">Boolean to delete or not</param>
+        /// <param name="taskList">The associated task list</param>
+        /// <param name="notes">The shift notes</param>
+        /// <returns>True if update is successful, false otherwise</returns>
+        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList, string notes)
+        {
+            JavaScriptSerializer thing = new JavaScriptSerializer();
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
+
+            Shift shift = new Shift();
+            shift.shiftID = int.Parse(shiftID);
+            shift.scheduleShiftID = int.Parse(scheduleshiftID);
+            shift.personID = int.Parse(personID);
+            shift.positionID = int.Parse(positionID);
+            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            if (!string.IsNullOrEmpty(startlunchdt))
+            {
+                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakStart = null;
+            }
+            if (!string.IsNullOrEmpty(endlunchdt))
+            {
+                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
+            }
+            else
+            {
+                shift.scheduledLunchBreakEnd = null;
+            }
+            shift.Notes = notes;
+
+            //Delete or update shift accordingly
+            if (string.Equals(isDelete, "delete"))
+            {
+                this.ContactPersonShiftChange("delete", shift);
+                return Json(shiftDAL.DeleteShift(shift));
+            }
+            else
+            {
+                this.ContactPersonShiftChange("update", shift);
+                return Json(shiftDAL.UpdateShift(shift, otherThing));
+            }
+        }
+
+        /// <summary>
+        /// Checks if user is scheduled - prevents double scheduling
+        /// Called from app.js file
+        /// </summary>
+        /// <param name="personID">The person's id as an integer</param>
+        /// <param name="startdt">The start of shift</param>
+        /// <param name="enddt">The end of shift</param>
+        /// <returns>True if scheduled, false otherwise</returns>
+        public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
+        {
+            DateTime scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            DateTime scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
+        }
+
+        /// <summary>
+        /// Request time off
+        /// </summary>
+        /// <returns>The view for requesting time off</returns>
+        public ActionResult RequestTimeOff()
+        {
+            ViewBag.failedRequest = "";
+            ViewBag.successfulRequest = "";
+            return View();
+        }
+
+        /// <summary>
+        /// Accepts request off time
+        /// </summary>
+        /// <param name="personID">The person's id</param>
+        /// <param name="positionID">The position's id</param>
+        /// <param name="startDate">The start time for asking off</param>
+        /// <param name="endDate">The end time for asking off</param>
+        /// <param name="taskList">The task list</param>
+        /// <param name="notes">Notes</param>
+        /// <returns>True or false if success</returns>
+        [HttpPost]
+        public ActionResult RequestTimeOffFunction(string personID, string positionID, string startDate, string endDate, string taskList, string notes)
+        {
+
+            startDate = Request.Form["startDate"];
+            if (startDate == "")
+            {
+                ViewBag.startError = "You must include a start date.";
+                return View("RequestTimeOff");
+            }
+            endDate = Request.Form["endDate"];
+            if (endDate == "")
+            {
+                ViewBag.startError = "You must include an end date.";
+                return View("RequestTimeOff");
+            }
+            if (DateTime.Parse(endDate) < DateTime.Parse(startDate))
+            {
+                ViewBag.timingError = "Your end date must not be before your start date.";
+                return View("RequestTimeOff");
+            }
+            if (DateTime.Parse(startDate) < DateTime.Now)
+            {
+                ViewBag.pastError = "You cannot request off in the past.";
+                return View("RequestTimeOff");
+            }
+
+            Shift shift = new Shift();
+            shift.personID = int.Parse(Session["id"].ToString());
+            shift.positionID = this.positionDAL.FindPositionIDByUnavailable();
+            shift.scheduledStartTime = DateTime.Parse(startDate).AddHours(4);
+            shift.scheduledEndTime = DateTime.Parse(endDate).AddHours(4);
+            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
+            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
+            if (checkIfAlreadyScheduled == false)
+            {
+                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +
+                    endDate + " or have requested this time off already. Please check your schedule.";
+                return View("RequestTimeOff");
+            }
+            else
+            {
+                ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
+                this.shiftDAL.AddShift(shift, otherThing);
+                return View("RequestTimeOff");
+            }
+        }
+
         #region TimeCard
 
         /// <summary>
         /// Adds Timecard page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>View</returns>
         public ActionResult AddTimePunchPage()
         {
             string loggedInUserId = (Session["id"].ToString());
@@ -63,6 +253,11 @@ namespace ScheduleBuilder.Controllers
             return View(this.TimeUpdate(nearestShift));
         }
 
+        /// <summary>
+        /// Verify time is valid
+        /// </summary>
+        /// <param name="whereClause">Where clause for use in DAL</param>
+        /// <returns>True or false if valid/invalid</returns>
         public bool ValidPunch(string whereClause)
         {
             bool validShift = true;
@@ -91,6 +286,10 @@ namespace ScheduleBuilder.Controllers
             return validShift;
         }
 
+        /// <summary>
+        /// Refresh display
+        /// </summary>
+        /// <returns>Add time punch view</returns>
         public ActionResult RefreshPageDisplayError()
         {
             return RedirectToAction("AddTimePunchPage", "Shift");
@@ -99,10 +298,9 @@ namespace ScheduleBuilder.Controllers
         /// <summary>
         /// Clocks user in retruns them to the time card page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Time punch view</returns>
         public ActionResult ClockUserIn()
         {
-
             string loggedInUserId = (Session["id"].ToString());
             string whereClause = "WHERE p.id = " + loggedInUserId;
             if (this.ValidPunch(whereClause))
@@ -120,7 +318,7 @@ namespace ScheduleBuilder.Controllers
         /// <summary>
         /// Clocks the user out returns them to the time card page
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Time punch View</returns>
         public ActionResult ClockUserOut()
         {
             //This needs to be cleaned up THREE LINES TO GET one ID not cool
@@ -130,7 +328,10 @@ namespace ScheduleBuilder.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        //Starts the users lunch break
+        /// <summary>
+        /// Clockt the user out for lunch
+        /// </summary>
+        /// <returns>Time Punch View</returns>
         public ActionResult ClockLunchStart()
         {
             string loggedInUserId = (Session["id"].ToString());
@@ -139,7 +340,10 @@ namespace ScheduleBuilder.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        //ends user's lunch break
+        /// <summary>
+        /// Clocks the user in from lunch
+        /// </summary>
+        /// <returns>Time Punch View</returns>
         public ActionResult ClockLunchEnd()
         {
             string loggedInUserId = (Session["id"].ToString());
@@ -148,22 +352,15 @@ namespace ScheduleBuilder.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
         #endregion
-        /// <summary>
-        /// Returns accepted SQL errors 
-        /// </summary>
-        /// <param name="xMessage"></param>
-        public void Messagebox(string xMessage)
-        {
-            Response.Write("<script>alert('" + xMessage + "')</script>");
-        }
+
 
         #region TimeCardEdit
 
         /// <summary>
         /// Get last two weeks worth of shifts for person with the accepted personid
         /// </summary>
-        /// <param name="personid"></param>
-        /// <returns></returns>
+        /// <param name="personid">The person's id as an integer</param>
+        /// <returns>The time card edit view</returns>
         public ActionResult GetLastTwoWeeksOfShiftsForEdit(int personid)
         {
             string whereClause = $"Where p.id =  {personid}  and sh.scheduledStartTime > (DATEADD(day,- 14, GETDATE())) and sh.scheduledStartTime < (GETDATE())";
@@ -426,6 +623,11 @@ namespace ScheduleBuilder.Controllers
             return hasErrors;
         }
 
+        /// <summary>
+        /// Edit the time card
+        /// </summary>
+        /// <param name="shiftId">The shift id to be edited</param>
+        /// <returns>Time card view</returns>
         public ActionResult EditTimecard(int shiftId)
         {
             string whereClause = $"WHERE s.id = {shiftId}";
@@ -435,11 +637,15 @@ namespace ScheduleBuilder.Controllers
             return View(selectedTimeCard[0]);
         }
 
+        /// <summary>
+        /// Edit Time Card
+        /// </summary>
+        /// <param name="editedViewModel">The view model</param>
+        /// <returns>Redirect to view</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditTimecard(TimeCardEditViewModel editedViewModel)
         {
-
             editedViewModel = this.AddUserAddedValuesToTimeCard(editedViewModel);
             if (EditTimeCardErrorCheck(editedViewModel))
             {
@@ -452,7 +658,7 @@ namespace ScheduleBuilder.Controllers
             tempOrignalShift.scheduleShiftID = Int32.MinValue + 500;
 
             Shift updatedShift = this.ConvertTimeCardEditViewModelToShift(editedViewModel, orignalShift);
-            
+
             //Alerts and prevents user from 'saving' when no changes are made  
             if (!this.HasShiftChanged(updatedShift, tempOrignalShift))
             {
@@ -460,8 +666,6 @@ namespace ScheduleBuilder.Controllers
                 return RedirectToAction("EditTimecard", "Shift", new { shiftId = editedViewModel.shiftId });
 
             }
-
-
 
             if (this.shiftDAL.EditShift(updatedShift, tempOrignalShift))
             {
@@ -474,11 +678,12 @@ namespace ScheduleBuilder.Controllers
             var herefortest = updatedShift;
             return RedirectToAction("GetLastTwoWeeksOfShiftsForEdit", "Shift", new { personid = updatedShift.personID });
         }
+
         private bool HasShiftChanged(Shift updated, Shift orignal)
         {
             if (updated.scheduledStartTime != orignal.scheduledStartTime)
             {
-                 return true;
+                return true;
             }
             if (updated.scheduledEndTime != orignal.scheduledEndTime)
             {
@@ -486,27 +691,27 @@ namespace ScheduleBuilder.Controllers
             }
             if (updated.scheduledLunchBreakStart != orignal.scheduledLunchBreakStart)
             {
-                 return true;
+                return true;
             }
             if (updated.scheduledLunchBreakEnd != orignal.scheduledLunchBreakEnd)
             {
-                 return true;
+                return true;
             }
             if (updated.actualStartTime != orignal.actualStartTime)
             {
-                 return true;
+                return true;
             }
             if (updated.actualEndTime != orignal.actualEndTime)
             {
-                 return true;
+                return true;
             }
             if (updated.actualLunchBreakStart != orignal.actualLunchBreakStart)
             {
-                 return true;
+                return true;
             }
             if (updated.actualLunchBreakEnd != orignal.actualLunchBreakEnd)
             {
-                 return true;
+                return true;
             }
             return false;
         }
@@ -548,202 +753,10 @@ namespace ScheduleBuilder.Controllers
         }
 
         #endregion
-        /// <summary>
-        /// gets all positions from the database
-        /// </summary>
-        [HttpPost]
-        public ActionResult ViewAllActivePositions()
+
+        private void Messagebox(string xMessage)
         {
-            try
-            {
-                return Json(positionDAL.GetAllActivePositions());
-            }
-            catch (Exception e)
-            {
-                this.Messagebox(e.ToString());
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Adds a shift
-        /// </summary>
-        /// <param name="personID"></param>
-        /// <param name="positionID"></param>
-        /// <param name="startdt"></param>
-        /// <param name="enddt"></param>
-        /// <param name="startlunchdt"></param>
-        /// <param name="endlunchdt"></param>
-        /// <param name="taskList"></param>
-        /// <param name="notes"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult AddShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string taskList, string notes)
-        {
-
-            JavaScriptSerializer thing = new JavaScriptSerializer();
-            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
-            Shift shift = new Shift();
-            shift.personID = int.Parse(personID);
-            shift.positionID = int.Parse(positionID);
-            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
-            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
-
-
-
-            if (!string.IsNullOrEmpty(startlunchdt))
-            {
-                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
-            }
-            else
-            {
-                shift.scheduledLunchBreakStart = null;
-            }
-            if (!string.IsNullOrEmpty(endlunchdt))
-            {
-                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
-            }
-            else
-            {
-                shift.scheduledLunchBreakEnd = null;
-            }
-            shift.Notes = notes;
-
-            return Json(shiftDAL.AddShift(shift, otherThing));
-
-        }
-
-        /// <summary>
-        /// gets all positions from the database
-        /// allows updating shifts
-        /// </summary>
-        [HttpPost]
-        public ActionResult UpdateShift(string personID, string positionID, string startdt, string enddt, string startlunchdt, string endlunchdt, string shiftID, string scheduleshiftID, string isDelete, string taskList, string notes)
-        {
-            JavaScriptSerializer thing = new JavaScriptSerializer();
-            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
-            //Create shift object from values passed from view
-            Shift shift = new Shift();
-            shift.shiftID = int.Parse(shiftID);
-            shift.scheduleShiftID = int.Parse(scheduleshiftID);
-            shift.personID = int.Parse(personID);
-            shift.positionID = int.Parse(positionID);
-            shift.scheduledStartTime = ConvertDateToC(long.Parse(startdt));
-            shift.scheduledEndTime = ConvertDateToC(long.Parse(enddt));
-            if (!string.IsNullOrEmpty(startlunchdt))
-            {
-                shift.scheduledLunchBreakStart = ConvertDateToC(long.Parse(startlunchdt));
-            }
-            else
-            {
-                shift.scheduledLunchBreakStart = null;
-            }
-            if (!string.IsNullOrEmpty(endlunchdt))
-            {
-                shift.scheduledLunchBreakEnd = ConvertDateToC(long.Parse(endlunchdt));
-            }
-            else
-            {
-                shift.scheduledLunchBreakEnd = null;
-            }
-            shift.Notes = notes;
-
-            //Delete or update shift accordingly
-            if (string.Equals(isDelete, "delete"))
-            {
-                this.ContactPersonShiftChange("delete", shift);
-                return Json(shiftDAL.DeleteShift(shift));
-            }
-            else
-            {
-                this.ContactPersonShiftChange("update", shift);
-                return Json(shiftDAL.UpdateShift(shift, otherThing));
-
-            }
-
-        }
-
-        /// <summary>
-        /// Checks if user is scheduled - prevents double scheduling
-        /// </summary>
-        /// <param name="personID"></param>
-        /// <param name="startdt"></param>
-        /// <param name="enddt"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
-        {
-            DateTime scheduledStartTime = ConvertDateToC(long.Parse(startdt));
-            DateTime scheduledEndTime = ConvertDateToC(long.Parse(enddt));
-            return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
-        }
-
-        /// <summary>
-        /// Request time off
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult RequestTimeOff()
-        {
-            ViewBag.failedRequest = "";
-            ViewBag.successfulRequest = "";
-            return View();
-        }
-
-        /// <summary>
-        /// Accepts request off time
-        /// </summary>
-        /// <param name="personID"></param>
-        /// <param name="positionID"></param>
-        /// <param name="startDate"></param>
-        /// <param name="endDate"></param>
-        /// <param name="taskList"></param>
-        /// <param name="notes"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult RequestTimeOffFunction(string personID, string positionID, string startDate, string endDate, string taskList, string notes)
-        {
-
-            startDate = Request.Form["startDate"];
-            if(startDate == "")
-            {
-                ViewBag.startError = "You must include a start date.";
-                return View("RequestTimeOff");   
-            }
-            endDate = Request.Form["endDate"];
-            if (endDate == "")
-            {
-                ViewBag.startError = "You must include an end date.";
-                return View("RequestTimeOff");
-            }
-            if (DateTime.Parse(endDate) < DateTime.Parse(startDate)){
-                ViewBag.timingError = "Your end date must not be before your start date.";
-                return View("RequestTimeOff");
-            }
-            if(DateTime.Parse(startDate) < DateTime.Now)
-            {
-                ViewBag.pastError = "You cannot request off in the past.";
-                return View("RequestTimeOff");
-            }
-
-            Shift shift = new Shift();
-            shift.personID = int.Parse(Session["id"].ToString());
-            shift.positionID = this.positionDAL.FindPositionIDByUnavailable();
-            shift.scheduledStartTime = DateTime.Parse(startDate).AddHours(4);
-            shift.scheduledEndTime = DateTime.Parse(endDate).AddHours(4);
-            Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
-            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
-            if (checkIfAlreadyScheduled == false)
-            {
-                ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +
-                    endDate + " or have requested this time off already. Please check your schedule.";
-                return View("RequestTimeOff");
-            }
-            else
-            {
-                ViewBag.successfulRequest = "Your request beginning " + startDate + " and ending " + endDate + " has been submitted.";
-                this.shiftDAL.AddShift(shift, otherThing);
-                return View("RequestTimeOff");
-            }
+            Response.Write("<script>alert('" + xMessage + "')</script>");
         }
 
         private void ContactPersonShiftChange(string type, Shift shift)
@@ -809,7 +822,6 @@ namespace ScheduleBuilder.Controllers
             }
             return shift;
         }
-
 
     }
 }
