@@ -13,7 +13,7 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Returns all ActivePositions
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of position objects</returns>
         public List<Position> GetAllActivePositions()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -56,7 +56,7 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Retrieves all the positions
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of position objects</returns>
         public List<Position> GetAllPositions()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
@@ -132,12 +132,11 @@ namespace ScheduleBuilder.DAL
             return personPepositionList;
         }
 
-
         /// <summary>
         /// Adds a new position
         /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
+        /// <param name="position">The position object to be added</param>
+        /// <returns>True if insert is successful, false otherwise</returns>
         public bool AddPosition(Position position)
         {
             int positionResult = 0;
@@ -171,10 +170,11 @@ namespace ScheduleBuilder.DAL
         }
 
         /// <summary>
-        /// Adds a position to a person
+        /// Connects a person to an assigned position
         /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
+        /// <param name="person">The person's id as an integer</param>
+        /// <param name="position">The position id as an integer</param>
+        /// <returns>True if insert is successful, false otherwise</returns>
         public bool AddPositionToPerson(int person, int position)
         {
             int positionResult = 0;
@@ -209,8 +209,8 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Updates a selected position 
         /// </summary>
-        /// <param name="position"></param>
-        /// <returns></returns>
+        /// <param name="position">The position object to be updated</param>
+        /// <returns>True if update is successful, false otherwise</returns>
         public bool UpdatePosition(Position position)
         {
             string updateStatement =
@@ -250,7 +250,7 @@ namespace ScheduleBuilder.DAL
         /// <summary>
         /// Finds PositionIDByUnavailable
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The id of the 'Unavailable' position</returns>
         public int FindPositionIDByUnavailable()
         {
             SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection();
