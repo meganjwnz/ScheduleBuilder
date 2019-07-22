@@ -371,6 +371,7 @@ namespace ScheduleBuilder.Controllers
             return View(timeCardEdits);
         }
 
+        //displays oldest first to insure that mistakes can be corrected
         private List<TimeCardEditViewModel> CovertShiftToTimeCardView(List<Shift> shifts)
         {
             List<TimeCardEditViewModel> timeCardEdits = new List<TimeCardEditViewModel>();
