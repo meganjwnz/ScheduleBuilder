@@ -7,9 +7,20 @@
 
 <h2>All Shifts</h2>
 
-<div>
+<table>
     <button type="button" class="btn btn-default" ng-click="openModal('Add', {})">Add Shift</button>
-    <h4>All Shifts:</h4>
+
+    <br />
+
+    <form>
+        <table>
+            <tr>
+                <th>Search Name or Position: </th>
+                <th><input type="text" class="form-control" placeholder="Search" ng-model="searchShift"></th>
+            </tr>
+        </table>
+    </form>
+
     <table style="width:100%;">
 
         <thead class="tablestyle">
