@@ -375,9 +375,8 @@ namespace ScheduleBuilder.Controllers
         private List<TimeCardEditViewModel> CovertShiftToTimeCardView(List<Shift> shifts)
         {
             List<TimeCardEditViewModel> timeCardEdits = new List<TimeCardEditViewModel>();
-            for (int count = shifts.Count-1; count > 0; count--)
+            foreach (Shift shift in shifts)
             {
-                Shift shift = shifts[count];
                 TimeCardEditViewModel timeCard = new TimeCardEditViewModel();
                 timeCard.shiftId = shift.shiftID;
                 timeCard.personFirstName = shift.personFirstName;
@@ -395,7 +394,6 @@ namespace ScheduleBuilder.Controllers
 
             return timeCardEdits;
         }
-
         private Shift ConvertTimeCardEditViewModelToShift(TimeCardEditViewModel timeCardEditViewModel, Shift orignalShift)
         {
             Shift shift = orignalShift;
