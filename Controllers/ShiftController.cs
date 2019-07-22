@@ -20,6 +20,12 @@ namespace ScheduleBuilder.Controllers
         RoleDAL roleDAL = new RoleDAL();
         StatusDAL statusDAL = new StatusDAL();
 
+
+        public ActionResult Shifts()
+        {
+            return View();
+        }
+
         /// <summary>
         /// gets all shifts from the database
         /// </summary>

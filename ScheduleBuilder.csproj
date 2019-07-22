@@ -401,6 +401,7 @@
     <Content Include="Views\Shift\RequestTimeOff.cshtml" />
     <Content Include="Views\Shift\GetLastTwoWeeksOfShiftsForEdit.cshtml" />
     <Content Include="Views\Shift\EditTimecard.cshtml" />
+    <Content Include="Views\Shift\Shifts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\NewFolder1\" />
