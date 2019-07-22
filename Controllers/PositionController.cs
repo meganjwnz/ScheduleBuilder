@@ -5,18 +5,28 @@ using System.Web.Mvc;
 
 namespace ScheduleBuilder.Controllers
 {
+    /// <summary>
+    /// Controller responsible for Position and Task model classes and actions
+    /// </summary>
     public class PositionController : Controller
     {
         #region position methods
         readonly PositionDAL positionDAL = new PositionDAL();
 
-        // GET: Position
+        /// <summary>
+        /// Load the positions/task page and content
+        /// </summary>
+        /// <returns>The view page</returns>
         public ActionResult Positions()
         {
-            return View(this.taskDAL.GetAllTasks());
+            return View();
         }
 
-        // GET: Position
+        /// <summary>
+        /// Get all positions
+        /// Called from app.js
+        /// </summary>
+        /// <returns>A JSON list of all positions</returns>
         public ActionResult GetAllPositions()
         {
             try
@@ -30,7 +40,12 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
-        // GET: Position
+        /// <summary>
+        /// Gets all positions assigned to a specific person
+        /// Called from app.js
+        /// </summary>
+        /// <param name="personID">The person's id as an integer</param>
+        /// <returns>A JSON list of positions</returns>
         public ActionResult GetPersonPositions(int personID)
         {
             try
@@ -47,11 +62,12 @@ namespace ScheduleBuilder.Controllers
         // POST: Position/AddPosition
         /// <summary>
         /// Creates a new position
+        /// Called from app.js
         /// </summary>
-        /// <param name="positionTitle"></param>
-        /// <param name="positionDescription"></param>
-        /// <param name="isActive"></param>
-        /// <returns></returns>
+        /// <param name="positionTitle">The title of the position as a string</param>
+        /// <param name="positionDescription">The description of the position as a string</param>
+        /// <param name="isActive">Boolean of active or inactive</param>
+        /// <returns>A value of true if insert was successful, false otherwise</returns>
         [HttpPost]
         public ActionResult AddPosition(string positionTitle, string positionDescription, bool isActive)
         {
@@ -72,8 +88,15 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
-        // POST: Position/Edit/5
-        [HttpPost]
+        /// <summary>
+        /// Update a position object
+        /// Called from app.js
+        /// </summary>
+        /// <param name="id">The position's id as an integer</param>
+        /// <param name="positionTitle">The title as a string</param>
+        /// <param name="positionDescription">The description as a string</param>
+        /// <param name="isActive">Active or inactive as a boolean</param>
+        /// <returns>A true value if update was successful, false otherwise</returns>
         public ActionResult UpdatePosition(int id, string positionTitle, string positionDescription, bool isActive)
         {
             try
@@ -111,9 +134,10 @@ namespace ScheduleBuilder.Controllers
         private readonly TaskDAL taskDAL = new TaskDAL();
 
         /// <summary>
-        /// Returns all tasks
+        /// Returns all tasks as a json list
+        /// Called from app.js
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A JSON list of all tasks</returns>
         public ActionResult GetAllTasks()
         {
             try
@@ -128,10 +152,11 @@ namespace ScheduleBuilder.Controllers
         }
 
         /// <summary>
-        /// Returns all postion tasks
+        /// Returns all tasks assigned to a specific position
+        /// Called from app.js
         /// </summary>
-        /// <param name="positionID"></param>
-        /// <returns></returns>
+        /// <param name="positionID">The position's id as an integer</param>
+        /// <returns>A JSON list of tasks</returns>
         public ActionResult GetPositionTasks(int positionID)
         {
             try
@@ -145,35 +170,14 @@ namespace ScheduleBuilder.Controllers
             }
         }
 
-        // POST: Task/AddTask
         /// <summary>
-        /// Creates a new task
+        /// Creates a new task with an assigned position
+        /// Called from app.js
         /// </summary>
-        /// <param name="taskTitle"></param>
-        /// <param name="taskDescription"></param>
-        /// <param name="isActive"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult AddTaskShift(string taskTitle, string taskDescription, bool isActive)
-        {
-            Task task = new Task
-            {
-                Task_title = taskTitle,
-                Task_description = taskDescription,
-                IsActive = isActive
-            };
-            return Json(this.taskDAL.AddShiftTask(task));
-        }
-
-        // POST: Task/AddTask
-        /// <summary>
-        /// Creates a new task
-        /// </summary>
-        /// <param name="taskTitle"></param>
-        /// <param name="taskDescription"></param>
-        /// <param name="isActive"></param>
-        /// <returns></returns>
-        [HttpPost]
+        /// <param name="taskTitle">Task title as a string</param>
+        /// <param name="taskDescription">Task description as a string</param>
+        /// <param name="isActive">Active or Inactive as a boolean</param>
+        /// <returns>True if task is added successfully, false otherwise</returns
         public ActionResult AddTaskPosition(string taskTitle, string taskDescription, bool isActive, string positionID)
         {
             Task task = new Task
@@ -186,30 +190,16 @@ namespace ScheduleBuilder.Controllers
             return Json(this.taskDAL.AddPositionTask(task));
         }
 
-        // POST: Position/Edit/5
-        [HttpPost]
-        public ActionResult UpdateTaskShift(int id, string taskTitle, string taskDescription, bool isActive)
-        {
-            try
-            {
-                Task task = new Task
-                {
-                    Task_title = taskTitle,
-                    Task_description = taskDescription,
-                    IsActive = isActive,
-                    TaskId = id
-                };
-
-                return Json(this.taskDAL.UpdateShiftTask(task));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // POST: Position/Edit/5
-        [HttpPost]
+        /// <summary>
+        /// Update a task with an assigned position
+        /// Called from app.js
+        /// </summary>
+        /// <param name="id">The id of the task to be updated</param>
+        /// <param name="taskTitle">The title as a string</param>
+        /// <param name="taskDescription">The description as a string</param>
+        /// <param name="isActive">Active or Inactive as a boolean</param>
+        /// <param name="positionID">The associated positionID for the task</param>
+        /// <returns></returns>
         public ActionResult UpdateTaskPosition(int id, string taskTitle, string taskDescription, bool isActive, int positionID)
         {
             try

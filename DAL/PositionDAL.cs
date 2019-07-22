@@ -277,8 +277,4 @@ namespace ScheduleBuilder.DAL
             return position.positionID;
         }
     }
-    //// Add position check here
-
-
-
 }
