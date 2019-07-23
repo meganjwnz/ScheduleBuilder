@@ -1,4 +1,5 @@
 ﻿using Autofac.Extras.Moq;
+using Moq;
 using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using System.Collections.Generic;
@@ -33,6 +34,50 @@ namespace ScheduleBuilderTests
                 }
             }
         }
+
+        [Fact]
+        public void TestAddPositionTask()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var task = new Task
+                {
+                    Task_title = "Waitress",
+                    Task_description = "Serve customers",
+                    IsActive = true
+                };
+
+                mock.Mock<ITaskDAL>().Setup(x => x.AddPositionTask(task));
+
+                var cls = mock.Create<ITaskDAL>();
+
+                cls.AddPositionTask(task);
+
+                mock.Mock<ITaskDAL>().Verify(x => x.AddPositionTask(task), Times.Exactly(1));
+            }
+        }
+
+        [Fact]
+        public void TestUpdatePositionTask()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                var updatedtask = new Task
+                {
+                    Task_title = "Cook",
+                    Task_description = "Cooks the food",
+                    IsActive = true
+                };
+
+                mock.Mock<ITaskDAL>().Setup(x => x.GetAllTasks()).Returns(GetSampleTasks());
+
+                var taskDAL = mock.Create<ITaskDAL>();
+                taskDAL.UpdatePositionTask(updatedtask);
+
+                mock.Mock<ITaskDAL>().Verify(x => x.UpdatePositionTask(updatedtask), Times.Exactly(1));
+            }
+        }
+
 
         private List<Task> GetSampleTasks()
         {
