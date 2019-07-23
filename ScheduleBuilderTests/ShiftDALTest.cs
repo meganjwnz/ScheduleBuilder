@@ -202,59 +202,22 @@ namespace ScheduleBuilderTests
 
         }
 
+        //Returns false if person is scheduled already
         [Fact]
-        public void TestClockUserIn()
+        public void TestCheckIfPersonIsScheduled()
         {
-            DateTime timepunch = new DateTime(2019, 07, 07, 04, 00, 00);
             using (var mock = AutoMock.GetLoose())
             {
-                var shift = new Shift
-                {
-                    shiftID = 7,
-                    scheduleShiftID = 15,
-                    personID = 43,
-                    personFirstName = "Cooper",
-                    personLastName = "Speer",
-                    positionID = 45,
-                    positionName = "Boss",
-                    actualStartTime = timepunch
-                };
+                mock.Mock<IShiftDAL>().Setup(x => x.GetAllShifts()).Returns(GetSampleTimedShifts());
 
-                mock.Mock<IShiftDAL>().Setup(x => x.ClockUserIn(7, timepunch));
+                var shiftDAL = mock.Create<IShiftDAL>();
 
-                var cls = mock.Create<IShiftDAL>();
+                var expected1 = GetSampleTimedShifts()[0];
+                var expected2 = GetSampleTimedShifts()[1];
 
-                cls.ClockUserIn(7, timepunch);
+                var resultShouldReturnFalse = shiftDAL.CheckIfPersonIsScheduled(1, expected1.scheduledStartTime, expected2.scheduledEndTime);
+                Assert.False(resultShouldReturnFalse);
 
-                mock.Mock<IShiftDAL>().Verify(x => x.ClockUserIn(7, timepunch), Times.Exactly(1));
-            }
-        }
-
-        [Fact]
-        public void TestClockUserOut()
-        {
-            DateTime timepunch = new DateTime(2019, 07, 07, 04, 00, 00);
-            using (var mock = AutoMock.GetLoose())
-            {
-                var shift = new Shift
-                {
-                    shiftID = 7,
-                    scheduleShiftID = 15,
-                    personID = 43,
-                    personFirstName = "Cooper",
-                    personLastName = "Speer",
-                    positionID = 45,
-                    positionName = "Boss",
-                    actualStartTime = timepunch
-                };
-
-                mock.Mock<IShiftDAL>().Setup(x => x.ClockUserOut(7, timepunch));
-
-                var cls = mock.Create<IShiftDAL>();
-
-                cls.ClockUserOut(7, timepunch);
-
-                mock.Mock<IShiftDAL>().Verify(x => x.ClockUserOut(7, timepunch), Times.Exactly(1));
             }
         }
 
@@ -342,8 +305,51 @@ namespace ScheduleBuilderTests
                 }
             };
             return output;
+        }
 
+        private List<Shift> GetSampleTimedShifts()
+        {
+            List<Shift> output = new List<Shift> {
 
+                new Shift
+                {
+                    shiftID = 1,
+                    scheduleShiftID = 1,
+                    personID = 1,
+                    personFirstName = "Betty",
+                    personLastName = "Joe",
+                    positionID = 1,
+                    positionName = "Cat lady",
+                    scheduledStartTime = DateTime.Today.AddHours(4),
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                },
+                //no clocked hours
+                  new Shift
+                {
+                    shiftID = 2,
+                    scheduleShiftID = 2,
+                    personID = 1,
+                    personFirstName = "Betty",
+                    personLastName = "Joe",
+                    positionID = 2,
+                    positionName = "Cat lady",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = null,
+                    actualEndTime = null,
+                    actualLunchBreakStart = null,
+                    actualLunchBreakEnd = null
+                }
+            };
+            return output;
         }
     }
 }
