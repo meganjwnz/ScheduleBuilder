@@ -1,4 +1,5 @@
 ﻿using ScheduleBuilder.Model;
+using System;
 using System.Collections.Generic;
 
 namespace ScheduleBuilder.DAL
@@ -36,5 +37,19 @@ namespace ScheduleBuilder.DAL
         /// <param name="shift">The shift to be deleted</param>
         /// <returns>true if success, false if failure</returns>
         bool DeleteShift(Shift shift);
+
+        /// <summary>
+        /// Clocks user by the id IN by the clockin time
+        /// </summary>
+        /// <param name="shiftHoursId"></param>
+        /// <param name="clockIn"></param>
+        void ClockUserIn(int shiftHoursId, DateTime clockIn);
+
+        /// <summary>
+        /// Clocks user by Id OUT by the clockout time
+        /// </summary>
+        /// <param name="shiftHoursId"></param>
+        /// <param name="clockOut"></param>
+        void ClockUserOut(int shiftHoursId, DateTime clockOut);
     }
 }

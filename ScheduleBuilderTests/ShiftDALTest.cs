@@ -202,6 +202,62 @@ namespace ScheduleBuilderTests
 
         }
 
+        [Fact]
+        public void TestClockUserIn()
+        {
+            DateTime timepunch = new DateTime(2019, 07, 07, 04, 00, 00);
+            using (var mock = AutoMock.GetLoose())
+            {
+                var shift = new Shift
+                {
+                    shiftID = 7,
+                    scheduleShiftID = 15,
+                    personID = 43,
+                    personFirstName = "Cooper",
+                    personLastName = "Speer",
+                    positionID = 45,
+                    positionName = "Boss",
+                    actualStartTime = timepunch
+                };
+
+                mock.Mock<IShiftDAL>().Setup(x => x.ClockUserIn(7, timepunch));
+
+                var cls = mock.Create<IShiftDAL>();
+
+                cls.ClockUserIn(7, timepunch);
+
+                mock.Mock<IShiftDAL>().Verify(x => x.ClockUserIn(7, timepunch), Times.Exactly(1));
+            }
+        }
+
+        [Fact]
+        public void TestClockUserOut()
+        {
+            DateTime timepunch = new DateTime(2019, 07, 07, 04, 00, 00);
+            using (var mock = AutoMock.GetLoose())
+            {
+                var shift = new Shift
+                {
+                    shiftID = 7,
+                    scheduleShiftID = 15,
+                    personID = 43,
+                    personFirstName = "Cooper",
+                    personLastName = "Speer",
+                    positionID = 45,
+                    positionName = "Boss",
+                    actualStartTime = timepunch
+                };
+
+                mock.Mock<IShiftDAL>().Setup(x => x.ClockUserOut(7, timepunch));
+
+                var cls = mock.Create<IShiftDAL>();
+
+                cls.ClockUserOut(7, timepunch);
+
+                mock.Mock<IShiftDAL>().Verify(x => x.ClockUserOut(7, timepunch), Times.Exactly(1));
+            }
+        }
+
         /// <summary>
         /// A dummy list of shifts (mock uses this as a return from the db)
         /// </summary>
