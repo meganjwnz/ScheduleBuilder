@@ -1,4 +1,5 @@
 ﻿using ScheduleBuilder.Model;
+using System;
 using System.Collections.Generic;
 
 namespace ScheduleBuilder.DAL
@@ -36,5 +37,7 @@ namespace ScheduleBuilder.DAL
         /// <param name="shift">The shift to be deleted</param>
         /// <returns>true if success, false if failure</returns>
         bool DeleteShift(Shift shift);
+
+        bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime);
     }
 }

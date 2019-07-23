@@ -202,6 +202,25 @@ namespace ScheduleBuilderTests
 
         }
 
+        //Returns false if person is scheduled already
+        [Fact]
+        public void TestCheckIfPersonIsScheduled()
+        {
+            using (var mock = AutoMock.GetLoose())
+            {
+                mock.Mock<IShiftDAL>().Setup(x => x.GetAllShifts()).Returns(GetSampleTimedShifts());
+
+                var shiftDAL = mock.Create<IShiftDAL>();
+
+                var expected1 = GetSampleTimedShifts()[0];
+                var expected2 = GetSampleTimedShifts()[1];
+
+                var resultShouldReturnFalse = shiftDAL.CheckIfPersonIsScheduled(1, expected1.scheduledStartTime, expected2.scheduledEndTime);
+                Assert.False(resultShouldReturnFalse);
+
+            }
+        }
+
         /// <summary>
         /// A dummy list of shifts (mock uses this as a return from the db)
         /// </summary>
@@ -286,8 +305,51 @@ namespace ScheduleBuilderTests
                 }
             };
             return output;
+        }
 
+        private List<Shift> GetSampleTimedShifts()
+        {
+            List<Shift> output = new List<Shift> {
 
+                new Shift
+                {
+                    shiftID = 1,
+                    scheduleShiftID = 1,
+                    personID = 1,
+                    personFirstName = "Betty",
+                    personLastName = "Joe",
+                    positionID = 1,
+                    positionName = "Cat lady",
+                    scheduledStartTime = DateTime.Today.AddHours(4),
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = DateTime.Today,
+                    actualEndTime = DateTime.Today,
+                    actualLunchBreakStart = DateTime.Today,
+                    actualLunchBreakEnd = DateTime.Today
+                },
+                //no clocked hours
+                  new Shift
+                {
+                    shiftID = 2,
+                    scheduleShiftID = 2,
+                    personID = 1,
+                    personFirstName = "Betty",
+                    personLastName = "Joe",
+                    positionID = 2,
+                    positionName = "Cat lady",
+                    scheduledStartTime = DateTime.Today,
+                    scheduledEndTime = DateTime.Today,
+                    scheduledLunchBreakStart = DateTime.Today,
+                    scheduledLunchBreakEnd = DateTime.Today,
+                    actualStartTime = null,
+                    actualEndTime = null,
+                    actualLunchBreakStart = null,
+                    actualLunchBreakEnd = null
+                }
+            };
+            return output;
         }
     }
 }
