@@ -215,7 +215,7 @@ namespace ScheduleBuilderTests
                 var expected1 = GetSampleTimedShifts()[0];
                 var expected2 = GetSampleTimedShifts()[1];
 
-                var resultShouldReturnFalse = shiftDAL.CheckIfPersonIsScheduled(1, expected1.scheduledStartTime, expected2.scheduledEndTime);
+                var resultShouldReturnFalse = shiftDAL.CheckIfPersonIsScheduled(1, expected1.scheduledStartTime, expected2.scheduledEndTime, "");
                 Assert.False(resultShouldReturnFalse);
 
             }

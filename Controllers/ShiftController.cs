@@ -157,11 +157,11 @@ namespace ScheduleBuilder.Controllers
         /// <param name="startdt">The start of shift</param>
         /// <param name="enddt">The end of shift</param>
         /// <returns>True if scheduled, false otherwise</returns>
-        public ActionResult CheckIfScheduled(int personID, string startdt, string enddt)
+        public ActionResult CheckIfScheduled(int personID, string startdt, string enddt, string whereClause)
         {
             DateTime scheduledStartTime = ConvertDateToC(long.Parse(startdt));
             DateTime scheduledEndTime = ConvertDateToC(long.Parse(enddt));
-            return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime));
+            return Json(this.shiftDAL.CheckIfPersonIsScheduled(personID, scheduledStartTime, scheduledEndTime, whereClause));
         }
 
         /// <summary>
@@ -212,13 +212,15 @@ namespace ScheduleBuilder.Controllers
                 return View("RequestTimeOff");
             }
 
+            var where = "";
+
             Shift shift = new Shift();
             shift.personID = int.Parse(Session["id"].ToString());
             shift.positionID = this.positionDAL.FindPositionIDByUnavailable();
             shift.scheduledStartTime = DateTime.Parse(startDate).AddHours(4);
             shift.scheduledEndTime = DateTime.Parse(endDate).AddHours(4);
             Dictionary<int, bool> otherThing = taskList == null ? new Dictionary<int, bool>() : JsonConvert.DeserializeObject<Dictionary<int, bool>>(taskList);
-            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime);
+            bool checkIfAlreadyScheduled = this.shiftDAL.CheckIfPersonIsScheduled(shift.personID, shift.scheduledStartTime, shift.scheduledEndTime, where);
             if (checkIfAlreadyScheduled == false)
             {
                 ViewBag.failedRequest = "You are already scheduled between " + startDate + " and " +

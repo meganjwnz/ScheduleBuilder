@@ -487,7 +487,7 @@ namespace ScheduleBuilder.DAL
         /// <param name="startTime">The shift start date time</param>
         /// <param name="endTime">The shift end date time</param>
         /// <returns>True or false if they are or are not scheduled</returns>
-        public bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime)
+        public bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime, string whereClause)
         {
             Person person = new Person();
             Shift shift = new Shift();
@@ -496,7 +496,7 @@ namespace ScheduleBuilder.DAL
                 "FROM person " +
                 "INNER JOIN shift ON shift.personId = person.id " +
                 "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
-                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
+                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime " + whereClause;
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();

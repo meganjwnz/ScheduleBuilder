@@ -8,11 +8,11 @@
             </button>
             @if (@Session["user"] == null)
             {
-                @Html.ActionLink("Scheldule Manager", "Login", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Schedule Manager", "Login", "Home", new { area = "" }, new { @class = "navbar-brand" })
             }
             else
             {
-                @Html.ActionLink("Scheldule Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Schedule Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             }
 
         </div>

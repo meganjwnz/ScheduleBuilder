@@ -38,6 +38,6 @@ namespace ScheduleBuilder.DAL
         /// <returns>true if success, false if failure</returns>
         bool DeleteShift(Shift shift);
 
-        bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime);
+        bool CheckIfPersonIsScheduled(int personId, DateTime startTime, DateTime endTime, string whereClause);
     }
 }
