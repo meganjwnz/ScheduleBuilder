@@ -1,6 +1,7 @@
 ﻿using ScheduleBuilder.DAL;
 using ScheduleBuilder.Model;
 using ScheduleBuilder.ModelViews;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -90,7 +91,7 @@ namespace ScheduleBuilder.Controllers
 
             if (dataTable.Rows.Count > 0)
             {
-                if (person.Password == "newHire")
+                if (person.Password == "newHire" || person.Password.Contains("TempPassword"))
                 {
                     this.success = false;
                     Session["user"] = dataTable.Rows[0]["name"];
@@ -172,7 +173,7 @@ namespace ScheduleBuilder.Controllers
                     return View("ForgotPassword");
                 }
                 Person person = personDAL.GetPersonByID(personID);
-                personDAL.UpdatePasswordOnly(person, Request.Form["newPassword"]);
+                this.SendResetPasswordEmail(person);
                 return RedirectToAction("Login");
 
             }
@@ -182,6 +183,34 @@ namespace ScheduleBuilder.Controllers
                 return View("ForgetPassword");
             }
         }
+
+
+        private void SendResetPasswordEmail(Person person)
+        {
+            string newRandomPass = this.RandomPassword();
+
+            Email email = new Email(person);
+
+            string subject = $"Your Password has been reset";
+
+            string body = $"Hello { person.GetFullName()}, \n" +
+                $"\nYou are recieving this email to let you know that your password has been reset" +
+                $"\n Username {person.Username}" +
+                $"\n Your temporary password is " + newRandomPass;
+
+            email.SendMessage(subject, body);
+
+            this.personDAL.UpdatePasswordOnly(person, newRandomPass);
+        }
+
+        private string RandomPassword()
+        {
+            Random random = new Random();
+            int randomInt = random.Next(100);
+            return "TempPassword" + randomInt;
+        }
+
+
     }
-    #endregion
 }
+    #endregion
