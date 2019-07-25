@@ -405,7 +405,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
         var taskArray = JSON.stringify(selected.tasks);
         var notes = selected.notes ? selected.notes : null;
-        var where = "AND shift.id != " + shiftID.toString();
+        var where = "AND shift.id == " + shiftID.toString();
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
