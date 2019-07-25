@@ -492,7 +492,7 @@ namespace ScheduleBuilder.DAL
             Person person = new Person();
             Shift shift = new Shift();
             string selectStatement =
-                "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
+                "SELECT shift.id, person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
                 "FROM person " +
                 "INNER JOIN shift ON shift.personId = person.id " +
                 "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
@@ -509,7 +509,8 @@ namespace ScheduleBuilder.DAL
                     {
                         while (reader.Read())
                         {
-                            shift.personID = (int)reader["id"];
+                            shift.personID = (int)reader["personId"];
+                            shift.shiftID = (int)reader["id"];
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
                         }
@@ -518,12 +519,15 @@ namespace ScheduleBuilder.DAL
                 List<Shift> allShifts = this.GetAllShifts("");
                 foreach (Shift item in allShifts)
                 {
-                    if (item.personID == personId)
+                    if (item.personID == personId && item.shiftID != shift.shiftID)
                     {
-                        if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+
+                        if (startTime >= item.scheduledStartTime && startTime <= item.scheduledEndTime)
                         {
                             return false;
                         }
+
+
                     }
                 }
                 if (shift.personID == personId && shift.scheduledStartTime == startTime)
