@@ -492,11 +492,11 @@ namespace ScheduleBuilder.DAL
             Person person = new Person();
             Shift shift = new Shift();
             string selectStatement =
-                "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
+                "SELECT shift.id, person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
                 "FROM person " +
                 "INNER JOIN shift ON shift.personId = person.id " +
                 "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
-                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime " + whereClause;
+                "WHERE person.id = @personId " + whereClause;
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
@@ -509,32 +509,28 @@ namespace ScheduleBuilder.DAL
                     {
                         while (reader.Read())
                         {
-                            shift.personID = (int)reader["id"];
+                            shift.shiftID = (int)reader["id"];
                             shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
                             shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
                         }
                     }
                 }
+
                 List<Shift> allShifts = this.GetAllShifts("");
                 foreach (Shift item in allShifts)
                 {
                     if (item.personID == personId)
                     {
-                        if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+                        if (item.shiftID != shift.shiftID)
                         {
-                            return false;
+                            if (startTime >= item.scheduledStartTime && startTime <= item.scheduledEndTime)
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
-                if (shift.personID == personId && shift.scheduledStartTime == startTime)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-
+                return true;
             }
         }
 
