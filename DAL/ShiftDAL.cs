@@ -496,7 +496,7 @@ namespace ScheduleBuilder.DAL
                 "FROM person " +
                 "INNER JOIN shift ON shift.personId = person.id " +
                 "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
-                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime " + whereClause;
+                "WHERE person.id = @personId " + whereClause;
             using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
             {
                 connection.Open();
@@ -516,7 +516,9 @@ namespace ScheduleBuilder.DAL
                         }
                     }
                 }
+                var test = shift;
                 List<Shift> allShifts = this.GetAllShifts("");
+                this.personDAL.GetPersonByID(personId);
                 foreach (Shift item in allShifts)
                 {
                     if (item.personID == personId && item.shiftID != shift.shiftID)
