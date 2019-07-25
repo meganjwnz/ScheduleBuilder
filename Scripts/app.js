@@ -86,6 +86,10 @@ app.controller("appCtrl", function ($scope, $http, $uibModal) {
         startingDay: 1
     };
 
+    $scope.checkDate = function (checkDate) {
+        return checkDate < Date.now();
+    }
+
     $scope.openModal = function (type, shift) {
         $scope.selectedShift = shift;
         $scope.type = type;
@@ -401,13 +405,13 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, $scope, $http) 
         var endlunchdt = selected.lunchenddt ? selected.lunchenddt.getTime() : null;
         var taskArray = JSON.stringify(selected.tasks);
         var notes = selected.notes ? selected.notes : null;
-        var where = "AND shift.shiftID != " + selected.scheduleshiftID;
+        var where = "AND shift.id != " + shiftID.toString();
 
         if ($scope.checkDateOrder(startdt, enddt, startlunchdt, endlunchdt) == false) {
             return;
         } else {
             if (!isDelete) {
-                $http.post('/Shift/CheckIfScheduled', { personID: personID, startdt: startdt, enddt: enddt }).then(function (response) {
+                $http.post('/Shift/CheckIfScheduled', { personID: personID, startdt: startdt, enddt: enddt, whereClause: where }).then(function (response) {
                     $scope.success = response.data;
                     if ($scope.success) {
                         $http.post('/Shift/UpdateShift', {
