@@ -523,7 +523,23 @@ namespace ScheduleBuilder.DAL
                     {
                         if (item.shiftID != shift.shiftID)
                         {
-                            if (startTime >= item.scheduledStartTime && startTime <= item.scheduledEndTime)
+                            if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+                            {
+                                return false;
+                            }
+                            if (endTime >= item.scheduledStartTime.AddHours(-4) && endTime <= item.scheduledEndTime.AddHours(-4))
+                            {
+                                return false;
+                            }
+                            if (startTime <= item.scheduledStartTime.AddHours(-4) && startTime >= item.scheduledEndTime.AddHours(-4))
+                            {
+                                return false;
+                            }
+                            if (endTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                            {
+                                return false;
+                            }
+                            if (startTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
                             {
                                 return false;
                             }
@@ -542,30 +558,6 @@ namespace ScheduleBuilder.DAL
             shift.scheduledStartTime = startTime;
             shift.scheduledEndTime = endTime;
 
-            //string selectStatement =
-            //    "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
-            //    "FROM person " +
-            //    "INNER JOIN shift ON shift.personId = person.id " +
-            //    "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
-            //    "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
-            //using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            //{
-            //    connection.Open();
-            //    using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
-            //    {
-            //        selectCommand.Parameters.AddWithValue("@personId", personId);
-            //        selectCommand.Parameters.AddWithValue("@startTime", startTime);
-            //        selectCommand.Parameters.AddWithValue("@endTime", endTime);
-            //        using (SqlDataReader reader = selectCommand.ExecuteReader())
-            //        {
-            //            while (reader.Read())
-            //            {
-            //                shift.personID = (int)reader["id"];
-            //                shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
-            //                shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
-            //            }
-            //        }
-            //    }
             List<Shift> allShifts = this.GetAllShifts("");
             foreach (Shift item in allShifts)
             {
