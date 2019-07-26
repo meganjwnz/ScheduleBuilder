@@ -280,6 +280,7 @@ namespace ScheduleBuilder.DAL
                             , username = @username
                             , email = @email
                             , statusId = @statusId
+                            , roleId = @roledId
                             WHERE id = @id 
                             AND  password = @password                            
                             AND date_of_birth = @dateOfBirth";
@@ -294,6 +295,7 @@ namespace ScheduleBuilder.DAL
                         updateCommand.Parameters.AddWithValue("@lastName", editPerson.LastName);
                         updateCommand.Parameters.AddWithValue("@firstName", editPerson.FirstName);
                         updateCommand.Parameters.AddWithValue("@dateOfBirth", editPerson.DateOfBirth);
+                        updateCommand.Parameters.AddWithValue("@roleId", editPerson.RoleId);
 
                         if (String.IsNullOrEmpty(editPerson.Ssn))
                         {
