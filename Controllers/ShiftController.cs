@@ -165,6 +165,21 @@ namespace ScheduleBuilder.Controllers
         }
 
         /// <summary>
+        /// Checks if user is scheduled - prevents double scheduling
+        /// Called from app.js file
+        /// </summary>
+        /// <param name="personID">The person's id as an integer</param>
+        /// <param name="startdt">The start of shift</param>
+        /// <param name="enddt">The end of shift</param>
+        /// <returns>True if scheduled, false otherwise</returns>
+        public ActionResult CheckIfScheduledAdd(int personID, string startdt, string enddt)
+        {
+            DateTime scheduledStartTime = ConvertDateToC(long.Parse(startdt));
+            DateTime scheduledEndTime = ConvertDateToC(long.Parse(enddt));
+            return Json(this.shiftDAL.CheckIfScheduledAdd(personID, scheduledStartTime, scheduledEndTime));
+        }
+
+        /// <summary>
         /// Request time off
         /// </summary>
         /// <returns>The view for requesting time off</returns>
