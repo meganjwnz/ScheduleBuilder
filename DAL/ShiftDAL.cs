@@ -536,53 +536,66 @@ namespace ScheduleBuilder.DAL
 
         public bool CheckIfScheduledAdd(int personId, DateTime startTime, DateTime endTime)
         {
-            Person person = new Person();
+            //Person person = this.personDAL.GetPersonByID(personId);
             Shift shift = new Shift();
-            string selectStatement =
-                "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
-                "FROM person " +
-                "INNER JOIN shift ON shift.personId = person.id " +
-                "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
-                "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
-            using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
-            {
-                connection.Open();
-                using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
-                {
-                    selectCommand.Parameters.AddWithValue("@personId", personId);
-                    selectCommand.Parameters.AddWithValue("@startTime", startTime);
-                    selectCommand.Parameters.AddWithValue("@endTime", endTime);
-                    using (SqlDataReader reader = selectCommand.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            shift.personID = (int)reader["id"];
-                            shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
-                            shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
-                        }
-                    }
-                }
-                List<Shift> allShifts = this.GetAllShifts("");
-                foreach (Shift item in allShifts)
-                {
-                    if (item.personID == personId)
-                    {
-                        if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
-                        {
-                            return false;
-                        }
-                    }
-                }
-                if (shift.personID == personId && shift.scheduledStartTime == startTime)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+            shift.personID = personId;
+            shift.scheduledStartTime = startTime;
+            shift.scheduledEndTime = endTime;
 
+            //string selectStatement =
+            //    "SELECT person.id, shiftHours.scheduledStartTime, shiftHours.scheduledEndTime " +
+            //    "FROM person " +
+            //    "INNER JOIN shift ON shift.personId = person.id " +
+            //    "INNER JOIN shiftHours ON shiftHours.id = shift.scheduleShiftId " +
+            //    "WHERE person.id = @personId AND shiftHours.scheduledStartTime = @startTime";
+            //using (SqlConnection connection = ScheduleBuilder_DB_Connection.GetConnection())
+            //{
+            //    connection.Open();
+            //    using (SqlCommand selectCommand = new SqlCommand(selectStatement, connection))
+            //    {
+            //        selectCommand.Parameters.AddWithValue("@personId", personId);
+            //        selectCommand.Parameters.AddWithValue("@startTime", startTime);
+            //        selectCommand.Parameters.AddWithValue("@endTime", endTime);
+            //        using (SqlDataReader reader = selectCommand.ExecuteReader())
+            //        {
+            //            while (reader.Read())
+            //            {
+            //                shift.personID = (int)reader["id"];
+            //                shift.scheduledStartTime = (DateTime)reader["scheduledStartTime"];
+            //                shift.scheduledEndTime = (DateTime)reader["scheduledEndTime"];
+            //            }
+            //        }
+            //    }
+            List<Shift> allShifts = this.GetAllShifts("");
+            foreach (Shift item in allShifts)
+            {
+                if (item.personID == personId)
+                {
+                    if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+                    {
+                        return false;
+                    }
+                    if (endTime >= item.scheduledStartTime.AddHours(-4) && endTime <= item.scheduledEndTime.AddHours(-4))
+                    {
+                        return false;
+                    }
+                    if (startTime <= item.scheduledStartTime.AddHours(-4) && startTime >= item.scheduledEndTime.AddHours(-4))
+                    {
+                        return false;
+                    }
+                    if (endTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                    {
+                        return false;
+                    }
+                    if (startTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                    {
+                        return false;
+                    }
+                }
             }
+            return true;
+
+
         }
 
         #region TimeCard 
