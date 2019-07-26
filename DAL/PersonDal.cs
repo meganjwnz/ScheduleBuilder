@@ -280,7 +280,7 @@ namespace ScheduleBuilder.DAL
                             , username = @username
                             , email = @email
                             , statusId = @statusId
-                            , roleId = @roledId
+                            , roleId = @roleId
                             WHERE id = @id 
                             AND  password = @password                            
                             AND date_of_birth = @dateOfBirth";
