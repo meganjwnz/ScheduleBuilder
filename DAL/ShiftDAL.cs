@@ -523,23 +523,23 @@ namespace ScheduleBuilder.DAL
                     {
                         if (item.shiftID != shift.shiftID)
                         {
-                            if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+                            if (startTime >= item.scheduledStartTime && startTime <= item.scheduledEndTime)
                             {
                                 return false;
                             }
-                            if (endTime >= item.scheduledStartTime.AddHours(-4) && endTime <= item.scheduledEndTime.AddHours(-4))
+                            if (endTime >= item.scheduledStartTime && endTime <= item.scheduledEndTime)
                             {
                                 return false;
                             }
-                            if (startTime <= item.scheduledStartTime.AddHours(-4) && startTime >= item.scheduledEndTime.AddHours(-4))
+                            if (startTime <= item.scheduledStartTime && startTime >= item.scheduledEndTime)
                             {
                                 return false;
                             }
-                            if (endTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                            if (endTime <= item.scheduledStartTime && endTime >= item.scheduledEndTime)
                             {
                                 return false;
                             }
-                            if (startTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                            if (startTime <= item.scheduledStartTime && endTime >= item.scheduledEndTime)
                             {
                                 return false;
                             }
@@ -563,23 +563,23 @@ namespace ScheduleBuilder.DAL
             {
                 if (item.personID == personId)
                 {
-                    if (startTime >= item.scheduledStartTime.AddHours(-4) && startTime <= item.scheduledEndTime.AddHours(-4))
+                    if (startTime >= item.scheduledStartTime && startTime <= item.scheduledEndTime)
                     {
                         return false;
                     }
-                    if (endTime >= item.scheduledStartTime.AddHours(-4) && endTime <= item.scheduledEndTime.AddHours(-4))
+                    if (endTime >= item.scheduledStartTime && endTime <= item.scheduledEndTime)
                     {
                         return false;
                     }
-                    if (startTime <= item.scheduledStartTime.AddHours(-4) && startTime >= item.scheduledEndTime.AddHours(-4))
+                    if (startTime <= item.scheduledStartTime && startTime >= item.scheduledEndTime)
                     {
                         return false;
                     }
-                    if (endTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                    if (endTime <= item.scheduledStartTime && endTime >= item.scheduledEndTime)
                     {
                         return false;
                     }
-                    if (startTime <= item.scheduledStartTime.AddHours(-4) && endTime >= item.scheduledEndTime.AddHours(-4))
+                    if (startTime <= item.scheduledStartTime && endTime >= item.scheduledEndTime)
                     {
                         return false;
                     }

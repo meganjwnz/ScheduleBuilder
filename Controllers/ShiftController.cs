@@ -221,7 +221,7 @@ namespace ScheduleBuilder.Controllers
                 ViewBag.timingError = "Your end date must not be before your start date.";
                 return View("RequestTimeOff");
             }
-            if (DateTime.Parse(startDate) < DateTime.Now)
+            if (DateTime.Parse(startDate) < DateTime.Now.AddHours(-4))
             {
                 ViewBag.pastError = "You cannot request off in the past.";
                 return View("RequestTimeOff");
